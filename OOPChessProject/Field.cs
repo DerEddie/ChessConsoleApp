@@ -21,6 +21,7 @@ namespace OOPChessProject
     };
 }
 
+// (int)row._1, (row)0
 namespace OOPChessProject
 {
     public enum col

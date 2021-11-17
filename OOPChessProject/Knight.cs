@@ -35,7 +35,7 @@ namespace OOPChessProject
 
             //Init FieldList
             List<Field> fList = new List<Field>();
-            
+            //TODO fix hitting own piece
             // get current field
             var rowNumColNum = CurrField.fieldToNum();
 
@@ -51,7 +51,7 @@ namespace OOPChessProject
                 r_n = r + os.Item1;
                 c_n = c + os.Item2;
 
-                if (0 < c_n && c_n < 8 && c_n < 9 && r_n > 0 && r_n < 9) 
+                if (cb.isRowAndColStillBoard(r_n, c_n)) 
                 {
                     Field f_n = new Field((row)r_n, (col)c_n);
                     fList.Add(f_n);
