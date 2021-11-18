@@ -14,10 +14,10 @@ All types in .Net inherit from the Object class meaning functions like Equals, T
 ## Polymorphism
 Implementing methods that must be implemented by any derived classes
 For example:
-The Class Piece (parent class) has a Method called GetPossibleMoves(). Classes like pawn, knight etc. inherit from the piece class.
-Since every kind of piece moves different the implementation of GetPossibleMoves() is unique inside the child classes.
+The Class Piece (parent class) has a Method called getPossibleFields(). Classes like pawn, knight etc. inherit from the piece class.
+Since every kind of piece moves different the implementation of getPossibleFields() is unique inside the child classes.
 The Input for the GetPossibleMoves is the currentChessboardObject (to detect blocking and other illegal moves). The returned list is really different
-depending on which child class called the GetPossibleMoves()-Method.
+depending on which child class called the getPossibleFields()-Method.
 
 ```
     class Knight : Piece
@@ -47,4 +47,10 @@ depending on which child class called the GetPossibleMoves()-Method.
             return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false);
         }
     }
+ ```
+The Piece class is also an abstract class, because there shouldn't be a piece instance and the get getPossibleFields-Method also gets the abstract keyword.
+
+ ```
+        //Implement in Piece children
+        public abstract List<Field> getPossibleFields(ChessBoard cb);
  ```
