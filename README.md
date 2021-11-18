@@ -28,7 +28,7 @@ depending on which child class called the GetPossibleMoves()-Method.
             //already Implemented
             base.PrintRepresentation = "KN";
         }
-    ...  
+        ...  
     
                 public override List<Field> getPossibleFields(ChessBoard cb)
         {
