@@ -8,9 +8,6 @@ namespace OOPChessProject
 {
     class Knight : Piece
     {
-        //fields
-        
-
         //constructor
         public Knight(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
         {
@@ -19,7 +16,7 @@ namespace OOPChessProject
         }
 
         
-        public override List<Field> getPossibleFields(ChessBoard cb)
+        public override List<Move> getPossibleMoves(ChessBoard cb)
         {
             var rowOfsetcolOfset = new List<(int, int)>
             {

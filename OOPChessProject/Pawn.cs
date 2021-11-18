@@ -15,13 +15,19 @@ namespace OOPChessProject
             base.PrintRepresentation= "PW";
         }
 
-        public override List<Field> getPossibleFields(ChessBoard cb)
+        public override List<Move> getPossibleMoves(ChessBoard cb)
         {
             //Since Pawns move only forward, We need to know whether piece is black or white
             var rc_offset = new int[,] { { -1, 0 }};
-            
 
-            List<Field> fList = new List<Field>();
+            var rc_offset_capturing = new List<(int, int)>
+            {
+                (-1, -1),
+                (-1, 1)
+            };
+
+
+                List<Move> fList = new List<Move>();
 
             row r = CurrField.fieldRow;
             col c = CurrField.fieldCol;
@@ -48,7 +54,31 @@ namespace OOPChessProject
             col c1 = (col)c_nr;
             Field f = new Field(r1, c1);
             //check whether Field is Empty
-            if (cb.IsFieldEmpty(f)) fList.Add(f);
+            if (cb.IsFieldEmpty(f)) fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.moving)); ;
+
+            
+            foreach (var capt in rc_offset_capturing)
+            {
+                Field f1 = new Field((row) r_nr + capt.Item1*directionFactor, (col) c_nr + capt.Item2*directionFactor);
+
+                if (this.PieceColor == Color.White)
+                {
+                    if (cb.IsFieldOccupiedByColor(f1, Color.Black))
+                    {
+                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
+                    }
+                }
+                else
+                {
+                    if (cb.IsFieldOccupiedByColor(f1, Color.White))
+                    {
+                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.moving));
+                    }
+                }
+                
+            }
+            
+            
 
             //Check the double-step
             if (this.CurrField.FieldRow == row._2 | this.CurrField.FieldRow ==  row._7)
@@ -56,7 +86,7 @@ namespace OOPChessProject
                 r1 = (row)r_nr + 2*(-directionFactor);
                 c1 = (col)c_nr;
                 f = new Field(r1, c1);
-                if (cb.IsFieldEmpty(f)) fList.Add(f);
+                if (cb.IsFieldEmpty(f)) fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.moving)); ;
             }
 
             //TODO Pawn can only attack opposite color..

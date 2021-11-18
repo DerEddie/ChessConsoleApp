@@ -37,7 +37,7 @@ namespace OOPChessProject
 
 
         //Implement in Piece children
-        public abstract List<Field> getPossibleFields(ChessBoard cb);
+        public abstract List<Move> getPossibleMoves(ChessBoard cb);
 
         public override string ToString()
         {
@@ -58,9 +58,9 @@ namespace OOPChessProject
             } 
         }
 
-        protected List<Field> getPossibleFieldsTraversingPieces(ChessBoard cb, List<(int, int)> directions, bool Istraverse = true)
+        protected List<Move> getPossibleFieldsTraversingPieces(ChessBoard cb, List<(int, int)> directions, bool Istraverse = true)
         {
-            List<Field> fList = new List<Field>();
+            List<Move> fList = new List<Move>();
             // get current field
             var rowNumColNum = CurrField.fieldToNum();
 
@@ -68,8 +68,6 @@ namespace OOPChessProject
             int r = rowNumColNum.Item1;
             int c = rowNumColNum.Item2;
 
-
-            
             int iterMax;
             if (Istraverse) iterMax = 7; else iterMax = 1 ;
 
@@ -90,7 +88,7 @@ namespace OOPChessProject
 
                         if (this.PieceColor == Color.White)
                         {
-                            EnemyCol = Color.Black;
+                            EnemyCol = Color.Black; 
                         }
                         else
                         {
@@ -103,7 +101,8 @@ namespace OOPChessProject
                         if (cb.IsFieldOccupiedByColor(fn, EnemyCol))
                         {
                             //if this piece is white and we reach a black one we can capture it but must stop iteration
-                            fList.Add(fn);
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.capturing));
+
                             break;
                         }
                         else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
@@ -114,7 +113,7 @@ namespace OOPChessProject
                         else
                         {
                             //its an empty field
-                            fList.Add(fn);
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.moving));
                         }
 
                     }

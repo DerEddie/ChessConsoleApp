@@ -14,7 +14,7 @@ namespace OOPChessProject
             base.PrintRepresentation = "BS";
         }
 
-        public override List<Field> getPossibleFields(ChessBoard cb)
+        public override List<Move> getPossibleMoves(ChessBoard cb)
         {
             //Init FieldList
             List<Field> fList = new List<Field>();

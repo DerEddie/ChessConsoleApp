@@ -54,7 +54,7 @@ namespace OOPChessProject
 
         public override string ToString()
         {
-            return String.Format("r:{0},c:{1}",this.FieldRow.ToString() ,  this.FieldCol.ToString());
+            return String.Format("ROW:{0},COL:{1}",this.FieldRow.ToString() ,  this.FieldCol.ToString());
         }
 
 

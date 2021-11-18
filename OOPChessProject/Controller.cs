@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,12 +31,14 @@ namespace OOPChessProject
             do
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("_________________________________");
                 Console.WriteLine("Iteration Nr." + cGame.TurnCounter);
                 cGame.TurnCounter++;
                 Console.WriteLine(cGame.currentChessBoard);
                 Console.WriteLine(cGame.CurrentPlayer + "'s turn!");
                 Console.WriteLine(cGame.CurrentPlayer.Color);
-                
+                Console.WriteLine("_________________________________");
+
                 //User Input --> Another While Loop
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
                 string s = Console.ReadLine();
@@ -55,7 +56,7 @@ namespace OOPChessProject
                 //Lookup the possible Moves
                 var p = cGame.currentChessBoard.GetPieceFromField(of);
                 Console.WriteLine("FieldState" + p.CurrField);
-                var l = p.getPossibleFields(cGame.currentChessBoard);
+                var l = p.getPossibleMoves(cGame.currentChessBoard);
 
                 foreach (var f in l)
                 {
@@ -68,7 +69,7 @@ namespace OOPChessProject
                 //cGame.currentChessBoard.GetPieceFromField(Field f);
 
 
-                Console.WriteLine("Destination Field");
+                Console.WriteLine("Enter Destination Field: [A-H][1-8]");
                 s = Console.ReadLine();
                 var df = stringToField(s);
 
@@ -76,9 +77,11 @@ namespace OOPChessProject
                 cGame.currentChessBoard.MovePiece(of, df);
 
                 //After the move check whether this piece now attacks the enemy King
-                var listAfterMove = p.getPossibleFields(cGame.currentChessBoard);
+                var listAfterMove = p.getPossibleMoves(cGame.currentChessBoard);
 
                 Console.WriteLine("Did the King get checked?");
+
+                
                 var r = cGame.IsKingOnMoveList(listAfterMove);
                 if (r.Item1)
                 {

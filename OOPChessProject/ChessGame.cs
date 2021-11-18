@@ -41,7 +41,7 @@ namespace OOPChessProject
             CurrentPlayer = Player1;
 
             //set Move Counter to Zero
-            TurnCounter = 1;
+            TurnCounter = 0;
 
             //gameState
             GameState = gameState.Running;
@@ -61,7 +61,7 @@ namespace OOPChessProject
         }
 
         //Public because i need this function to determine the restricted fields
-        public Tuple<bool, Field> IsKingOnMoveList(List<Field> flist)
+        public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist)
         {
             var cb = this.currentChessBoard;
             var posList = cb.kFieldvPiece;
@@ -69,7 +69,7 @@ namespace OOPChessProject
             foreach (var f in flist)
             {
                 Piece p;
-                var wasSuccess = cb.TryGetPieceFromField(f, out p);
+                var wasSuccess = cb.TryGetPieceFromField(f.ToField, out p);
                 if (wasSuccess)
                 {
                     if (p.PrintRepresentation == "KI")

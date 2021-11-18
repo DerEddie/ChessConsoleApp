@@ -46,6 +46,7 @@
     <Compile Include="ChessGame.cs" />
     <Compile Include="ChessBoard.cs" />
     <Compile Include="Bishop.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="King.cs" />
     <Compile Include="Queen.cs" />
