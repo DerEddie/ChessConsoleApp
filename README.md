@@ -28,6 +28,23 @@ depending on which child class called the GetPossibleMoves()-Method.
             //already Implemented
             base.PrintRepresentation = "KN";
         }
-    ...    
+    ...  
+    
+                public override List<Field> getPossibleFields(ChessBoard cb)
+        {
+            var rowOfsetcolOfset = new List<(int, int)>
+            {
+                (-2, -1), //2 hoch 1 links
+                (-2, 1), // 2 hoch 1 rechts
+                (-1, -2),  // 1 hoch  2 links
+                (-1, 2), // 1 hoch 2 rechts
+                (1,2), // 1 runter 2 rechts
+                (1,-2), // 1 runter 2 links
+                (2,1),
+                (2,-1)
+            };
+
+            return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false);
+        }
     }
  ```
