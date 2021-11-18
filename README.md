@@ -18,3 +18,16 @@ The Class Piece (parent class) has a Method called GetPossibleMoves(). Classes l
 Since every kind of piece moves different the implementation of GetPossibleMoves() is unique inside the child classes.
 The Input for the GetPossibleMoves is the currentChessboardObject (to detect blocking and other illegal moves). The returned list is really different
 depending on which child class called the GetPossibleMoves()-Method.
+
+```
+    class Knight : Piece
+    {
+        //constructor
+        public Knight(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
+        {
+            //already Implemented
+            base.PrintRepresentation = "KN";
+        }
+    ...    
+    }
+ ```
