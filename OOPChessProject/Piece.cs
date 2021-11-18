@@ -15,7 +15,7 @@ namespace OOPChessProject
     {
 
         //A protected member is accessible within its class and by derived class instances.
-        protected Field CurrField;
+        public Field CurrField;
         bool IsAlive;
         int iconImageID;
 

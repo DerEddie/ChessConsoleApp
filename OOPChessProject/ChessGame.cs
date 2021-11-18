@@ -60,6 +60,28 @@ namespace OOPChessProject
             return colorSame;
         }
 
+        //Public because i need this function to determine the restricted fields
+        public Tuple<bool, Field> IsKingOnMoveList(List<Field> flist)
+        {
+            var cb = this.currentChessBoard;
+            var posList = cb.kFieldvPiece;
+            
+            foreach (var f in flist)
+            {
+                Piece p;
+                var wasSuccess = cb.TryGetPieceFromField(f, out p);
+                if (wasSuccess)
+                {
+                    if (p.PrintRepresentation == "KI")
+                    {
+                        return new Tuple<bool, Field>(true,p.CurrField);
+                    }
+                }
+            }
+
+            return new Tuple<bool, Field>(false, null);
+        }
+
 
     }
 }

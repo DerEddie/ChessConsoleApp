@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,16 +32,14 @@ namespace OOPChessProject
             do
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                //Console.WriteLine(cGame.currentChessBoard);
+                Console.WriteLine("Iteration Nr." + cGame.TurnCounter);
+                cGame.TurnCounter++;
                 Console.WriteLine(cGame.currentChessBoard);
                 Console.WriteLine(cGame.CurrentPlayer + "'s turn!");
                 Console.WriteLine(cGame.CurrentPlayer.Color);
                 
                 //User Input --> Another While Loop
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
-
-
-
                 string s = Console.ReadLine();
                 var of = stringToField(s);
 
@@ -55,6 +54,7 @@ namespace OOPChessProject
 
                 //Lookup the possible Moves
                 var p = cGame.currentChessBoard.GetPieceFromField(of);
+                Console.WriteLine("FieldState" + p.CurrField);
                 var l = p.getPossibleFields(cGame.currentChessBoard);
 
                 foreach (var f in l)
@@ -75,8 +75,20 @@ namespace OOPChessProject
                 //Move gets Performed
                 cGame.currentChessBoard.MovePiece(of, df);
 
-                
+                //After the move check whether this piece now attacks the enemy King
+                var listAfterMove = p.getPossibleFields(cGame.currentChessBoard);
 
+                Console.WriteLine("Did the King get checked?");
+                var r = cGame.IsKingOnMoveList(listAfterMove);
+                if (r.Item1)
+                {
+                    Console.WriteLine(r.Item2);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Check!!!");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
+
+                
 
                 //Change current Player
                 cGame.CurrentPlayer= (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2: cGame.Player1;
