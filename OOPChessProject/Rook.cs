@@ -16,7 +16,7 @@ namespace OOPChessProject
             base.PrintRepresentation = "RK";
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
         {
             //Init FieldList
             List<Field> fList = new List<Field>();

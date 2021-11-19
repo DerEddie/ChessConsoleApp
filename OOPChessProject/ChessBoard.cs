@@ -200,6 +200,20 @@ namespace OOPChessProject
             return !IsFieldOccupied;
         }
 
+        public List<Piece> getAllPiecesOfColor(Color c)
+        {
+            List<Piece> pList = new List<Piece>();
+            foreach (var kvpair in kFieldvPiece)
+            {
+                if (kvpair.Value.PieceColor == c)
+                {
+                    pList.Add(kvpair.Value);
+                }
+            }
+
+            return pList;
+        }
+
 
         public bool IsFieldOccupiedByColor(Field f, Color c)
         {

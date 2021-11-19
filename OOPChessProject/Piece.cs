@@ -37,7 +37,7 @@ namespace OOPChessProject
 
 
         //Implement in Piece children
-        public abstract List<Move> getPossibleMoves(ChessBoard cb);
+        public abstract List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive);
 
         public override string ToString()
         {

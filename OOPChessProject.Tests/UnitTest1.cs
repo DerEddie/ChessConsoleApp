@@ -17,10 +17,11 @@ namespace OOPChessProject.Tests
 
         }
 
+        [Test]
         public void TestMethod2()
         {
             Field f = new Field(row._1, col.A);
-
+            Assert.AreEqual(4, 5);
         }
     }
 }

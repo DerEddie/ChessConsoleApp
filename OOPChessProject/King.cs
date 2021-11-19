@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace OOPChessProject
         }
 
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
         {
             //Init FieldList
             List<Field> fList = new List<Field>();
@@ -33,26 +34,55 @@ namespace OOPChessProject
                 (0, 1),
                 (0, -1)
             };
-            Helper.ColorSwapper(Color.White);
-            return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false);
+            if(isrecursive)
+            {
+                return FilterMoves(getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, true), cb);
+            }
+            else
+            {
+                return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false);
+            }
+            
+            return FilterMoves(getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false), cb);
         }
 
 
-/*
-        public List<Move> filterMoves(List<Move> moveList)
+        //takes the kings movelist and checks whether enemy pieces attack this field
+        public List<Move> FilterMoves(List<Move> moveList, ChessBoard cb)
         {
-            foreach (var move in moveList)
+            HashSet<Field> forbiddenFields = new HashSet<Field>();
+            var enemyList = cb.getAllPiecesOfColor(Helper.ColorSwapper(this.PieceColor));
+
+            foreach (var piece in enemyList)
             {
-                foreach EnemyPiece()
+                //get possible moves from that piece and get the destination field
+                var moves = piece.getPossibleMoves(cb, false);
+
+                foreach (var m in moves)
                 {
-                    foreach possibleField EnemyPiece
-                    {
-                        // <--+#+#+-->
-                    }
+                    forbiddenFields.Add(m.ToField);
                 }
             }
+            //TODO remove debug
+            Console.WriteLine("ListForbidden");
+            foreach (var field in forbiddenFields)
+            {
+                Console.WriteLine(field);
+            }
+
+            foreach (var move in moveList)
+            {
+
+                //getting the enemy Pieces (opposite color)
+                if (forbiddenFields.Contains(move.ToField))
+                {
+                    moveList.Remove(move);
+                }
+                
+            }
+            return moveList;
         }
-*/
+
 
         //TODO Iterate over all pices of one kind -> Create a set so no duplicates for the fields those pieces attack. --> consider special case the pawn who moves and attacks differently
 

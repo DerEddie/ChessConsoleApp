@@ -30,14 +30,15 @@ namespace OOPChessProject
             //Game Loop
             do
             {
+                #region Printing the board
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("_________________________________");
                 Console.WriteLine("Iteration Nr." + cGame.TurnCounter);
-                cGame.TurnCounter++;
                 Console.WriteLine(cGame.currentChessBoard);
                 Console.WriteLine(cGame.CurrentPlayer + "'s turn!");
                 Console.WriteLine(cGame.CurrentPlayer.Color);
                 Console.WriteLine("_________________________________");
+                #endregion region MyClass definition  
 
                 //User Input --> Another While Loop
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
@@ -56,7 +57,7 @@ namespace OOPChessProject
                 //Lookup the possible Moves
                 var p = cGame.currentChessBoard.GetPieceFromField(of);
                 Console.WriteLine("FieldState" + p.CurrField);
-                var l = p.getPossibleMoves(cGame.currentChessBoard);
+                var l = p.getPossibleMoves(cGame.currentChessBoard, false);
 
                 foreach (var f in l)
                 {
@@ -77,7 +78,7 @@ namespace OOPChessProject
                 cGame.currentChessBoard.MovePiece(of, df);
 
                 //After the move check whether this piece now attacks the enemy King
-                var listAfterMove = p.getPossibleMoves(cGame.currentChessBoard);
+                var listAfterMove = p.getPossibleMoves(cGame.currentChessBoard, false);
 
                 Console.WriteLine("Did the King get checked?");
 
@@ -95,8 +96,8 @@ namespace OOPChessProject
 
                 //Change current Player
                 cGame.CurrentPlayer= (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2: cGame.Player1;
-                
 
+                cGame.TurnCounter++;
 
             } while (true);
 

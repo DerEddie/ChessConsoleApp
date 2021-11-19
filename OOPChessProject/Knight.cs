@@ -16,7 +16,7 @@ namespace OOPChessProject
         }
 
         
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
         {
             var rowOfsetcolOfset = new List<(int, int)>
             {

@@ -15,7 +15,7 @@ namespace OOPChessProject
             base.PrintRepresentation= "PW";
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
         {
             //Since Pawns move only forward, We need to know whether piece is black or white
             var rc_offset = new int[,] { { -1, 0 }};
@@ -72,7 +72,7 @@ namespace OOPChessProject
                 {
                     if (cb.IsFieldOccupiedByColor(f1, Color.White))
                     {
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.moving));
+                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
                     }
                 }
                 
