@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace OOPChessProject
+namespace OOPChessProject.Pieces
 {
-    class Rook : Piece
+    class Queen: Piece
     {
-        
 
-        public Rook(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
+        public Queen(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
         {
             //already Implemented
-            base.PrintRepresentation = "RK";
+            base.PrintRepresentation = "QN";
         }
 
         public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
@@ -23,6 +18,10 @@ namespace OOPChessProject
 
             var rowOfsetcolOfset = new List<(int, int)>
             {
+                (1 , 1),
+                (-1, -1),
+                (-1, 1),
+                (1, -1),
                 (1,  0),
                 (-1 , 0),
                 (0, 1),
@@ -30,5 +29,6 @@ namespace OOPChessProject
             };
             return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset);
         }
+
     }
 }
