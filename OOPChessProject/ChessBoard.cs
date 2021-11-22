@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
@@ -214,7 +215,7 @@ namespace OOPChessProject
             return pList;
         }
 
-
+        
         public bool IsFieldOccupiedByColor(Field f, Color c)
         {
             //returns True if there is a black piece
@@ -242,6 +243,7 @@ namespace OOPChessProject
         }
 
         
+
 
         public bool IsFieldWhiteOccupied(Field f)
         {
