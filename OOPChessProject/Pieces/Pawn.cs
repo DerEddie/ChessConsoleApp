@@ -5,7 +5,7 @@ namespace OOPChessProject.Pieces
     class Pawn : Piece
     {
 
-        public Pawn(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive)
+        public Pawn(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive)
         {
             //already Implemented
             base.PrintRepresentation= "PW";

@@ -5,7 +5,7 @@ namespace OOPChessProject.Pieces
     class Bishop: Piece
     {
         
-        public Bishop(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
+        public Bishop(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
         {
             base.PrintRepresentation = "BS";
         }
@@ -22,7 +22,7 @@ namespace OOPChessProject.Pieces
                 (-1, 1), 
                 (1, -1) 
             };
-            return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset);
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset);
         }
 
 

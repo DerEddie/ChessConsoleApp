@@ -19,13 +19,11 @@ namespace OOPChessProject
 
 
 
-        public void Doit()
+        public void MainGameLoop()
         {
-
+            //Init Game with the Players
             var cGame = new ChessGame("Eduard", "Benjamin");
-            
-
-            //var kFieldvPiece = new Dictionary<Field, Piece>();
+ 
 
             //Game Loop
             do
@@ -40,11 +38,18 @@ namespace OOPChessProject
                 Console.WriteLine("_________________________________");
                 #endregion region MyClass definition  
 
+                //check if there is a check
+                //see if king is on controlledFields.
+                //GetControlledFields
+
+                #region Asking for 1st User Input
                 //User Input --> Another While Loop
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
                 string s = Console.ReadLine();
                 var of = stringToField(s);
+                #endregion
 
+                #region Check for right color and if field is not empty
                 //if the colors are not the same we need to prompt again for input, because not the right piece was chosen.
                 if (!cGame.isPlayerAndPieceColorSame(cGame.CurrentPlayer, cGame.currentChessBoard.GetPieceFromField(of)))
                 {
@@ -53,10 +58,15 @@ namespace OOPChessProject
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     continue;
                 }
+                #endregion
 
+                
+
+                
+
+                
                 //Lookup the possible Moves
                 var p = cGame.currentChessBoard.GetPieceFromField(of);
-                Console.WriteLine("FieldState" + p.CurrField);
                 var l = p.getPossibleMoves(cGame.currentChessBoard, false);
 
                 foreach (var f in l)
@@ -75,7 +85,7 @@ namespace OOPChessProject
                 var df = stringToField(s);
 
                 //Move gets Performed
-                cGame.currentChessBoard.MovePiece(of, df);
+                cGame.currentChessBoard.MovePiece(of, df,cGame);
 
                 //After the move check whether this piece now attacks the enemy King
                 var listAfterMove = p.getPossibleMoves(cGame.currentChessBoard, false);

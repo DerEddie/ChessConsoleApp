@@ -21,11 +21,11 @@ namespace OOPChessProject
         Field toField;
         MovementType movementType;
 
-        public Move(string name, Field f1, Field f2, MovementType mt)
+        public Move(string name, Field from, Field to, MovementType mt)
         {
             //pieceName = name;
-            fromField = f1;
-            toField = f2;
+            fromField = from;
+            toField = to;
             movementType = mt;
         }
 

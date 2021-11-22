@@ -6,16 +6,13 @@ namespace OOPChessProject.Pieces
     class King : Piece
     {
         
-        public King(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
+        public King(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
         {
             //already Implemented
             base.PrintRepresentation = "KI";
         }
 
-        public void checkCastlingOptions(ChessBoard cb)
-        {
 
-        }
 
         public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
         {
@@ -33,19 +30,23 @@ namespace OOPChessProject.Pieces
                 (0, 1),
                 (0, -1)
             };
-            if(isrecursive)
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
+            /*
+            if (isrecursive)
             {
-                return FilterMoves(getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, true), cb);
+                return FilterMoves(getPossibleMovesTraversing(cb, rowOfsetcolOfset, true), cb);
             }
             else
             {
-                return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false);
+                return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
             }
             
-            return FilterMoves(getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false), cb);
+            return FilterMoves(getPossibleMovesTraversing(cb, rowOfsetcolOfset, false), cb);
+            */
         }
 
-
+        #region SomeComplicated stuff
+        /*
         //takes the kings movelist and checks whether enemy pieces attack this field
         public List<Move> FilterMoves(List<Move> moveList, ChessBoard cb)
         {
@@ -81,8 +82,8 @@ namespace OOPChessProject.Pieces
             }
             return moveList;
         }
-
-
+        */
+        #endregion
         //TODO Iterate over all pices of one kind -> Create a set so no duplicates for the fields those pieces attack. --> consider special case the pawn who moves and attacks differently
 
     }

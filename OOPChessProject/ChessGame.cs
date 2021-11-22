@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OOPChessProject
 {
-    enum gameState
+    public enum gameState
     {
         Running,
         Check,
@@ -14,7 +14,7 @@ namespace OOPChessProject
         Draw
     }
 
-    class ChessGame
+    public class ChessGame
     {
         public ChessBoard currentChessBoard;
         public List<Move> movesHistory;

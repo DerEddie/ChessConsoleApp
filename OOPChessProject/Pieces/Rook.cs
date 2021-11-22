@@ -6,7 +6,7 @@ namespace OOPChessProject.Pieces
     {
         
 
-        public Rook(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
+        public Rook(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
         {
             //already Implemented
             base.PrintRepresentation = "RK";
@@ -24,7 +24,7 @@ namespace OOPChessProject.Pieces
                 (0, 1),
                 (0, -1)
             };
-            return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset);
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset);
         }
     }
 }

@@ -16,10 +16,14 @@ namespace OOPChessProject
         public Dictionary<string, Piece> kFieldvPiece;
         public List<Piece> deadPieces = new List<Piece>();
 
+        //TODO use those
+        public List<Field> FieldControlledByWhite;
+        public List<Field> FieldControlledByBlack;
+
         //A Constructor which sets up the Game Board
         public ChessBoard()
         {
-            //create a dict to store the pieces as VALUE and field as KEY
+            //create a dict from store the pieces as VALUE and field as KEY
             kFieldvPiece = new Dictionary<string, Piece>();
             //iterate over all field combinations
             foreach (row r in Enum.GetValues(typeof(row)))
@@ -268,7 +272,7 @@ namespace OOPChessProject
         */
 
         //Removing the field from the dict and creating new entry/overwriting entry
-        //if the destination field is occupied move it to the deadPieces
+        //if the destination field is occupied move it from the deadPieces
 
         //Objekt ändert sich selbst.
         //Oder eher anderes Objekt ändert dieses Objekt (WAM: Trennung Fields und Methoden)
@@ -276,32 +280,35 @@ namespace OOPChessProject
 
 
 
-        //TODO how to handle input field which is empty
+        //TODO how from handle input field which is empty
         //Move Piece in Dict and also change field in Piece Object
-        public void MovePiece(Field f1, Field f2)
+        public void MovePiece(Field from, Field to, ChessGame cg)
         {
             
             //Piece which gonna move
-            var p = this.kFieldvPiece[f1.ToString()];
-            p.field = f2;
-            if (IsFieldEmpty(f2))
+            var p = this.kFieldvPiece[from.ToString()];
+            p.field = to;
+            if (IsFieldEmpty(to))
             {
                 
-                this.kFieldvPiece.Add(f2.ToString(),p);
+                this.kFieldvPiece.Add(to.ToString(),p);
             }
             else
             {
-                var deadP = this.kFieldvPiece[f2.ToString()];
-                this.kFieldvPiece[f2.ToString()] = p;
+                var deadP = this.kFieldvPiece[to.ToString()];
+                this.kFieldvPiece[to.ToString()] = p;
                 deadPieces.Add(deadP);
             }
-            this.kFieldvPiece.Remove(f1.ToString());
+            this.kFieldvPiece.Remove(from.ToString());
+
+            cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
         }
 
-        public void castleShort()
+        public void castleShort(Color c)
         {
             //check whether King haven't moved yet.
             //check whether Rook didn't move yet.
+            
 
 
         }

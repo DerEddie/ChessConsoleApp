@@ -5,7 +5,7 @@ namespace OOPChessProject.Pieces
     class Queen: Piece
     {
 
-        public Queen(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
+        public Queen(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
         {
             //already Implemented
             base.PrintRepresentation = "QN";
@@ -27,7 +27,7 @@ namespace OOPChessProject.Pieces
                 (0, 1),
                 (0, -1)
             };
-            return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset);
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset);
         }
 
     }

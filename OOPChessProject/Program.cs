@@ -29,7 +29,7 @@ class Program
 
 
             Controller c = new Controller();
-            c.Doit();
+            c.MainGameLoop();
             
 
 

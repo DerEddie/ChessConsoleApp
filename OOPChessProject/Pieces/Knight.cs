@@ -5,7 +5,7 @@ namespace OOPChessProject.Pieces
     class Knight : Piece
     {
         //constructor
-        public Knight(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
+        public Knight(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
         {
             //already Implemented
             base.PrintRepresentation = "KN";
@@ -26,7 +26,7 @@ namespace OOPChessProject.Pieces
                 (2,-1)
             };
 
-            return getPossibleFieldsTraversingPieces(cb, rowOfsetcolOfset, false);
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
         }
 
 

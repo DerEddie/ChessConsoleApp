@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OOPChessProject
 {
-    class Player
+    public class Player
     {
         public string Name;
         public Color Color;
