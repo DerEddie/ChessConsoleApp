@@ -10,13 +10,17 @@ namespace OOPChessProject
 {
     class King : Piece
     {
-
+        
         public King(Field aField, Color aPieceColor, bool aisAlive = true) : base(aField, aPieceColor, aisAlive = true)
         {
             //already Implemented
             base.PrintRepresentation = "KI";
         }
 
+        public void checkCastlingOptions(ChessBoard cb)
+        {
+
+        }
 
         public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
         {
@@ -63,7 +67,7 @@ namespace OOPChessProject
                     forbiddenFields.Add(m.ToField);
                 }
             }
-            //TODO remove debug
+            
             Console.WriteLine("ListForbidden");
             foreach (var field in forbiddenFields)
             {

@@ -33,7 +33,7 @@ namespace OOPChessProject
                     //Piece p;
                     if(rowNum == 1)
                     {
-                        //TODO White and Black switched
+                        
                         if(colNum == 1 | colNum == 8)
                         {
                             Rook p = new Rook(f, Color.White);
@@ -271,6 +271,8 @@ namespace OOPChessProject
         //Oder eher anderes Objekt ändert dieses Objekt (WAM: Trennung Fields und Methoden)
 
 
+
+
         //TODO how to handle input field which is empty
         //Move Piece in Dict and also change field in Piece Object
         public void MovePiece(Field f1, Field f2)
@@ -292,6 +294,20 @@ namespace OOPChessProject
             }
             this.kFieldvPiece.Remove(f1.ToString());
         }
+
+        public void castleShort()
+        {
+            //check whether King haven't moved yet.
+            //check whether Rook didn't move yet.
+
+
+        }
+
+        public void castleLong()
+        {
+
+        }
+
 
         public Piece GetPieceFromField(Field f)
         {

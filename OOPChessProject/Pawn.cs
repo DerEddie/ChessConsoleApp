@@ -15,6 +15,8 @@ namespace OOPChessProject
             base.PrintRepresentation= "PW";
         }
 
+
+        //TODO consider en passant
         public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
         {
             //Since Pawns move only forward, We need to know whether piece is black or white

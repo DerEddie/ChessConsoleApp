@@ -18,10 +18,10 @@ namespace OOPChessProject
         public Field CurrField;
         bool IsAlive;
         int iconImageID;
+        bool hasMovedOnce = false;
 
         //has a value in the children-classes
         public string PrintRepresentation;
-
         public Color PieceColor;
 
         //create a base constructor for instance creation of different pieces
@@ -117,8 +117,6 @@ namespace OOPChessProject
                         }
 
                     }
-
-
                 }
             }
 
