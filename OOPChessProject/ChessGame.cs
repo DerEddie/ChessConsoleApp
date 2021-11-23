@@ -30,6 +30,7 @@ namespace OOPChessProject
 
 
 
+
         public ChessGame(string player1name, string player2name)
         {
 

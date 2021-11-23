@@ -14,10 +14,16 @@ namespace OOPChessProject
         //A protected member is accessible within its class and by derived class instances.
         public Field CurrField;
         bool IsAlive;
-        int IconImageID;
         bool HasMovedOnce = false;
-        private List<Field> possibleMoves;
-        private List<Field> controlledFields;
+
+
+        //copyConstructor
+        public Piece(Piece p)
+        {
+            CurrField = p.CurrField;
+            IsAlive = p.IsAlive;
+            HasMovedOnce = p.HasMovedOnce;
+        }
 
         //Movement Behaviour
         public List<(int, int)> rowOfsetcolOfset;
@@ -141,7 +147,6 @@ namespace OOPChessProject
             int r_n = 0;
             int c_n = 0;
 
-            //Todo Inneren Loop auslagern?
             for (int i = 1; i <= traverseSteps; i++)
             {
                 r_n = row + direction.Item1 * i;

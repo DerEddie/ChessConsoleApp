@@ -56,7 +56,7 @@
     <Compile Include="Field.cs" />
     <Compile Include="Pieces\Knight.cs" />
     <Compile Include="Pieces\Pawn.cs" />
-    <Compile Include="Piece.cs" />
+    <Compile Include="Pieces\Piece.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

@@ -55,13 +55,14 @@ namespace OOPChessProject
 
                 if (cGame.GameState == gameState.Check)
                 {
-                    ChessBoard copyBoard = new ChessBoard(cGame.currentChessBoard);
-                    var pieces = copyBoard.getAllPiecesOfColor(cGame.CurrentPlayer.Color);
-                    foreach (var p in pieces)
+                    //TODO deepcopy the board
+                    var pieces = cGame.currentChessBoard.getAllPiecesOfColor(cGame.CurrentPlayer.Color);
+                    foreach (var pp in pieces)
                     {
-                        var moves = p.getPossibleMoves(cGame.currentChessBoard);
+                        var moves = pp.getPossibleMoves(cGame.currentChessBoard);
                         foreach (var m in moves)
                         {
+                            ChessBoard copyBoard = new ChessBoard(cGame.currentChessBoard);
                             copyBoard.MovePiece(m.FromField,m.ToField);
                         }
                         
@@ -127,7 +128,7 @@ namespace OOPChessProject
                 var df = stringToField(s);
 
                 //Move gets Performed
-                cGame.currentChessBoard.MovePiece(of, df,cGame);
+                cGame.currentChessBoard.MovePiece(of, df);
 
                 //After the move check whether this piece now attacks the enemy King
                 
