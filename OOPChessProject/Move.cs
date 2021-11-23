@@ -9,6 +9,8 @@ namespace OOPChessProject
     public enum MovementType
     {
         moving,
+        controlling, //controlling can mean capturing or potentially move to that field once the ally piece left.
+        doubleStep, //important for en passant implementation
         capturing,
         castleShort,
         castleLong

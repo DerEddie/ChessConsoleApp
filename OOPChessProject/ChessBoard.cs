@@ -22,43 +22,40 @@ namespace OOPChessProject
             //create a dict from store the pieces as VALUE and field as KEY
             kFieldvPiece = new Dictionary<string, Piece>();
             //iterate over all field combinations
-            foreach (row r in Enum.GetValues(typeof(row)))
+            for (int r = 0; r < 8; r++)
             {
-                foreach (col c in Enum.GetValues(typeof(col)))
+                for (int c = 0; c < 8; c++)
                 {
                     Field f = new Field(r, c);
 
-                    // Rows = {1..8} , Cols = {1..8}
-                    int rowNum = (int)r + 1;
-                    int colNum = (int)c + 1;
 
                     //Piece p;
-                    if(rowNum == 1)
+                    if(r == 0)
                     {
                         
-                        if(colNum == 1 | colNum == 8)
+                        if(c == 0 | c == 7)
                         {
                             Rook p = new Rook(f, Color.White);
                             kFieldvPiece.Add(f.ToString(), p);
 
                         }
-                        else if(colNum == 2 | colNum == 7)
+                        else if(c == 1 | c == 6)
                         {
                             Knight p = new Knight(f, Color.White);
                             kFieldvPiece.Add(f.ToString(), p);
                         }
-                        else if(colNum == 3 | colNum == 6)
+                        else if(c == 2| c == 5)
                         {
                             Bishop p = new Bishop(f, Color.White);
                             kFieldvPiece.Add(f.ToString(), p);
                         }
-                        else if(colNum == 4)
+                        else if(c == 3)
                         {
                             //Queen's Row
                             Queen p = new Queen(f, Color.White);
                             kFieldvPiece.Add(f.ToString(), p);
                         }
-                        else if(colNum  == 5)
+                        else if(c  == 4)
                         {
                             //King's Row
                             King p = new King(f, Color.White);
@@ -67,32 +64,32 @@ namespace OOPChessProject
                        
                     }
 
-                    if (rowNum == 8)
+                    if (r == 7)
                     {
 
-                        if (colNum == 1 | colNum == 8)
+                        if (c == 0 | c == 7)
                         {
                             Rook p = new Rook(f, Color.Black);
                             kFieldvPiece.Add(f.ToString(), p);
 
                         }
-                        else if (colNum == 2 | colNum == 7)
+                        else if (c == 1 | c == 6)
                         {
                             Knight p = new Knight(f, Color.Black);
                             kFieldvPiece.Add(f.ToString(), p);
                         }
-                        else if (colNum == 3 | colNum == 6)
+                        else if (c == 2 | c == 5)
                         {
                             Bishop p = new Bishop(f, Color.Black);
                             kFieldvPiece.Add(f.ToString(), p);
                         }
-                        else if (colNum == 4)
+                        else if (c == 3)
                         {
                             //Queen's Row
                             Queen p = new Queen(f, Color.Black);
                             kFieldvPiece.Add(f.ToString(), p);
                         }
-                        else if (colNum == 5)
+                        else if (c == 4)
                         {
                             //King's Row
                             King p = new King(f, Color.Black);
@@ -100,12 +97,12 @@ namespace OOPChessProject
                         }
                     }
 
-                    if (rowNum == 2)
+                    if (r == 1)
                     {
                         Pawn p = new Pawn(f, Color.White);
                         kFieldvPiece.Add(f.ToString(), p);
                     }
-                    if(rowNum == 7)
+                    if(r == 6)
                     {
                         //Console.WriteLine(f);
                         Pawn p = new Pawn(f, Color.Black);
@@ -124,12 +121,12 @@ namespace OOPChessProject
         public override string ToString()
         {
             string total = "   A  B  C  D  E  F  G  H \n";
-            foreach (row r in Enum.GetValues(typeof(row)))
+            for (int r = 0; r < 8; r++)
             {
                 string b = " +--+--+--+--+--+--+--+--+\n";
                 total = total + b;
-                total = total + ((int)r + 1).ToString();
-                foreach (col c in Enum.GetValues(typeof(col)))
+                total = total + (r + 1).ToString();
+                for (int c = 0; c < 8; c++)
                 {
                     Field f = new Field(r, c);
                     Piece value;
@@ -203,7 +200,7 @@ namespace OOPChessProject
 
                     if (cb.isRowAndColStillBoard(r_n, c_n))
                     {
-                        Field fn = new Field((row)r_n, (col)c_n);
+                        Field fn = new Field(r_n, c_n);
 
                         if (cb.IsFieldOccupiedByColor(fn, EnemyCol))
                         {
@@ -236,12 +233,13 @@ namespace OOPChessProject
         public string debugBoardPrint()
         {
             string total = "   A  B  C  D  E  F  G  H \n";
-            foreach (row r in Enum.GetValues(typeof(row)))
+            for (int r = 0; r < 8; r++)
             {
+                
                 string b = " +--+--+--+--+--+--+--+--+\n";
                 total = total + b;
                 total = total + ((int)r + 1).ToString();
-                foreach (col c in Enum.GetValues(typeof(col)))
+                for (int c = 0; r < 8; c++)
                 {
                     Field f = new Field(r, c);
                     Piece value;
@@ -261,6 +259,7 @@ namespace OOPChessProject
                     }
                 }
                 total = total + "| \n";
+
             }
             total = total + " +--+--+--+--+--+--+--+--+\n";
             return total;

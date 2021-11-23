@@ -10,7 +10,7 @@ namespace OOPChessProject
     //make public if other classes should use it.
     public enum row
     {
-        _1,
+        _1= 0,
         _2,
         _3,
         _4,
@@ -26,7 +26,7 @@ namespace OOPChessProject
 {
     public enum col
     {
-        A,
+        A = 0,
         B,
         C,
         D,
@@ -38,35 +38,34 @@ namespace OOPChessProject
 
     public class Field
     {
-        public row FieldRow;
-        public col FieldCol;
+        public int FieldRow; //row = 0 => 1
+        public int FieldCol; //col = 0 => A
 
 
 
 
         //creating a constructor for a field instance
-        public Field(row aFieldRow, col aFieldCol)
+        public Field(int aFieldRow, int aFieldCol)
         {
             FieldRow = aFieldRow;
             FieldCol = aFieldCol;          
         }
 
-        //ToDo addition bzw. Subtraktion überladen um das Convertieren zu meiden => col.A + 1 = col.B
 
         public override string ToString()
         {
-            return String.Format("{1}{0}",this.FieldRow.ToString() ,  this.FieldCol.ToString());
+            return String.Format("{1}{0}", (row)this.FieldRow ,  (col)this.FieldCol);
         }
 
 
         //define Getter And Setter for the FieldRow and FieldCol because the Piece wants to know its location
-        public row fieldRow   // property
+        public int fieldRow   // property
         {
             get { return FieldRow; }   // get method
             set { FieldRow = value; }  // set method
         }
 
-        public col fieldCol   // property
+        public int fieldCol   // property
         {
             get { return FieldCol; }   // get method
             set { FieldCol = value; }  // set method
@@ -74,8 +73,8 @@ namespace OOPChessProject
 
         public Tuple<int, int> fieldToNum()
         {
-            row r = this.fieldRow;
-            col c = this.fieldCol;
+            int r = this.fieldRow;
+            int c = this.fieldCol;
 
             //convert from enum to int
             int r_nr = (int)r;

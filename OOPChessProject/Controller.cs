@@ -10,8 +10,8 @@ namespace OOPChessProject
         public Field stringToField(string s)
         {
             // String to Field Methode
-            col c = (col)Enum.Parse(typeof(col), s[0].ToString());
-            row r = (row)Enum.Parse(typeof(row), "_" + s[1]);
+            int c = (int)(col)Enum.Parse(typeof(col), s[0].ToString());
+            int r = (int)(row)Enum.Parse(typeof(row), "_" + s[1]);
             Field of = new Field(r, c);
             return of;
         }

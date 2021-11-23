@@ -31,6 +31,21 @@ namespace OOPChessProject.Pieces
             }
         }
 
+        private List<Move> GetDoubleStepMoves(int r_nr, int c_nr, ChessBoard cb)
+        {
+            List<Move> fList = new List<Move>();
+            //Check the double-step
+            if (this.CurrField.FieldRow == 1 | this.CurrField.FieldRow == 6)
+            {
+                int r1 = r_nr + 2 * (-directionFactor);
+                int c1 = c_nr;
+                Field f = new Field(r1, c1);
+                if (cb.IsFieldEmpty(f))
+                    fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.doubleStep));
+            }
+
+            return fList;
+        }
 
         private List<Move> GetCapturingMoves(int r_nr, int c_nr, ChessBoard cb)
         {
@@ -44,7 +59,7 @@ namespace OOPChessProject.Pieces
 
             foreach (var capt in rc_offset_capturing)
             {
-                Field f1 = new Field((row)r_nr + capt.Item1 * directionFactor, (col)c_nr + capt.Item2 * directionFactor);
+                Field f1 = new Field(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor);
 
                 if (this.PieceColor == Color.White)
                 {
@@ -70,8 +85,8 @@ namespace OOPChessProject.Pieces
             List<Move> fList = new List<Move>();
 
             //convert back to enum with modified values
-            row r1 = (row) r_nr + 1 * (-directionFactor);
-            col c1 = (col) c_nr;
+            int r1 =  r_nr + 1 * (-directionFactor);
+            int c1 =  c_nr;
             Field f = new Field(r1, c1);
 
             //check whether Field is Empty
@@ -79,15 +94,7 @@ namespace OOPChessProject.Pieces
                 fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.moving));
             ;
 
-            //Check the double-step
-            if (this.CurrField.FieldRow == row._2 | this.CurrField.FieldRow == row._7)
-            {
-                r1 = (row) r_nr + 2 * (-directionFactor);
-                c1 = (col) c_nr;
-                f = new Field(r1, c1);
-                if (cb.IsFieldEmpty(f))
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.moving));
-            }
+
 
             return fList;
         }
@@ -108,13 +115,12 @@ namespace OOPChessProject.Pieces
 
             var mList_capturing = GetCapturingMoves(r_nr, c_nr, cb);
 
+            var mList_moving2Step = GetDoubleStepMoves(r_nr, c_nr, cb);
+
             mList_capturing.AddRange(mList_moving);
+            mList_capturing.AddRange(mList_moving2Step);
             return mList_capturing;
         }
 
-        public void getThe2StepMove()
-        {
-
-        }
     }
 }

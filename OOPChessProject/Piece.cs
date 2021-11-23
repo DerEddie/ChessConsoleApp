@@ -41,8 +41,6 @@ namespace OOPChessProject
         }
 
 
-        //ToDo Trenne moving und capturing in 2 Funktionen -> 2 Seperate MoveLists.
-
         //Implement in Piece children
         public abstract List<Move> getPossibleMoves(ChessBoard cb);
 
@@ -81,7 +79,7 @@ namespace OOPChessProject
                 Color EnemyCol;
                 if (cb.isRowAndColStillBoard(r_n, c_n))
                 {
-                    Field fn = new Field((row)r_n, (col)c_n);
+                    Field fn = new Field(r_n, c_n);
 
                     if (this.PieceColor == Color.White)
                     {
@@ -117,8 +115,10 @@ namespace OOPChessProject
             }
         }
 
-        protected List<Move> getPossibleMovesTraversing(ChessBoard cb, List<(int, int)> directions,
-            int traverseSteps = 7)
+
+        
+
+        protected List<Move> getPossibleMovesTraversing(ChessBoard cb, List<(int, int)> directions, int traverseSteps = 7)
         {
             List<Move> mList = new List<Move>();
             // get current field
@@ -139,8 +139,58 @@ namespace OOPChessProject
             return mList;
         }
 
-        
 
+        //Slightly Different implementation where the fields where pieces of own color stand are also a field which "potentially" the piece can move to
+        //this is important for the King movement. Because a King can caputure pieces but only those which aren't protected by their allies.
+        protected void TraverseInDirectionControlling(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)
+        {
+            int r_n = 0;
+            int c_n = 0;
+
+            //Todo Inneren Loop auslagern?
+            for (int i = 1; i <= traverseSteps; i++)
+            {
+                r_n = row + direction.Item1 * i;
+                c_n = col + direction.Item2 * i;
+
+                Color EnemyCol;
+                if (cb.isRowAndColStillBoard(r_n, c_n))
+                {
+                    Field fn = new Field(r_n, c_n);
+
+                    if (this.PieceColor == Color.White)
+                    {
+                        EnemyCol = Color.Black;
+                    }
+                    else
+                    {
+                        EnemyCol = Color.White;
+                    }
+
+
+
+
+                    if (cb.IsFieldOccupiedByColor(fn, EnemyCol))
+                    {
+                        //if this piece is white and we reach a black one we can capture it but must stop iteration
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.capturing));
+
+                        break;
+                    }
+                    else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
+                    {
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.controlling));
+                        break;
+                    }
+                    else
+                    {
+                        //its an empty field
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.moving));
+                    }
+
+                }
+            }
+        }
 
     }
 
