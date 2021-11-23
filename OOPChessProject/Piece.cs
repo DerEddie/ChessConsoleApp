@@ -66,9 +66,61 @@ namespace OOPChessProject
             } 
         }
 
-        protected List<Move> getPossibleMovesTraversing(ChessBoard cb, List<(int, int)> directions, bool Istraverse = true)
+        //adds possible moves to the List
+        protected void TraverseInDirection(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)
         {
-            List<Move> fList = new List<Move>();
+            int r_n = 0;
+            int c_n = 0;
+
+            //Todo Inneren Loop auslagern?
+            for (int i = 1; i <= traverseSteps; i++)
+            {
+                r_n = row + direction.Item1 * i;
+                c_n = col + direction.Item2 * i;
+
+                Color EnemyCol;
+                if (cb.isRowAndColStillBoard(r_n, c_n))
+                {
+                    Field fn = new Field((row)r_n, (col)c_n);
+
+                    if (this.PieceColor == Color.White)
+                    {
+                        EnemyCol = Color.Black;
+                    }
+                    else
+                    {
+                        EnemyCol = Color.White;
+                    }
+
+
+
+
+                    if (cb.IsFieldOccupiedByColor(fn, EnemyCol))
+                    {
+                        //if this piece is white and we reach a black one we can capture it but must stop iteration
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.capturing));
+
+                        break;
+                    }
+                    else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
+                    {
+                        //field occupied by own piece
+                        break;
+                    }
+                    else
+                    {
+                        //its an empty field
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.moving));
+                    }
+
+                }
+            }
+        }
+
+        protected List<Move> getPossibleMovesTraversing(ChessBoard cb, List<(int, int)> directions,
+            int traverseSteps = 7)
+        {
+            List<Move> mList = new List<Move>();
             // get current field
             var rowNumColNum = CurrField.fieldToNum();
 
@@ -77,60 +129,14 @@ namespace OOPChessProject
             int c = rowNumColNum.Item2;
 
             int iterMax;
-            if (Istraverse) iterMax = 7; else iterMax = 1 ;
 
-            
+
             foreach (var os in directions)
             {
-                int r_n = 0;
-                int c_n = 0;
-
-                //Todo Inneren Loop auslagern?
-                for (int i = 1; i <= iterMax; i++)
-                {
-                    r_n = r + os.Item1 * i;
-                    c_n = c + os.Item2 * i;
-
-                    Color EnemyCol;
-                    if (cb.isRowAndColStillBoard(r_n, c_n))
-                    {
-                        Field fn = new Field((row)r_n, (col)c_n);
-
-                        if (this.PieceColor == Color.White)
-                        {
-                            EnemyCol = Color.Black; 
-                        }
-                        else
-                        {
-                            EnemyCol = Color.White;
-                        }
-
-
-
-
-                        if (cb.IsFieldOccupiedByColor(fn, EnemyCol))
-                        {
-                            //if this piece is white and we reach a black one we can capture it but must stop iteration
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.capturing));
-
-                            break;
-                        }
-                        else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
-                        {
-                            //field occupied by own piece
-                            break;
-                        }
-                        else
-                        {
-                            //its an empty field
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.moving));
-                        }
-
-                    }
-                }
+                TraverseInDirection(mList,traverseSteps,r,c,os,cb);
             }
 
-            return fList;
+            return mList;
         }
 
         

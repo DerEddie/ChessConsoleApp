@@ -17,7 +17,9 @@ namespace OOPChessProject.Pieces
             base.PrintRepresentation = "--";
         }
 
-        
+        //TODO (1) consider en passant. Create Ghost Instance - new Class with Iteration and Pawn as Field,
+        //TODO (2) selfdestruct after one Iter. if destroyed by enemy destroy the Pawn as Field
+
 
         public override List<Move> getPossibleMoves(ChessBoard cb)
         {
@@ -28,7 +30,7 @@ namespace OOPChessProject.Pieces
             {
 
             };
-            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
         }
 
       

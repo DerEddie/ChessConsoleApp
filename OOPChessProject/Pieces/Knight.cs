@@ -27,7 +27,7 @@ namespace OOPChessProject.Pieces
         {
 
 
-            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
         }
 
 

@@ -32,7 +32,7 @@ namespace OOPChessProject.Pieces
             List<Field> fList = new List<Field>();
 
             
-            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
         }
 
         #region SomeComplicated stuff
