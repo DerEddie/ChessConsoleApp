@@ -23,7 +23,7 @@ namespace OOPChessProject
         private Piece p;
         Field fromField;
         Field toField;
-        MovementType movementType;
+        public MovementType movementType;
 
         public Move(string name, Field from, Field to, MovementType mt)
         {

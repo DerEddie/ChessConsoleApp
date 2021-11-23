@@ -71,17 +71,6 @@ namespace OOPChessProject
             set { FieldCol = value; }  // set method
         }
 
-        public Tuple<int, int> fieldToNum()
-        {
-            int r = this.fieldRow;
-            int c = this.fieldCol;
 
-            //convert from enum to int
-            int r_nr = (int)r;
-            int c_nr = (int)c;
-            return new Tuple<int, int>(r_nr, c_nr);
-        }
-
-        
     }
 }

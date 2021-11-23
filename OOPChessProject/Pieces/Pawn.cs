@@ -108,8 +108,8 @@ namespace OOPChessProject.Pieces
 
             List<Move> fList = new List<Move>();
 
-            int r_nr = CurrField.fieldToNum().Item1;
-            int c_nr = CurrField.fieldToNum().Item2;
+            int r_nr = CurrField.FieldRow;
+            int c_nr = CurrField.FieldCol;
 
             var mList_moving = GetMovingMoves(r_nr, c_nr, cb);
 

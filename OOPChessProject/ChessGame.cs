@@ -66,26 +66,7 @@ namespace OOPChessProject
         }
 
         //Public because i need this function to determine the restricted fields
-        public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist)
-        {
-            var cb = this.currentChessBoard;
-            var posList = cb.kFieldvPiece;
-            
-            foreach (var f in flist)
-            {
-                Piece p;
-                var wasSuccess = cb.TryGetPieceFromField(f.ToField, out p);
-                if (wasSuccess)
-                {
-                    if (p.GetType() == typeof(King))
-                        {
-                        return new Tuple<bool, Field>(true,p.CurrField);
-                    }
-                }
-            }
 
-            return new Tuple<bool, Field>(false, null);
-        }
 
 
     }

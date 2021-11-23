@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using OOPChessProject;
 using OOPChessProject.Pieces;
 
 namespace OOPChessProject
@@ -15,6 +16,11 @@ namespace OOPChessProject
         public Dictionary<string, Piece> kFieldvPiece;
         List<Piece> deadPieces = new List<Piece>();
 
+
+        public ChessBoard(ChessBoard cb)
+        {
+            kFieldvPiece = cb.kFieldvPiece;
+        }
 
         //A Constructor which sets up the Game Board
         public ChessBoard()
@@ -157,6 +163,57 @@ namespace OOPChessProject
             return (0 <= c_n && c_n < 8 && 0 <= r_n  && r_n < 8);
         }
 
+        
+
+
+        public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist)
+        {
+            var cb = this;
+            var posList = cb.kFieldvPiece;
+
+            foreach (var f in flist)
+            {
+                Piece p;
+                var wasSuccess = this.TryGetPieceFromField(f.ToField, out p);
+                if (wasSuccess)
+                {
+                    if (p.GetType() == typeof(King))
+                    {
+                        return new Tuple<bool, Field>(true, p.CurrField);
+                    }
+                }
+            }
+
+            return new Tuple<bool, Field>(false, null);
+        }
+
+
+        public bool isChecked(Color c)
+        {
+            
+            var pieces = getAllPiecesOfColor(c);
+            foreach (var p in pieces)
+            {
+                var moves = p.getPossibleMoves(this);
+                List<Move> filtered_moves = new List<Move>();
+                foreach (var m in moves)
+                {
+                    if (m.movementType == MovementType.capturing)
+                    {
+                        filtered_moves.Add(m);
+                    }
+                }
+                
+
+                var res = this.IsKingOnMoveList(filtered_moves);
+                if (res.Item1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public HashSet<Field> getControlledFieldsByColor(Color c, ChessBoard cb)
         {
@@ -176,12 +233,10 @@ namespace OOPChessProject
         protected List<Field> getControlledFields(Piece p,  ChessBoard cb, List<(int, int)> directions, bool Istraverse = true)
         {
             List<Field> fList = new List<Field>();
-            // get current field
-            var rowNumColNum = p.CurrField.fieldToNum();
 
             //create fields and append to the List
-            int r = rowNumColNum.Item1;
-            int c = rowNumColNum.Item2;
+            int r = p.CurrField.FieldRow;
+            int c = p.CurrField.FieldCol;
 
             int iterMax;
             if (Istraverse) iterMax = 7; else iterMax = 1;
@@ -347,7 +402,8 @@ namespace OOPChessProject
 
 
         //Move Piece in Dict and also change field in Piece Object
-        public void MovePiece(Field from, Field to, ChessGame cg)
+        //TODO implement move history
+        public void MovePiece(Field from, Field to)
         {
             
             //Piece which gonna move
@@ -366,7 +422,7 @@ namespace OOPChessProject
             }
             this.kFieldvPiece.Remove(from.ToString());
 
-            cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
+            //cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
         }
 
         public void castleShort(Color c)
@@ -406,7 +462,6 @@ namespace OOPChessProject
         {
             return null;
         }
-
 
     }
 }

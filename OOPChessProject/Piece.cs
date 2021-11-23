@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace OOPChessProject
 {
@@ -70,7 +67,6 @@ namespace OOPChessProject
             int r_n = 0;
             int c_n = 0;
 
-            //Todo Inneren Loop auslagern?
             for (int i = 1; i <= traverseSteps; i++)
             {
                 r_n = row + direction.Item1 * i;
@@ -121,12 +117,10 @@ namespace OOPChessProject
         protected List<Move> getPossibleMovesTraversing(ChessBoard cb, List<(int, int)> directions, int traverseSteps = 7)
         {
             List<Move> mList = new List<Move>();
-            // get current field
-            var rowNumColNum = CurrField.fieldToNum();
 
             //create fields and append to the List
-            int r = rowNumColNum.Item1;
-            int c = rowNumColNum.Item2;
+            int r = CurrField.FieldRow;
+            int c = CurrField.FieldCol;
 
             int iterMax;
 

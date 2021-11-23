@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace OOPChessProject
@@ -16,36 +17,17 @@ namespace OOPChessProject
             return of;
         }
 
-        /*
-        public bool isKinginCheck(List<Piece> enemyPieces,ChessBoard currentChessBoard)
-        {
-            foreach (var ep in enemyPieces)
-            {
-                var movesList = ep.getPossibleMoves(currentChessBoard);
-                var evalRes = IsKingOnMoveList(movesList);
-                if (evalRes.Item1)
-                {
-                    GameState = gameState.Check;
 
-
-
-                    Console.WriteLine(evalRes.Item2);
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Check!!!");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-
-                }
-            }
-        }
-        */
 
         public void MainGameLoop()
         {
             //Init Game with the Players
             var cGame = new ChessGame("Eduard", "Benjamin");
- 
 
-            
+            cGame.GameState = gameState.Running;
+            bool isCheck = false;
+
+             
 
             //Game Loop
             do
@@ -63,6 +45,29 @@ namespace OOPChessProject
                 //check if there is a check
                 //see if king is on controlledFields.
                 //GetControlledFields
+                isCheck = cGame.currentChessBoard.isChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
+                Console.WriteLine("Checked:");
+                if (isCheck)
+                {
+                    cGame.GameState = gameState.Check;
+                    Console.WriteLine("CHECK!");
+                }
+
+                if (cGame.GameState == gameState.Check)
+                {
+                    ChessBoard copyBoard = new ChessBoard(cGame.currentChessBoard);
+                    var pieces = copyBoard.getAllPiecesOfColor(cGame.CurrentPlayer.Color);
+                    foreach (var p in pieces)
+                    {
+                        var moves = p.getPossibleMoves(cGame.currentChessBoard);
+                        foreach (var m in moves)
+                        {
+                            copyBoard.MovePiece(m.FromField,m.ToField);
+                        }
+                        
+                    }
+
+                }
 
                 //Check if there is a check.
                 Console.WriteLine("Did the King get checked?");
