@@ -5,12 +5,12 @@ namespace OOPChessProject.Pieces
     class Bishop: Piece
     {
         
-        public Bishop(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
+        public Bishop(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
         {
             base.PrintRepresentation = "BS";
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
+        public override List<Move> getPossibleMoves(ChessBoard cb)
         {
             //Init FieldList
             List<Field> fList = new List<Field>();

@@ -5,8 +5,20 @@ namespace OOPChessProject.Pieces
 {
     class King : Piece
     {
-        
-        public King(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
+
+        List<(int, int)> rowOfsetcolOfset = new List<(int, int)>
+        {
+            (1, 1),
+            (-1, -1),
+            (-1, 1),
+            (1, -1),
+            (1, 0),
+            (-1, 0),
+            (0, 1),
+            (0, -1)
+        };
+
+        public King(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
         {
             //already Implemented
             base.PrintRepresentation = "KI";
@@ -14,35 +26,13 @@ namespace OOPChessProject.Pieces
 
 
 
-        public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
+        public override List<Move> getPossibleMoves(ChessBoard cb)
         {
             //Init FieldList
             List<Field> fList = new List<Field>();
 
-            var rowOfsetcolOfset = new List<(int, int)>
-            {
-                (1, 1),
-                (-1, -1),
-                (-1, 1),
-                (1, -1),
-                (1, 0),
-                (-1, 0),
-                (0, 1),
-                (0, -1)
-            };
-            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
-            /*
-            if (isrecursive)
-            {
-                return FilterMoves(getPossibleMovesTraversing(cb, rowOfsetcolOfset, true), cb);
-            }
-            else
-            {
-                return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
-            }
             
-            return FilterMoves(getPossibleMovesTraversing(cb, rowOfsetcolOfset, false), cb);
-            */
+            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, false);
         }
 
         #region SomeComplicated stuff

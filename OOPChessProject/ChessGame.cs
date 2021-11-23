@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OOPChessProject.Pieces;
 
 namespace OOPChessProject
 {
@@ -16,6 +17,7 @@ namespace OOPChessProject
 
     public class ChessGame
     {
+        //carries basic information and information for the flow control
         public ChessBoard currentChessBoard;
         public List<Move> movesHistory;
         public Player Player1;
@@ -23,6 +25,7 @@ namespace OOPChessProject
         public Player CurrentPlayer;
         public gameState GameState;
         public int TurnCounter;
+        
 
 
 
@@ -45,7 +48,9 @@ namespace OOPChessProject
 
             //gameState
             GameState = gameState.Running;
-            
+
+            //
+            movesHistory = new List<Move>();
         }
 
         //Implement here because attribute here
@@ -72,8 +77,8 @@ namespace OOPChessProject
                 var wasSuccess = cb.TryGetPieceFromField(f.ToField, out p);
                 if (wasSuccess)
                 {
-                    if (p.PrintRepresentation == "KI")
-                    {
+                    if (p.GetType() == typeof(King))
+                        {
                         return new Tuple<bool, Field>(true,p.CurrField);
                     }
                 }

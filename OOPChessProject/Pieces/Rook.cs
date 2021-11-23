@@ -6,13 +6,13 @@ namespace OOPChessProject.Pieces
     {
         
 
-        public Rook(Field position, Color aPieceColor, bool aisAlive = true) : base(position, aPieceColor, aisAlive = true)
+        public Rook(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
         {
             //already Implemented
             base.PrintRepresentation = "RK";
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb, bool isrecursive)
+        public override List<Move> getPossibleMoves(ChessBoard cb)
         {
             //Init FieldList
             List<Field> fList = new List<Field>();

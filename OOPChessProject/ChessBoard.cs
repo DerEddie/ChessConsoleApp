@@ -12,13 +12,9 @@ namespace OOPChessProject
     public class ChessBoard
     {
         //field
-        //remove public TODO
         public Dictionary<string, Piece> kFieldvPiece;
-        public List<Piece> deadPieces = new List<Piece>();
+        List<Piece> deadPieces = new List<Piece>();
 
-        //TODO use those
-        public List<Field> FieldControlledByWhite;
-        public List<Field> FieldControlledByBlack;
 
         //A Constructor which sets up the Game Board
         public ChessBoard()
@@ -165,6 +161,78 @@ namespace OOPChessProject
         }
 
 
+        public HashSet<Field> getControlledFieldsByColor(Color c, ChessBoard cb)
+        {
+            //use a hashset so every Field will be unique.
+            HashSet<Field> forbiddenFields = new HashSet<Field>();
+
+            var pList = getAllPiecesOfColor(c);
+            foreach (var p in pList)
+            {
+                var controlledFieldList = getControlledFields(p, cb, p.rowOfsetcolOfset);
+            }
+
+
+            return forbiddenFields;
+        }
+
+        protected List<Field> getControlledFields(Piece p,  ChessBoard cb, List<(int, int)> directions, bool Istraverse = true)
+        {
+            List<Field> fList = new List<Field>();
+            // get current field
+            var rowNumColNum = p.CurrField.fieldToNum();
+
+            //create fields and append to the List
+            int r = rowNumColNum.Item1;
+            int c = rowNumColNum.Item2;
+
+            int iterMax;
+            if (Istraverse) iterMax = 7; else iterMax = 1;
+
+
+            Color EnemyCol = Helper.ColorSwapper(p.PieceColor);
+
+            foreach (var os in directions)
+            {
+                int r_n = 0;
+                int c_n = 0;
+                for (int i = 1; i <= iterMax; i++)
+                {
+                    r_n = r + os.Item1 * i;
+                    c_n = c + os.Item2 * i;
+
+                    if (cb.isRowAndColStillBoard(r_n, c_n))
+                    {
+                        Field fn = new Field((row)r_n, (col)c_n);
+
+                        if (cb.IsFieldOccupiedByColor(fn, EnemyCol))
+                        {
+                            //if this piece is white and we reach a black one we can capture it but must stop iteration
+                            fList.Add(fn);
+
+                            break;
+                        }
+                        else if (cb.IsFieldOccupiedByColor(fn, p.PieceColor))
+                        {
+                            //field occupied by own piece
+                            fList.Add(fn);
+                            break;
+                        }
+                        else
+                        {
+                            //its an empty field
+                            fList.Add(fn);
+                        }
+
+                    }
+                }
+            }
+
+            return fList;
+        }
+
+
+
         public string debugBoardPrint()
         {
             string total = "   A  B  C  D  E  F  G  H \n";
@@ -279,8 +347,6 @@ namespace OOPChessProject
 
 
 
-
-        //TODO how from handle input field which is empty
         //Move Piece in Dict and also change field in Piece Object
         public void MovePiece(Field from, Field to, ChessGame cg)
         {
@@ -333,7 +399,6 @@ namespace OOPChessProject
             }
         }
 
-        //TODO use this method?
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
             return kFieldvPiece.TryGetValue(f.ToString(), out piece);

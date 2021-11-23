@@ -11,10 +11,10 @@ namespace OOPChessProject.Tests
         [Test]
         public void TestMethod1()
         {
-            Assert.AreEqual(2, 1 + 1);
-
-            //Assert.istrue;
-
+            ChessGame ChessGame = new ChessGame("Eduard", "Lukas");
+            string board = ChessGame.currentChessBoard.ToString();
+            Console.Write(board.Length);
+            Assert.AreEqual(board.Length, 494);
         }
 
         [Test]

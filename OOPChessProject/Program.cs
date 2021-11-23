@@ -10,7 +10,7 @@ namespace OOPChessProject
 class Program
     {
         /* Mistakes were made:
-         -The move class wasn't used, but it wouldve been useful....
+        
          -Because of the pawn where capturing and moving is different a data type which could distinguish would be useful...
 
         Fazit:

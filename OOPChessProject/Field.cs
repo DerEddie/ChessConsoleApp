@@ -51,6 +51,7 @@ namespace OOPChessProject
             FieldCol = aFieldCol;          
         }
 
+        //ToDo addition bzw. Subtraktion überladen um das Convertieren zu meiden => col.A + 1 = col.B
 
         public override string ToString()
         {

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OOPChessProject
 {
     class Controller
     {
+
+
         public Field stringToField(string s)
         {
             // String to Field Methode
@@ -17,13 +16,36 @@ namespace OOPChessProject
             return of;
         }
 
+        /*
+        public bool isKinginCheck(List<Piece> enemyPieces,ChessBoard currentChessBoard)
+        {
+            foreach (var ep in enemyPieces)
+            {
+                var movesList = ep.getPossibleMoves(currentChessBoard);
+                var evalRes = IsKingOnMoveList(movesList);
+                if (evalRes.Item1)
+                {
+                    GameState = gameState.Check;
 
+
+
+                    Console.WriteLine(evalRes.Item2);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Check!!!");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+
+                }
+            }
+        }
+        */
 
         public void MainGameLoop()
         {
             //Init Game with the Players
             var cGame = new ChessGame("Eduard", "Benjamin");
  
+
+            
 
             //Game Loop
             do
@@ -41,6 +63,21 @@ namespace OOPChessProject
                 //check if there is a check
                 //see if king is on controlledFields.
                 //GetControlledFields
+
+                //Check if there is a check.
+                Console.WriteLine("Did the King get checked?");
+
+                var enemyPieces = cGame.currentChessBoard.getAllPiecesOfColor(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
+
+
+                //Check if the check can be mitigated
+                var OwnPieces = cGame.currentChessBoard.getAllPiecesOfColor(cGame.CurrentPlayer.Color);
+
+                //Create Copy of the Board
+                //Perform the the move and then check if the check is still there. Once Move was found we break out
+                //var boardCopy 
+
+
 
                 #region Asking for 1st User Input
                 //User Input --> Another While Loop
@@ -67,7 +104,7 @@ namespace OOPChessProject
                 
                 //Lookup the possible Moves
                 var p = cGame.currentChessBoard.GetPieceFromField(of);
-                var l = p.getPossibleMoves(cGame.currentChessBoard, false);
+                var l = p.getPossibleMoves(cGame.currentChessBoard);
 
                 foreach (var f in l)
                 {
@@ -88,19 +125,13 @@ namespace OOPChessProject
                 cGame.currentChessBoard.MovePiece(of, df,cGame);
 
                 //After the move check whether this piece now attacks the enemy King
-                var listAfterMove = p.getPossibleMoves(cGame.currentChessBoard, false);
-
-                Console.WriteLine("Did the King get checked?");
+                
 
                 
-                var r = cGame.IsKingOnMoveList(listAfterMove);
-                if (r.Item1)
-                {
-                    Console.WriteLine(r.Item2);
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Check!!!");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                }
+
+                
+                
+
 
                 
 
