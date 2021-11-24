@@ -26,5 +26,11 @@ namespace OOPChessProject.Pieces
             };
             return getPossibleMovesTraversing(cb, rowOfsetcolOfset);
         }
+
+        public override object Clone()
+        {
+            Rook rook = new Rook(this.CurrField, this.PieceColor);
+            return rook;
+        }
     }
 }

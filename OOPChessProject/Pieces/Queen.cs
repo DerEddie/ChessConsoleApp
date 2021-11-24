@@ -30,5 +30,10 @@ namespace OOPChessProject.Pieces
             return getPossibleMovesTraversing(cb, rowOfsetcolOfset);
         }
 
+        public override object Clone()
+        {
+            Queen queen = new Queen(this.CurrField, this.PieceColor);
+            return queen;
+        }
     }
 }

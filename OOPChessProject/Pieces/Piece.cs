@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 
-namespace OOPChessProject
+namespace OOPChessProject 
 {
     public enum Color
     {
         White,
         Black
     }
-    public abstract class Piece
+    public abstract class Piece : ICloneable
     {
 
         //A protected member is accessible within its class and by derived class instances.
@@ -24,6 +26,9 @@ namespace OOPChessProject
             IsAlive = p.IsAlive;
             HasMovedOnce = p.HasMovedOnce;
         }
+
+        public abstract object Clone();
+ 
 
         //Movement Behaviour
         public List<(int, int)> rowOfsetcolOfset;
@@ -190,6 +195,7 @@ namespace OOPChessProject
                 }
             }
         }
+
 
     }
 

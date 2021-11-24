@@ -31,6 +31,20 @@ namespace OOPChessProject.Pieces
             }
         }
 
+        //The object keyword represents the System.Object type,
+        //which is the root type in the C# class hierarchy. This
+        //keyword is often used when there's no way to identify
+        //the object type at compile time, which often happens
+        //in various interoperability scenarios.
+
+        public override object Clone()
+        {
+            Pawn pawn = new Pawn(this.CurrField, this.PieceColor);
+            return pawn;
+        }
+
+
+
         private List<Move> GetDoubleStepMoves(int r_nr, int c_nr, ChessBoard cb)
         {
             List<Move> fList = new List<Move>();

@@ -25,7 +25,6 @@ namespace OOPChessProject
         public Player CurrentPlayer;
         public gameState GameState;
         public int TurnCounter;
-        
 
 
 
@@ -54,6 +53,9 @@ namespace OOPChessProject
             movesHistory = new List<Move>();
         }
 
+        
+
+
         //Implement here because attribute here
         //Check if Color Player == Color Piece
         public bool isPlayerAndPieceColorSame(Player player, Piece piece)
@@ -66,9 +68,31 @@ namespace OOPChessProject
             return colorSame;
         }
 
-        //Public because i need this function to determine the restricted fields
+        //true if a mitigating move was found, False if not
+        public bool ChessMitigationPossible()
+        {
+            bool mitigationFound = false;
 
+            var pieces = this.currentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
+            foreach (var pp in pieces)
+            {
+                var moves = pp.getPossibleMoves(this.currentChessBoard);
+                foreach (var m in moves)
+                {
+                    ChessBoard copyBoard = new ChessBoard(this.currentChessBoard);
+                    copyBoard.MovePiece(m.FromField, m.ToField);
+                    if (!copyBoard.isChecked(Helper.ColorSwapper(this.CurrentPlayer.Color)))
+                    {
+                        mitigationFound = true;
+                        break;
+                    }
 
+                }
+
+            }
+
+            return mitigationFound;
+        }
 
     }
 }

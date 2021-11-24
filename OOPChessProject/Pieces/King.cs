@@ -24,7 +24,11 @@ namespace OOPChessProject.Pieces
             base.PrintRepresentation = "KI";
         }
 
-
+        public override object Clone()
+        {
+            King king = new King(this.CurrField, this.PieceColor);
+            return king;
+        }
 
         public override List<Move> getPossibleMoves(ChessBoard cb)
         {

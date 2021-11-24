@@ -25,6 +25,10 @@ namespace OOPChessProject.Pieces
             return getPossibleMovesTraversing(cb, rowOfsetcolOfset);
         }
 
-
+        public override object Clone()
+        {
+            Bishop bishop = new Bishop(this.CurrField, this.PieceColor);
+            return bishop;
+        }
     }
 }

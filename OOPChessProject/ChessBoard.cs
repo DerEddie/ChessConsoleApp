@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
-using OOPChessProject;
 using OOPChessProject.Pieces;
 
 namespace OOPChessProject
@@ -17,10 +11,19 @@ namespace OOPChessProject
         List<Piece> deadPieces = new List<Piece>();
 
 
-        public ChessBoard(ChessBoard cb)
+
+        public ChessBoard(ChessBoard otherBoard)
         {
-            kFieldvPiece = cb.kFieldvPiece;
+            var copyDict = new Dictionary<string, Piece>();
+            foreach (var kvpPair in otherBoard.kFieldvPiece)
+            {
+                //clone -> returns object -> to Piece
+                copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
+            }
+
+            kFieldvPiece = copyDict;
         }
+
 
         //A Constructor which sets up the Game Board
         public ChessBoard()

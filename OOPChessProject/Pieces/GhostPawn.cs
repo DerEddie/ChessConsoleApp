@@ -33,6 +33,11 @@ namespace OOPChessProject.Pieces
             return getPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
         }
 
-      
+        public override object Clone()
+        {
+            GhostPawn pawn = new GhostPawn(this.CurrField, this.PieceColor);
+            return pawn;
+        }
+
     }
 }

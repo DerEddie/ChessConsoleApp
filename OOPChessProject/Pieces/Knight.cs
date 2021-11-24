@@ -22,7 +22,12 @@ namespace OOPChessProject.Pieces
             base.PrintRepresentation = "KN";
         }
 
-        
+        public override object Clone()
+        {
+            Knight knight = new Knight(this.CurrField, this.PieceColor);
+            return knight;
+        }
+
         public override List<Move> getPossibleMoves(ChessBoard cb)
         {
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.Win32;
 
 
 namespace OOPChessProject
@@ -55,19 +56,12 @@ namespace OOPChessProject
 
                 if (cGame.GameState == gameState.Check)
                 {
-                    //TODO deepcopy the board
-                    var pieces = cGame.currentChessBoard.getAllPiecesOfColor(cGame.CurrentPlayer.Color);
-                    foreach (var pp in pieces)
+                    //TODO function which returns true if mitigation of check found
+                    if (!cGame.ChessMitigationPossible())
                     {
-                        var moves = pp.getPossibleMoves(cGame.currentChessBoard);
-                        foreach (var m in moves)
-                        {
-                            ChessBoard copyBoard = new ChessBoard(cGame.currentChessBoard);
-                            copyBoard.MovePiece(m.FromField,m.ToField);
-                        }
-                        
+                        Console.WriteLine("Game Over!");
+                        Console.ReadKey();
                     }
-
                 }
 
                 //Check if there is a check.

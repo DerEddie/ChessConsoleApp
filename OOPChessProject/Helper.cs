@@ -22,18 +22,6 @@ namespace OOPChessProject
         }
 
 
-        public Dictionary<string, Piece> deepCopy(Dictionary<string, Piece> mydict)
-        {
-            Dictionary<string, Piece> clone = new Dictionary<string, Piece>();
-            foreach (var kvpair in mydict)
-            {
-
-                //TODO implement the dictionary copy correct: currently Problem to copy a piece: do really need a CopyCOnstructor for every piece???
-                //clone.Add(kvpair.Key, new Piece);
-            }
-
-            return mydict;
-        }
 
     }
     //internal Dictionary<string, Piece> clone = new Dictionary<string, Piece>();
