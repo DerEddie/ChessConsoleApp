@@ -1,4 +1,5 @@
-# ChessConsoleApp
+# ChessConsoleApp . OOP - Project
+
 General Project-Structure:
 
 ![Unbenannt](https://user-images.githubusercontent.com/29587190/143298051-5ec44c11-8890-450c-b4a9-20657083fdad.PNG)
