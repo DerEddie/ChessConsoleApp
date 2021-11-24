@@ -1,4 +1,9 @@
 # ChessConsoleApp
+General Project-Structure:
+
+![image](https://user-images.githubusercontent.com/29587190/143297663-e65d90df-d8b9-4c59-80bc-c72b3c68a0d6.png)
+
+
 
 OOP-Project: Implementing Chess as a Concole App.
 
