@@ -10,7 +10,11 @@ namespace OOPChessProject
         public Dictionary<string, Piece> kFieldvPiece;
         List<Piece> deadPieces = new List<Piece>();
 
-
+        public ChessBoard(string fen)
+        {
+            //TODO write a fen notation reader
+            //https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
+        }
 
         public ChessBoard(ChessBoard otherBoard)
         {
@@ -113,7 +117,7 @@ namespace OOPChessProject
                     }
                     if(r == 6)
                     {
-                        //Console.WriteLine(f);
+                        //Console.WriteLine(field);
                         Pawn p = new Pawn(f, Color.Black);
                         kFieldvPiece.Add(f.ToString(), p);
                     }
@@ -166,7 +170,13 @@ namespace OOPChessProject
             return (0 <= c_n && c_n < 8 && 0 <= r_n  && r_n < 8);
         }
 
-        
+
+
+        public void CreateAGhostlyPawn(int iterofcreation, Field field, Color color)
+        {
+            //Inserts a new ghost Pawn on the board
+            kFieldvPiece[field.ToString()] = new GhostPawn(iterofcreation,field, color);
+        }
 
 
         public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist)
@@ -406,15 +416,14 @@ namespace OOPChessProject
 
         //Move Piece in Dict and also change field in Piece Object
         //TODO implement move history
-        public void MovePiece(Field from, Field to)
+        public void MovePiece(Field from, Field to, MovementType type, int iterOfMove)
         {
-            
             //Piece which gonna move
             var p = this.kFieldvPiece[from.ToString()];
+            p.HasMovedOnce = true;
             p.field = to;
             if (IsFieldEmpty(to))
             {
-                
                 this.kFieldvPiece.Add(to.ToString(),p);
             }
             else
@@ -425,24 +434,133 @@ namespace OOPChessProject
             }
             this.kFieldvPiece.Remove(from.ToString());
 
-            //cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
+            Color c = p.PieceColor;
+
+
+            if (type == MovementType.doubleStep)
+            {
+                int tr = to.FieldRow;
+                int tc = to.FieldCol;
+
+                if (tr == 3)
+                {
+                    CreateAGhostlyPawn(iterOfMove,new Field(tr-1,tc), c);
+                }
+                else
+                {
+                    CreateAGhostlyPawn(iterOfMove, new Field(tr + 1, tc), c);
+                }
+            }
+            //TODO cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
         }
 
-        public void castleShort(Color c)
+        //because the King can't know whether other pieces have moved the higher class checkboard will perform this check.
+        public bool CastleLong(Color c)
         {
             //check whether King haven't moved yet.
             //check whether Rook didn't move yet.
-            
+            int row = 0;
+            //check there are no pieces in bewetween
+            if (c == Color.White)
+            {
+                row = 0;
+            }
+            else
+            {
+                row = 7;
+            }
 
+            List<Field> shouldntHaveMoved = new List<Field>();
 
+            Field fofRook = new Field(row, 0);
+            Field fofKing = new Field(row, 4);
+            shouldntHaveMoved.Add(fofKing);
+            shouldntHaveMoved.Add(fofRook);
+
+            List<Field> shouldBeEmpty = new List<Field>();
+
+            Field fofKingsNeighbor = new Field(row, 1);
+            Field fofRooksNeighbor = new Field(row, 2);
+            Field fofbishop = new Field(row, 3);
+            shouldBeEmpty.Add(fofRooksNeighbor);
+            shouldBeEmpty.Add(fofKingsNeighbor);
+            shouldBeEmpty.Add(fofbishop);
+
+            foreach (var f in shouldBeEmpty)
+            {
+                if (!this.IsFieldEmpty(f))
+                {
+                    return false;
+                }
+            }
+
+            foreach (var f in shouldntHaveMoved)
+            {
+                Piece piece;
+                var isRetrieved = this.TryGetPieceFromField(f, out piece);
+                if (isRetrieved)
+                {
+                    if (piece.HasMovedOnce)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
-        public void castleLong()
+        public bool CastleShort(Color c)
         {
+            int row = 0;
+            //check there are no pieces in bewetween
+            if (c == Color.White)
+            {
+                row = 0;
+            }
+            else
+            {
+                row = 7;
+            }
+            List<Field> shouldntHaveMoved = new List<Field>();
+            
+            Field fofRook = new Field(row, 0);
+            Field fofKing = new Field(row, 4);
+            shouldntHaveMoved.Add(fofKing);
+            shouldntHaveMoved.Add(fofRook);
 
+            List<Field> shouldBeEmpty = new List<Field>();
+
+            Field fofKingsNeighbor = new Field(row, 5);
+            Field fofRooksNeighbor = new Field(row, 6);
+            shouldBeEmpty.Add(fofRooksNeighbor);
+            shouldBeEmpty.Add(fofKingsNeighbor);
+
+            foreach (var f in shouldBeEmpty)
+            {
+                if (!this.IsFieldEmpty(f))
+                {
+                    return false;
+                }
+            }
+
+            foreach (var f in shouldntHaveMoved)
+            {
+                Piece piece;
+                var isRetrieved = this.TryGetPieceFromField(f, out piece);
+                if (isRetrieved)
+                {
+                    if (piece.HasMovedOnce)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
-
+        //TODO those 2 functions kinda do the same...a bit redundand
         public Piece GetPieceFromField(Field f)
         {
             Piece value;

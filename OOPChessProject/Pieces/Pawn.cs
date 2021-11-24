@@ -13,6 +13,8 @@ namespace OOPChessProject.Pieces
             (-1, 1)
         };
 
+        
+
         public Pawn(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive)
         {
             //already Implemented

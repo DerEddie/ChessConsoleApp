@@ -16,7 +16,7 @@ namespace OOPChessProject
         //A protected member is accessible within its class and by derived class instances.
         public Field CurrField;
         bool IsAlive;
-        bool HasMovedOnce = false;
+        public bool HasMovedOnce = false;
 
 
         //copyConstructor

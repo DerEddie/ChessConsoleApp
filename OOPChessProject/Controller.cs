@@ -26,9 +26,9 @@ namespace OOPChessProject
             var cGame = new ChessGame("Eduard", "Benjamin");
 
             cGame.GameState = gameState.Running;
-            bool isCheck = false;
+            bool isCheck;
 
-             
+            Console.ReadKey();
 
             //Game Loop
             do
@@ -43,9 +43,7 @@ namespace OOPChessProject
                 Console.WriteLine("_________________________________");
                 #endregion region MyClass definition  
 
-                //check if there is a check
-                //see if king is on controlledFields.
-                //GetControlledFields
+                //check if there is a check //change color because we need to iter of opponents pieces
                 isCheck = cGame.currentChessBoard.isChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
                 Console.WriteLine("Checked:");
                 if (isCheck)
@@ -63,11 +61,14 @@ namespace OOPChessProject
                         Console.ReadKey();
                     }
                 }
+                else //if there is no check we need to see if there is a stalemate which will result in a draw
+                {
+                    if (!cGame.movesAvailable())
+                    {
+                        Console.WriteLine("Stalemate!");
+                    }
+                }
 
-                //Check if there is a check.
-                Console.WriteLine("Did the King get checked?");
-
-                var enemyPieces = cGame.currentChessBoard.getAllPiecesOfColor(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
 
 
                 //Check if the check can be mitigated
@@ -104,9 +105,9 @@ namespace OOPChessProject
                 
                 //Lookup the possible Moves
                 var p = cGame.currentChessBoard.GetPieceFromField(of);
-                var l = p.getPossibleMoves(cGame.currentChessBoard);
+                var listofMoves = p.getPossibleMoves(cGame.currentChessBoard);
 
-                foreach (var f in l)
+                foreach (var f in listofMoves)
                 {
                     Console.WriteLine(f);
                 }
@@ -121,8 +122,18 @@ namespace OOPChessProject
                 s = Console.ReadLine();
                 var df = stringToField(s);
 
+                MovementType mtype = MovementType.moving; ;
+                foreach (var move in listofMoves)
+                {
+                    if (move.ToField.ToString() == df.ToString())
+                    {
+                        mtype = move.movementType;
+                    }
+                }
+
+
                 //Move gets Performed
-                cGame.currentChessBoard.MovePiece(of, df);
+                cGame.currentChessBoard.MovePiece(of, df, mtype, cGame.TurnCounter);
 
                 //After the move check whether this piece now attacks the enemy King
                 

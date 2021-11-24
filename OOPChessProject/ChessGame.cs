@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using OOPChessProject.Pieces;
@@ -68,6 +69,11 @@ namespace OOPChessProject
             return colorSame;
         }
 
+
+
+        //Check Whether a move results in a check
+
+
         //true if a mitigating move was found, False if not
         public bool ChessMitigationPossible()
         {
@@ -80,7 +86,7 @@ namespace OOPChessProject
                 foreach (var m in moves)
                 {
                     ChessBoard copyBoard = new ChessBoard(this.currentChessBoard);
-                    copyBoard.MovePiece(m.FromField, m.ToField);
+                    copyBoard.MovePiece(m.FromField, m.ToField, MovementType.moving, 0);
                     if (!copyBoard.isChecked(Helper.ColorSwapper(this.CurrentPlayer.Color)))
                     {
                         mitigationFound = true;
@@ -93,6 +99,26 @@ namespace OOPChessProject
 
             return mitigationFound;
         }
+
+        //TODO make sure available moves are actually available filtering of moves needed...if check for example
+        public bool movesAvailable()
+        {
+            bool areMovesAvail = false;
+            var pieces = this.currentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
+
+            foreach (var pp in pieces)
+            {
+                var moves = pp.getPossibleMoves(this.currentChessBoard);
+                if (moves.Count > 0)
+                {
+                    areMovesAvail = true;
+                }
+            }
+
+            return areMovesAvail;
+        }
+
+
 
     }
 }
