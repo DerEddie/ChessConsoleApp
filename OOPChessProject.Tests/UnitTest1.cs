@@ -76,5 +76,20 @@ namespace OOPChessProject.Tests
             bool checkAndnoCheckAfterBlock = (shouldBeCheck == true) && (shouldntBeCheck == false);
             Assert.IsTrue(checkAndnoCheckAfterBlock);
         }
+
+        [Test]
+        public void testCastleShort()
+        {
+
+
+        }
+
+        [Test]
+        public void fen_notation_tester()
+        {
+            string s = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR";
+            ChessGame cG = new ChessGame(s);
+            Console.WriteLine(cG.currentChessBoard);
+        }
     }
 }

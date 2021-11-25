@@ -8,8 +8,8 @@ namespace OOPChessProject.Pieces
         //The ghostpawn is tied to an actual pawn so both can disapear when ghost pawn gets captured.
         //GhostPawn wont block own movement options since it is already gone once the enemy has moved,
 
-        private int IterationOfCreation;
-        private Pawn TheRealPawn;
+        public int IterationOfCreation;
+        public Pawn TheRealPawn;
 
         public GhostPawn(int iterOfCreation, Field position, Color pieceColor,   bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
         {

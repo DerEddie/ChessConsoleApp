@@ -99,10 +99,6 @@ namespace OOPChessProject
                 #endregion
 
                 
-
-                
-
-                
                 //Lookup the possible Moves
                 var p = cGame.currentChessBoard.GetPieceFromField(of);
                 var listofMoves = p.getPossibleMoves(cGame.currentChessBoard);
@@ -137,19 +133,13 @@ namespace OOPChessProject
 
                 //After the move check whether this piece now attacks the enemy King
                 
-
-                
-
-                
-                
-
-
-                
-
+                cGame.currentChessBoard.removeSomeGhosts(cGame.TurnCounter);
+                //cGame.currentChessBoard
                 //Change current Player
                 cGame.CurrentPlayer= (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2: cGame.Player1;
-
                 cGame.TurnCounter++;
+
+
 
             } while (true);
 

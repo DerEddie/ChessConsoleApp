@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,88 @@ namespace OOPChessProject
         public int TurnCounter;
 
 
+        //Overloading the instructor with a fen notation option
+        //FEN NOTATION: rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
+        //TODO b KQkq e3 0 1 not implemented yet...
+        // lower case letter = black, upper case letter = white.
+        //   "/" new row- numbers are empty fields
+        //   KQ = King-&Queenside-Castling is possible
+        //   kq = same for black
+        //   en passant fields..
+        public ChessGame(string fenNotationString)
+        {
+            var dict = new Dictionary<string, Piece>();
+
+
+            int row = 7;
+            int col = 0;
+            Color color;
+            Piece p; //= new Pawn(new Field(0,0), Color.White);
+            foreach (var c in fenNotationString)
+            {
+                if (Char.IsLower(c))
+                {
+                     color = Color.Black;
+                }
+
+                else
+                {
+                     color = Color.White;
+                }
+
+                var lowerOfChar = Char.ToLower(c);
+                Field f = new Field(row, col);
+
+                
+                if (Char.IsDigit(lowerOfChar))
+                {
+
+                    col = col + int.Parse(c.ToString());
+                    continue;
+                }
+                if (Char.IsLetter(lowerOfChar))
+                {
+
+                    //switch
+                    switch (lowerOfChar)
+                    {
+                        case 'r':
+                            p = new Rook(f, color);
+                            break;
+                        case 'n':
+                            p = new Knight(f, color);
+                            break;
+                        case 'b':
+                            p = new Bishop(f, color);
+                            break;
+                        case 'q':
+                            p = new Queen(f, color);
+                            break;
+                        case 'k':
+                            p = new King(f, color);
+                            break;
+                        case 'p':
+                            p = new Pawn(f, color);
+                            break;
+                        default:
+                            p = new Pawn(f, color);
+                            break;
+                    }
+                    dict.Add(f.ToString(), p);
+                    col++;
+                }
+                else if (lowerOfChar == char.Parse("/"))
+                {
+                    row--;
+                    col = 0;
+                }
+
+
+                
+
+             }
+            currentChessBoard = new ChessBoard(dict);
+        }
 
 
 

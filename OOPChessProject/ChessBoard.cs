@@ -28,6 +28,11 @@ namespace OOPChessProject
             kFieldvPiece = copyDict;
         }
 
+        public ChessBoard(Dictionary<string, Piece> dict)
+        {
+            kFieldvPiece = dict;
+        }
+
 
         //A Constructor which sets up the Game Board
         public ChessBoard()
@@ -355,6 +360,7 @@ namespace OOPChessProject
             return pList;
         }
 
+
         
         public bool IsFieldOccupiedByColor(Field f, Color c)
         {
@@ -391,28 +397,38 @@ namespace OOPChessProject
             return Color.White == p.PieceColor;
         }
 
-
-        //return something if it is accessible or return null???
-        /*
-        public Piece locateKingOnBoard(Color color)
+        public void removeSomeGhosts(int currentIter)
         {
-            foreach (var kvp in kFieldvPiece)
+            //iter over positionsDict
+            //remove the ghost which are too old.
+            //Result: en passant is only possible
+
+            //Changing an iterable while iteration over it -> Error. 
+            //Fix: Copy the dictionary iter over it. but change the original one.
+            var copyDict = new Dictionary<string, Piece>();
+            foreach (var kvpPair in this.kFieldvPiece)
             {
-                if (kvp.Value.PrintRepresentation == "KN" &  )
+                //clone -> returns object -> to Piece
+                copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
+            }
+
+
+
+            foreach (var kvp in copyDict)
+            {
+                
+                GhostPawn gp;
+                if (kvp.Value is GhostPawn)
                 {
-                    return kvp.Value;
+                    gp = ((GhostPawn) kvp.Value);
+                    var iterOfPice = gp.IterationOfCreation;
+                    if (gp.IterationOfCreation < currentIter)
+                    {
+                        this.kFieldvPiece.Remove(kvp.Key);
+                    }
                 }
             }
         }
-        */
-
-        //Removing the field from the dict and creating new entry/overwriting entry
-        //if the destination field is occupied move it from the deadPieces
-
-        //Objekt ändert sich selbst.
-        //Oder eher anderes Objekt ändert dieses Objekt (WAM: Trennung Fields und Methoden)
-
-
 
         //Move Piece in Dict and also change field in Piece Object
         //TODO implement move history
@@ -436,25 +452,49 @@ namespace OOPChessProject
 
             Color c = p.PieceColor;
 
+            int toRow = to.FieldRow;
+            int toCol = to.FieldCol;
+            int fromRow = from.FieldRow;
+            int fromCol = from.FieldCol;
 
             if (type == MovementType.doubleStep)
             {
-                int tr = to.FieldRow;
-                int tc = to.FieldCol;
+                //todo handle doublestep function
 
-                if (tr == 3)
+
+                if (toRow == 3)
                 {
-                    CreateAGhostlyPawn(iterOfMove,new Field(tr-1,tc), c);
+                    CreateAGhostlyPawn(iterOfMove,new Field(toRow-1,toCol), c);
                 }
                 else
                 {
-                    CreateAGhostlyPawn(iterOfMove, new Field(tr + 1, tc), c);
+                    CreateAGhostlyPawn(iterOfMove, new Field(toRow + 1, toCol), c);
                 }
             }
             //TODO cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
+            if (type == MovementType.castleShort)
+            {
+
+                Field f_rookold = new Field(fromRow, 7);
+                Piece pc = GetPieceFromField(f_rookold);
+                this.kFieldvPiece.Remove(f_rookold.ToString());
+
+                Field f_rooknew = new Field(fromRow, 5);
+                this.kFieldvPiece.Add(f_rooknew.ToString(), pc);
+
+            }
+
         }
 
         //because the King can't know whether other pieces have moved the higher class checkboard will perform this check.
+
+
+        //Castling is performed on the kingside or queenside with the rook on the same rank.
+        //Neither the king nor the chosen rook has previously moved.
+        //There are no pieces between the king and the chosen rook.
+        //The king is not currently in check.
+        //The king does not pass through a square that is attacked by an enemy piece.
+        //The king does not end up in check. (True of any legal move.)
         public bool CastleLong(Color c)
         {
             //check whether King haven't moved yet.

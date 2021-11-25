@@ -2,7 +2,7 @@
 
 namespace OOPChessProject.Pieces
 {
-    class Pawn : Piece
+    public class Pawn : Piece
     {
         readonly int directionFactor;
 
