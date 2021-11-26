@@ -37,8 +37,27 @@ namespace OOPChessProject
         //   KQ = King-&Queenside-Castling is possible
         //   kq = same for black
         //   en passant fields..
-        public ChessGame(string fenNotationString)
+        public ChessGame(string fenNotationString, string player1name, string player2name)
         {
+            Player1 = new Player(player1name, Color.White);
+            Player2 = new Player(player2name, Color.Black);
+
+
+            //Create the Board
+            currentChessBoard = new ChessBoard();
+
+            //set white as starting Player
+            CurrentPlayer = Player1;
+
+            //set Move Counter to Zero
+            TurnCounter = 0;
+
+            //gameState
+            GameState = gameState.Running;
+
+            //
+            movesHistory = new List<Move>();
+
             var dict = new Dictionary<string, Piece>();
 
 
@@ -155,9 +174,56 @@ namespace OOPChessProject
 
 
         //Check Whether a move results in a check
+        public List<Move> FilterMove(MovementType type, List<Move> MoveList)
+        {
+            List<Move> filteredList = new List<Move>();
+ 
+            foreach (var m in MoveList)
+            {
+                if (m.movementType != type)
+                {
+                    filteredList.Add(m);
+                }
+            }
+
+            return filteredList;
+        }
 
 
-        //true if a mitigating move was found, False if not
+        public List<Move> FilterKingMoves(List<Move> moveList, King king)
+        {
+            moveList = FilterMove(MovementType.defending, moveList);
+            
+
+            Color c = king.PieceColor;
+            Color oppColor = Helper.ColorSwapper(c);
+            var pieces = this.currentChessBoard.getAllPiecesOfColor(oppColor);
+
+            foreach (var p in pieces)
+            {
+                var enemyPmoves = p.getPossibleMoves(this.currentChessBoard);
+                enemyPmoves = FilterMove(MovementType.doubleStep, enemyPmoves);
+                enemyPmoves = FilterMove(MovementType.movingPeaceful, enemyPmoves);
+
+
+                foreach (var mEnemy in enemyPmoves)
+                {
+                    for (int i = moveList.Count-1; i >= 0; i--)
+                    {
+                        if (moveList[i].ToField.ToString() == mEnemy.ToField.ToString())
+                        {
+                            moveList.RemoveAt(i);
+                        }
+                        
+                    }
+                }
+
+            }
+
+            return moveList;
+        }
+
+        //TODO needs to be tested
         public bool ChessMitigationPossible()
         {
             bool mitigationFound = false;
@@ -166,6 +232,8 @@ namespace OOPChessProject
             foreach (var pp in pieces)
             {
                 var moves = pp.getPossibleMoves(this.currentChessBoard);
+                moves = FilterMove(MovementType.defending, moves);
+
                 foreach (var m in moves)
                 {
                     ChessBoard copyBoard = new ChessBoard(this.currentChessBoard);
@@ -192,6 +260,7 @@ namespace OOPChessProject
             foreach (var pp in pieces)
             {
                 var moves = pp.getPossibleMoves(this.currentChessBoard);
+                moves = FilterMove(MovementType.defending, moves);
                 if (moves.Count > 0)
                 {
                     areMovesAvail = true;

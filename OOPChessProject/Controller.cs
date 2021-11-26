@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Win32;
+using OOPChessProject.Pieces;
 
 
 namespace OOPChessProject
@@ -23,7 +24,10 @@ namespace OOPChessProject
         public void MainGameLoop()
         {
             //Init Game with the Players
-            var cGame = new ChessGame("Eduard", "Benjamin");
+            //var cGame = new ChessGame("Eduard", "Benjamin");
+            //string st = "rnbqkbnr/2pppppppp / 8 / 8 / 8 / 8 / 2PPPPPP / 6K1";
+            string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
+            ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
 
             cGame.GameState = gameState.Running;
             bool isCheck;
@@ -58,7 +62,6 @@ namespace OOPChessProject
                     if (!cGame.ChessMitigationPossible())
                     {
                         Console.WriteLine("Game Over!");
-                        Console.ReadKey();
                     }
                 }
                 else //if there is no check we need to see if there is a stalemate which will result in a draw
@@ -71,14 +74,6 @@ namespace OOPChessProject
 
 
 
-                //Check if the check can be mitigated
-                var OwnPieces = cGame.currentChessBoard.getAllPiecesOfColor(cGame.CurrentPlayer.Color);
-
-                //Create Copy of the Board
-                //Perform the the move and then check if the check is still there. Once Move was found we break out
-                //var boardCopy 
-
-
 
                 #region Asking for 1st User Input
                 //User Input --> Another While Loop
@@ -89,7 +84,9 @@ namespace OOPChessProject
 
                 #region Check for right color and if field is not empty
                 //if the colors are not the same we need to prompt again for input, because not the right piece was chosen.
-                if (!cGame.isPlayerAndPieceColorSame(cGame.CurrentPlayer, cGame.currentChessBoard.GetPieceFromField(of)))
+                Piece pi;
+                bool wassuccess = cGame.currentChessBoard.TryGetPieceFromField(of, out pi);
+                if (!cGame.isPlayerAndPieceColorSame(cGame.CurrentPlayer, pi ))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("WRONG COLOR OR FIELD IS EMPTY!!!");
@@ -100,8 +97,15 @@ namespace OOPChessProject
 
                 
                 //Lookup the possible Moves
-                var p = cGame.currentChessBoard.GetPieceFromField(of);
+                Piece p; 
+                cGame.currentChessBoard.TryGetPieceFromField(of, out p);
                 var listofMoves = p.getPossibleMoves(cGame.currentChessBoard);
+
+                if (p.PrintRepresentation == "KI")
+                {
+                    listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
+                }
+
 
                 foreach (var f in listofMoves)
                 {

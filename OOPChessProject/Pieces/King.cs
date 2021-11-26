@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OOPChessProject.Pieces
 {
-    class King : Piece
+    public class King : Piece
     {
 
         List<(int, int)> rowOfsetcolOfset = new List<(int, int)>
@@ -78,7 +78,8 @@ namespace OOPChessProject.Pieces
         }
         */
         #endregion
-        //TODO Iterate over all pices of one kind -> Create a set so no duplicates for the fields those pieces attack. --> consider special case the pawn who moves and attacks differently
+        //TODO Iterate over all pices of one kind -> Create a set so no duplicates for the fields those pieces attack.
+        //--> consider special case the pawn who moves and attacks differently
 
     }
 

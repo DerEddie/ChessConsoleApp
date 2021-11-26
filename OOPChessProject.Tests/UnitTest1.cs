@@ -88,7 +88,47 @@ namespace OOPChessProject.Tests
         public void fen_notation_tester()
         {
             string s = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR";
-            ChessGame cG = new ChessGame(s);
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG.currentChessBoard);
+        }
+
+        [Test]
+        public void initBoardWithFEN()
+        {
+            string s = "rnbqkbnr / pppppppp / 8 / 8 / 8 / 8 / PPPPPPPP / RNBQKBNR";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+
+
+            ChessGame cGinit = new ChessGame("A", "B");
+            //Console.WriteLine(cG.currentChessBoard);
+            //Console.WriteLine(cGinit.currentChessBoard);
+
+            Assert.AreEqual(cG.currentChessBoard.ToString(), cGinit.currentChessBoard.ToString());
+        }
+
+        [Test]
+        public void testCastling()
+        {
+            string s = "r3kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG.currentChessBoard);
+            cG.currentChessBoard.MovePiece(new Field("E1"), new Field("G1"), MovementType.castleShort, 5);
+            Console.WriteLine(cG.currentChessBoard);
+        }
+
+        [Test]
+        public void TestFieldConstructor()
+        {
+
+            Field f = new Field("E1");
+            Console.WriteLine(f);
+        }
+
+        [Test]
+        public void TryCheckmate()
+        {
+            string s = "rnbqkbnr/2pppppppp / 8 / 8 / 8 / 8 / 2PPPPPP / 6K1";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
             Console.WriteLine(cG.currentChessBoard);
         }
     }

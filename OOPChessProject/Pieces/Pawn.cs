@@ -75,22 +75,37 @@ namespace OOPChessProject.Pieces
 
             foreach (var capt in rc_offset_capturing)
             {
-                Field f1 = new Field(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor);
+                //Check so Pawn doesnt try to capture outside the board,
+                if (cb.isRowAndColStillBoard(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor))
+                {
+                    Field f1 = new Field(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor);
 
-                if (this.PieceColor == Color.White)
-                {
-                    if (cb.IsFieldOccupiedByColor(f1, Color.Black))
+                    if (this.PieceColor == Color.White)
                     {
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
+                        if (cb.IsFieldOccupiedByColor(f1, Color.Black))
+                        {
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
+                        }
+                        else
+                        {
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.defending));
+                        }
+                    }
+                    else
+                    {
+                        if (cb.IsFieldOccupiedByColor(f1, Color.White))
+                        {
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
+                        }
+                        else
+                        {
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.defending));
+                        }
                     }
                 }
-                else
-                {
-                    if (cb.IsFieldOccupiedByColor(f1, Color.White))
-                    {
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
-                    }
-                }
+                
+
+
             }
             return fList;
         }
@@ -107,7 +122,7 @@ namespace OOPChessProject.Pieces
 
             //check whether Field is Empty
             if (cb.IsFieldEmpty(f))
-                fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.moving));
+                fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.movingPeaceful));
             ;
 
 

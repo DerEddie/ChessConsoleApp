@@ -42,6 +42,15 @@ namespace OOPChessProject
         public int FieldCol; //col = 0 => A
 
 
+        public Field(string s)
+        {
+            
+            
+            int Number = int.Parse(s[1].ToString())-1;
+
+            FieldRow = Number;
+            FieldCol = (int) (col) Enum.Parse(typeof(col), s[0].ToString());
+        }
 
 
         //creating a constructor for a field instance

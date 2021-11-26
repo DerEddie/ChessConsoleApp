@@ -109,7 +109,7 @@ namespace OOPChessProject
                     }
                     else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
                     {
-                        //field occupied by own piece
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.defending));
                         break;
                     }
                     else
@@ -183,7 +183,7 @@ namespace OOPChessProject
                     }
                     else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
                     {
-                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.controlling));
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.defending));
                         break;
                     }
                     else

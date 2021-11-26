@@ -10,11 +10,6 @@ namespace OOPChessProject
         public Dictionary<string, Piece> kFieldvPiece;
         List<Piece> deadPieces = new List<Piece>();
 
-        public ChessBoard(string fen)
-        {
-            //TODO write a fen notation reader
-            //https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-        }
 
         public ChessBoard(ChessBoard otherBoard)
         {
@@ -391,11 +386,6 @@ namespace OOPChessProject
         
 
 
-        public bool IsFieldWhiteOccupied(Field f)
-        {
-            var p = GetPieceFromField(f);
-            return Color.White == p.PieceColor;
-        }
 
         public void removeSomeGhosts(int currentIter)
         {
@@ -459,7 +449,6 @@ namespace OOPChessProject
 
             if (type == MovementType.doubleStep)
             {
-                //todo handle doublestep function
 
 
                 if (toRow == 3)
@@ -472,16 +461,18 @@ namespace OOPChessProject
                 }
             }
             //TODO cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
+
+            //TODO work on castling
             if (type == MovementType.castleShort)
             {
 
                 Field f_rookold = new Field(fromRow, 7);
-                Piece pc = GetPieceFromField(f_rookold);
+                Piece pc;
+                bool wassuccess = TryGetPieceFromField(f_rookold, out pc);
                 this.kFieldvPiece.Remove(f_rookold.ToString());
 
                 Field f_rooknew = new Field(fromRow, 5);
                 this.kFieldvPiece.Add(f_rooknew.ToString(), pc);
-
             }
 
         }
@@ -619,10 +610,7 @@ namespace OOPChessProject
         {
             return kFieldvPiece.TryGetValue(f.ToString(), out piece);
         }
-        public Field getKingPostion()
-        {
-            return null;
-        }
+
 
     }
 }
