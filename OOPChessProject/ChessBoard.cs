@@ -11,7 +11,6 @@ namespace OOPChessProject
         public Dictionary<string, Piece> kFieldvPiece;
         List<Piece> deadPieces = new List<Piece>();
 
-
         public ChessBoard(ChessBoard otherBoard)
         {
             var copyDict = new Dictionary<string, Piece>();
@@ -458,9 +457,6 @@ namespace OOPChessProject
             }
             this.kFieldvPiece.Remove(from.ToString());
 
-            
-
-
             if (type == MovementType.castleShort)
             {
 
@@ -474,29 +470,32 @@ namespace OOPChessProject
             }
 
         }
-
         //because the King can't know whether other pieces have moved the higher class checkboard will perform this check.
-
-
         //Castling is performed on the kingside or queenside with the rook on the same rank.
         //Neither the king nor the chosen rook has previously moved.
         //There are no pieces between the king and the chosen rook.
         //The king is not currently in check.
         //The king does not pass through a square that is attacked by an enemy piece.
         //The king does not end up in check. (True of any legal move.)
-        public bool CastleLong(Color c)
+        public Tuple<bool, Move> CastleLong(Color c)
         {
             //check whether King haven't moved yet.
             //check whether Rook didn't move yet.
             int row = 0;
+            Move mo_;
+
+            Tuple<bool, Move> moveTuple;
+
             //check there are no pieces in bewetween
             if (c == Color.White)
             {
                 row = 0;
+                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.castleLong);
             }
             else
             {
                 row = 7;
+                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.castleLong);
             }
 
             List<Field> shouldntHaveMoved = new List<Field>();
@@ -519,7 +518,8 @@ namespace OOPChessProject
             {
                 if (!this.IsFieldEmpty(f))
                 {
-                    return false;
+                    moveTuple = new Tuple<bool, Move>(false, mo_);
+                    return moveTuple;
                 }
             }
 
@@ -531,25 +531,35 @@ namespace OOPChessProject
                 {
                     if (piece.HasMovedOnce)
                     {
-                        return false;
+                        moveTuple = new Tuple<bool, Move>(false, mo_);
+                        return moveTuple;
                     }
                 }
             }
 
-            return true;
+            moveTuple = new Tuple<bool, Move>(true, mo_);
+            return moveTuple;
         }
 
-        public bool CastleShort(Color c)
+        public Tuple<bool,Move> CastleShort(Color c)
         {
+            Tuple<bool, Move> moveTuple;
+            Move mo_;
             int row = 0;
             //check there are no pieces in bewetween
             if (c == Color.White)
             {
                 row = 0;
+
+                
+                    
+
+                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.castleShort);
             }
             else
             {
                 row = 7;
+                mo_ = new Move("KI", new Field("E8"), new Field("G8"), MovementType.castleShort);
             }
             List<Field> shouldntHaveMoved = new List<Field>();
             
@@ -569,7 +579,8 @@ namespace OOPChessProject
             {
                 if (!this.IsFieldEmpty(f))
                 {
-                    return false;
+                    moveTuple = new Tuple<bool, Move>(false, mo_);
+                    return moveTuple;
                 }
             }
 
@@ -581,12 +592,14 @@ namespace OOPChessProject
                 {
                     if (piece.HasMovedOnce)
                     {
-                        return false;
+                        moveTuple = new Tuple<bool, Move>(false, mo_);
+                        return moveTuple; 
                     }
                 }
             }
 
-            return true;
+            moveTuple = new Tuple<bool, Move>(true, mo_);
+            return moveTuple; ;
         }
 
         //TODO those 2 functions kinda do the same...a bit redundand

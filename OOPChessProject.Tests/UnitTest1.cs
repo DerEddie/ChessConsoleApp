@@ -38,7 +38,7 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void TestLongCastleChecker()
+        public void TestLongCastle()
         {
 
             ChessBoard cb = new ChessBoard();
@@ -54,8 +54,24 @@ namespace OOPChessProject.Tests
             //second test shouldnt because piece was moved back and forth.
             Console.WriteLine(cb);
             Console.WriteLine(cb.CastleLong(Color.White));
+        }
 
+        [Test]
+        public void TestCastleShort()
+        {
+            //Open Space for white
+            string s1 = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
+            ChessGame cg1 = new ChessGame(s1, "E", "K");
+            Console.WriteLine(cg1.currentChessBoard);
+            Console.WriteLine(cg1.currentChessBoard.CastleShort(Color.White));
 
+            //Open Space for black
+            string s2 = "rnbqk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+            ChessGame cg2 = new ChessGame(s2, "E", "K");
+            Console.WriteLine(cg2.currentChessBoard);
+            Console.WriteLine(cg2.currentChessBoard.CastleShort(Color.Black));
+            Console.WriteLine(cg2.currentChessBoard.CastleShort(Color.White));
+            //
         }
 
         [Test]
@@ -107,7 +123,16 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void testCastling()
+        public void testCastlingLong()
+        {
+            string s = "r3kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG.currentChessBoard);
+            cG.currentChessBoard.MovePiece(new Field("E1"), new Field("G1"), MovementType.castleShort, 5);
+            Console.WriteLine(cG.currentChessBoard);
+        }
+
+        public void testCastlingShort()
         {
             string s = "r3kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");

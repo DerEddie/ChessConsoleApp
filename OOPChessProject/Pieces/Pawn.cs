@@ -82,6 +82,7 @@ namespace OOPChessProject.Pieces
                     Piece p;
                     cb.TryGetPieceFromField(f1, out p);
 
+
                     if (cb.IsFieldOccupiedByColor(f1, Helper.ColorSwapper(this.PieceColor)))
                     {
                         if (p.PrintRepresentation == "xx")

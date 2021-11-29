@@ -192,9 +192,6 @@ namespace OOPChessProject
 
         public List<Move> FilterKingMoves(List<Move> moveList, King king)
         {
-            moveList = FilterMove(MovementType.defending, moveList);
-            
-
             Color c = king.PieceColor;
             Color oppColor = Helper.ColorSwapper(c);
             var pieces = this.currentChessBoard.getAllPiecesOfColor(oppColor);
@@ -224,7 +221,7 @@ namespace OOPChessProject
         }
 
 
-        public bool ChessMitigationPossible()
+        public bool CheckMitigationPossible()
         {
             bool mitigationFound = false;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Win32;
 using OOPChessProject.Pieces;
@@ -19,16 +20,29 @@ namespace OOPChessProject
             return of;
         }
 
+        public bool isALegalMove(List<Move> lMoves, string s)
+        {
+            foreach (var m in lMoves)
+            {
+                if (m.ToField.ToString() == s)
+                {
+                    return true;
+                }
+            }
 
+            return false;
+        }
 
         public void MainGameLoop()
         {
             //Init Game with the Players
             //var cGame = new ChessGame("Eduard", "Benjamin");
-            //string st = "rnbqkbnr/2pppppppp / 8 / 8 / 8 / 8 / 2PPPPPP / 6K1";
-            string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
-            ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
+            string st = "r2qk2r / pppppppp / 8 / 8 / 8 / 8 / PPPPPPPP / RN2K2R";
 
+            
+            //string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
+            ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
+            
             cGame.GameState = gameState.Running;
             bool isCheck;
 
@@ -58,7 +72,7 @@ namespace OOPChessProject
                 if (cGame.GameState == gameState.Check)
                 {
 
-                    if (!cGame.ChessMitigationPossible())
+                    if (!cGame.CheckMitigationPossible())
                     {
                         Console.WriteLine("Game Over!");
                     }
@@ -104,7 +118,22 @@ namespace OOPChessProject
 
                 if (p.PrintRepresentation == "KI")
                 {
+
+                    //Check if castling is possible
+
                     listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
+                    var canWeCastleShort = cGame.currentChessBoard.CastleShort(cGame.CurrentPlayer.Color);
+                    var canWeCastleLong = cGame.currentChessBoard.CastleLong(cGame.CurrentPlayer.Color);
+                    if (canWeCastleLong.Item1)
+                    {
+                        listofMoves.Add(canWeCastleLong.Item2);
+                    }
+
+                    if (canWeCastleShort.Item1)
+                    {
+                        listofMoves.Add(canWeCastleShort.Item2);
+                    }
+
                 }
 
 
@@ -118,19 +147,32 @@ namespace OOPChessProject
                 //Get List Of Possible Moves for that Piece
                 //cGame.currentChessBoard.GetPieceFromField(Field f);
 
-
                 Console.WriteLine("Enter Destination Field: [A-H][1-8]");
                 s = Console.ReadLine();
                 var df = stringToField(s);
+                MovementType mtype = MovementType.moving;
 
-                MovementType mtype = MovementType.moving; ;
-                foreach (var move in listofMoves)
+                if (isALegalMove(listofMoves, s))
                 {
-                    if (move.ToField.ToString() == df.ToString())
+                    
+                    foreach (var move in listofMoves)
                     {
-                        mtype = move.movementType;
+                        if (move.ToField.ToString() == df.ToString())
+                        {
+                            mtype = move.movementType;
+                        }
                     }
                 }
+                else
+                {
+                    //Berührt geführt not implemented
+                    Console.WriteLine("ILLEGAL MOVE!");
+                    continue;
+                }
+                
+
+
+
 
 
                 //Move gets Performed
