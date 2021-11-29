@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using OOPChessProject.Pieces;
 
 namespace OOPChessProject
@@ -130,7 +131,6 @@ namespace OOPChessProject
 
 
         }
-
         public override string ToString()
         {
             string total = "   A  B  C  D  E  F  G  H \n";
@@ -163,22 +163,15 @@ namespace OOPChessProject
             total = total + " +--+--+--+--+--+--+--+--+\n";
             return total;
         }
-
-
         public bool isRowAndColStillBoard(int r_n, int c_n)
         {
             return (0 <= c_n && c_n < 8 && 0 <= r_n  && r_n < 8);
         }
-
-
-
-        public void CreateAGhostlyPawn(int iterofcreation, Field field, Color color)
+        public void CreateAGhostlyPawn(Pawn p, int iterofcreation, Field field, Color color)
         {
             //Inserts a new ghost Pawn on the board
-            kFieldvPiece[field.ToString()] = new GhostPawn(iterofcreation,field, color);
+            kFieldvPiece[field.ToString()] = new GhostPawn(p,iterofcreation,field, color);
         }
-
-
         public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist)
         {
             var cb = this;
@@ -199,8 +192,6 @@ namespace OOPChessProject
 
             return new Tuple<bool, Field>(false, null);
         }
-
-
         public bool isChecked(Color c)
         {
             
@@ -296,8 +287,6 @@ namespace OOPChessProject
             return fList;
         }
 
-
-
         public string debugBoardPrint()
         {
             string total = "   A  B  C  D  E  F  G  H \n";
@@ -333,7 +322,6 @@ namespace OOPChessProject
             return total;
         }
 
-
         //Check wheter a field is empty
         public bool IsFieldEmpty(Field f)
         {   
@@ -355,8 +343,6 @@ namespace OOPChessProject
             return pList;
         }
 
-
-        
         public bool IsFieldOccupiedByColor(Field f, Color c)
         {
             //returns True if there is a black piece
@@ -382,10 +368,6 @@ namespace OOPChessProject
             }
             
         }
-
-        
-
-
 
         public void removeSomeGhosts(int currentIter)
         {
@@ -422,10 +404,46 @@ namespace OOPChessProject
 
         //Move Piece in Dict and also change field in Piece Object
         //TODO implement move history
+
+
         public void MovePiece(Field from, Field to, MovementType type, int iterOfMove)
         {
-            //Piece which gonna move
             var p = this.kFieldvPiece[from.ToString()];
+            Color c = p.PieceColor;
+            int toRow = to.FieldRow;
+            int toCol = to.FieldCol;
+            int fromRow = from.FieldRow;
+            int fromCol = from.FieldCol;
+
+
+            switch (type)
+            {
+                case MovementType.doubleStep:
+                    if (toRow == 3)
+                    {
+                        CreateAGhostlyPawn((Pawn)p, iterOfMove, new Field(toRow - 1, toCol), c);
+                    }
+                    else
+                    {
+                        CreateAGhostlyPawn((Pawn)p, iterOfMove, new Field(toRow + 1, toCol), c);
+                    }
+                    break;
+
+                case MovementType.enPassant:
+                    Piece g;
+                    var wasSucc = TryGetPieceFromField(to, out g);
+
+                   
+                    var ghostPawn = (GhostPawn) g;
+                    var realPawn = ghostPawn.TheRealPawn;
+
+                    this.kFieldvPiece.Remove(realPawn.CurrField.ToString());
+
+                    break;
+            }
+
+            //Piece which gonna move
+            
             p.HasMovedOnce = true;
             p.field = to;
             if (IsFieldEmpty(to))
@@ -440,29 +458,9 @@ namespace OOPChessProject
             }
             this.kFieldvPiece.Remove(from.ToString());
 
-            Color c = p.PieceColor;
-
-            int toRow = to.FieldRow;
-            int toCol = to.FieldCol;
-            int fromRow = from.FieldRow;
-            int fromCol = from.FieldCol;
-
-            if (type == MovementType.doubleStep)
-            {
+            
 
 
-                if (toRow == 3)
-                {
-                    CreateAGhostlyPawn(iterOfMove,new Field(toRow-1,toCol), c);
-                }
-                else
-                {
-                    CreateAGhostlyPawn(iterOfMove, new Field(toRow + 1, toCol), c);
-                }
-            }
-            //TODO cg.movesHistory.Add(new Move(p.PrintRepresentation,from,to, MovementType.moving));
-
-            //TODO work on castling
             if (type == MovementType.castleShort)
             {
 
@@ -606,6 +604,7 @@ namespace OOPChessProject
             }
         }
 
+        [MustUseReturnValue("Use the return value to...")]
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
             return kFieldvPiece.TryGetValue(f.ToString(), out piece);

@@ -223,7 +223,7 @@ namespace OOPChessProject
             return moveList;
         }
 
-        //TODO needs to be tested
+
         public bool ChessMitigationPossible()
         {
             bool mitigationFound = false;

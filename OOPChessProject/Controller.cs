@@ -32,7 +32,6 @@ namespace OOPChessProject
             cGame.GameState = gameState.Running;
             bool isCheck;
 
-            Console.ReadKey();
 
             //Game Loop
             do
@@ -58,7 +57,7 @@ namespace OOPChessProject
 
                 if (cGame.GameState == gameState.Check)
                 {
-                    //TODO function which returns true if mitigation of check found
+
                     if (!cGame.ChessMitigationPossible())
                     {
                         Console.WriteLine("Game Over!");
@@ -100,6 +99,8 @@ namespace OOPChessProject
                 Piece p; 
                 cGame.currentChessBoard.TryGetPieceFromField(of, out p);
                 var listofMoves = p.getPossibleMoves(cGame.currentChessBoard);
+                listofMoves = cGame.FilterMove(MovementType.defending, listofMoves);
+
 
                 if (p.PrintRepresentation == "KI")
                 {

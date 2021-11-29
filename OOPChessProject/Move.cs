@@ -14,7 +14,8 @@ namespace OOPChessProject
         doubleStep, //important for en passant implementation
         capturing,
         castleShort,
-        castleLong
+        castleLong,
+        enPassant
     }
 
     //TODO remove instance of Piece from board and put it in the move object. Create new instance for board

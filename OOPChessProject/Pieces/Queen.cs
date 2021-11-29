@@ -27,7 +27,7 @@ namespace OOPChessProject.Pieces
                 (0, 1),
                 (0, -1)
             };
-            return getPossibleMovesTraversing(cb, rowOfsetcolOfset);
+            return GetPossibleMovesTraversing(cb, rowOfsetcolOfset);
         }
 
         public override object Clone()

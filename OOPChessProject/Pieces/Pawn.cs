@@ -79,28 +79,24 @@ namespace OOPChessProject.Pieces
                 if (cb.isRowAndColStillBoard(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor))
                 {
                     Field f1 = new Field(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor);
+                    Piece p;
+                    cb.TryGetPieceFromField(f1, out p);
 
-                    if (this.PieceColor == Color.White)
+                    if (cb.IsFieldOccupiedByColor(f1, Helper.ColorSwapper(this.PieceColor)))
                     {
-                        if (cb.IsFieldOccupiedByColor(f1, Color.Black))
+                        if (p.PrintRepresentation == "xx")
                         {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.enPassant));
                         }
                         else
                         {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.defending));
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
                         }
+                        
                     }
                     else
                     {
-                        if (cb.IsFieldOccupiedByColor(f1, Color.White))
-                        {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
-                        }
-                        else
-                        {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.defending));
-                        }
+                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.defending));
                     }
                 }
                 

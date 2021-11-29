@@ -11,11 +11,12 @@ namespace OOPChessProject.Pieces
         public int IterationOfCreation;
         public Pawn TheRealPawn;
 
-        public GhostPawn(int iterOfCreation, Field position, Color pieceColor,   bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
+        public GhostPawn(Pawn p, int iterOfCreation, Field position, Color pieceColor,   bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
         {
             //already Implemented
             IterationOfCreation = iterOfCreation;
             base.PrintRepresentation = "xx";
+            TheRealPawn = p;
         }
 
         //TODO (1) consider en passant. Create Ghost Instance - new Class with Iteration and Pawn as Field,
@@ -31,12 +32,12 @@ namespace OOPChessProject.Pieces
             {
 
             };
-            return getPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
+            return GetPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
         }
 
         public override object Clone()
         {
-            GhostPawn pawn = new GhostPawn(this.IterationOfCreation,CurrField, this.PieceColor);
+            GhostPawn pawn = new GhostPawn(this.TheRealPawn, this.IterationOfCreation,CurrField, this.PieceColor);
             return pawn;
         }
 
