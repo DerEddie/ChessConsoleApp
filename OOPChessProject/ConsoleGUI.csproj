@@ -46,22 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChessGame.cs" />
-    <Compile Include="ChessBoard.cs" />
-    <Compile Include="GUI\Render.cs" />
-    <Compile Include="Pieces\Bishop.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="Pieces\GhostPawn.cs" />
-    <Compile Include="Pieces\King.cs" />
-    <Compile Include="Pieces\Queen.cs" />
-    <Compile Include="Pieces\Rook.cs" />
-    <Compile Include="Field.cs" />
-    <Compile Include="Pieces\Knight.cs" />
-    <Compile Include="Pieces\Pawn.cs" />
-    <Compile Include="Pieces\Piece.cs" />
-    <Compile Include="Move.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,6 +54,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Chess\Chess.csproj">
+      <Project>{7caad6bb-fc86-4797-b53e-35ed45ba5ba7}</Project>
+      <Name>Chess</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

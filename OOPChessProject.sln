@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.109
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPChessProject", "OOPChessProject\OOPChessProject.csproj", "{3B466078-B56B-463F-B95E-617C8AEE7A22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleGUI", "OOPChessProject\ConsoleGUI.csproj", "{3B466078-B56B-463F-B95E-617C8AEE7A22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPChessProject.Tests", "OOPChessProject.Tests\OOPChessProject.Tests.csproj", "{F1302FD1-164C-40C2-98E4-4B144A30579C}"
 EndProject

@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using Chess;
 
 namespace OOPChessProject.Pieces
 {
-    class Queen: Piece
+    class Rook : Piece
     {
+        
 
-        public Queen(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
+        public Rook(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
         {
             //already Implemented
-            base.PrintRepresentation = "QN";
+            base.PrintRepresentation = "RK";
         }
 
         public override List<Move> getPossibleMoves(ChessBoard cb)
@@ -18,10 +20,6 @@ namespace OOPChessProject.Pieces
 
             var rowOfsetcolOfset = new List<(int, int)>
             {
-                (1 , 1),
-                (-1, -1),
-                (-1, 1),
-                (1, -1),
                 (1,  0),
                 (-1 , 0),
                 (0, 1),
@@ -32,8 +30,8 @@ namespace OOPChessProject.Pieces
 
         public override object Clone()
         {
-            Queen queen = new Queen(this.CurrField, this.PieceColor);
-            return queen;
+            Rook rook = new Rook(this.CurrField, this.PieceColor);
+            return rook;
         }
     }
 }

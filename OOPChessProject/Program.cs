@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OOPChessProject;
-
-namespace OOPChessProject
+﻿namespace OOPChessProject
 {
-class Program
+    internal class Program
     {
         /* Mistakes were made:        
          -Because of the pawn where capturing and moving is different a data type which could distinguish would be useful...

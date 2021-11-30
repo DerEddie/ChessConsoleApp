@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using NUnit.Framework.Internal;
 using OOPChessProject.Pieces;
 
 
@@ -42,11 +40,13 @@ namespace OOPChessProject.Tests
                 bool moveFound = false;
                 foreach (var move in pawn.getPossibleMoves(cb))
                 {
-                    if (move.FromField.Equals(field)
-                        && move.ToField.Equals(targetField))
+                    if (move.FromField.Equals(field))
                     {
-                        moveFound = true;
-                        break;
+                        if (move.ToField.Equals(targetField))
+                        {
+                            moveFound = true;
+                            break;
+                        }
                     }
                 }
                 Assert.AreEqual(moveFound, expectedResult);

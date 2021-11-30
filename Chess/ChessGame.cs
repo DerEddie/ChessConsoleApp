@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Configuration;
-using System.Text;
-using System.Threading.Tasks;
+using OOPChessProject;
 using OOPChessProject.Pieces;
 
-namespace OOPChessProject
+namespace Chess
 {
-    public enum gameState
+    public enum GameState
     {
         Running,
         Check,
@@ -20,23 +16,23 @@ namespace OOPChessProject
     public class ChessGame
     {
         //carries basic information and information for the flow control
-        public ChessBoard currentChessBoard;
-        public List<Move> movesHistory;
+        public ChessBoard CurrentChessBoard;
+        public List<Move> MovesHistory;
         public Player Player1;
         public Player Player2;
         public Player CurrentPlayer;
-        public gameState GameState;
+        public GameState GameState;
         public int TurnCounter;
 
         
-        public ChessGame(string fenNotationString, string player1name, string player2name)
+        public ChessGame(string fenNotationString, string player1Name, string player2Name)
         {
-            Player1 = new Player(player1name, Color.White);
-            Player2 = new Player(player2name, Color.Black);
+            Player1 = new Player(player1Name, Color.White);
+            Player2 = new Player(player2Name, Color.Black);
 
 
             //Create the Board
-            currentChessBoard = new ChessBoard();
+            CurrentChessBoard = new ChessBoard();
 
             //set white as starting Player
             CurrentPlayer = Player1;
@@ -45,10 +41,10 @@ namespace OOPChessProject
             TurnCounter = 0;
 
             //gameState
-            GameState = gameState.Running;
+            GameState = GameState.Running;
 
             //
-            movesHistory = new List<Move>();
+            MovesHistory = new List<Move>();
 
             var dict = new Dictionary<string, Piece>();
 
@@ -120,20 +116,20 @@ namespace OOPChessProject
                 
 
              }
-            currentChessBoard = new ChessBoard(dict);
+            CurrentChessBoard = new ChessBoard(dict);
         }
 
 
 
-        public ChessGame(string player1name, string player2name)
+        public ChessGame(string player1Name, string player2Name)
         {
 
             //Create Players
-            Player1 = new Player(player1name, Color.White);
-            Player2 = new Player(player2name, Color.Black);
+            Player1 = new Player(player1Name, Color.White);
+            Player2 = new Player(player2Name, Color.Black);
 
             //Create the Board
-            currentChessBoard = new ChessBoard();
+            CurrentChessBoard = new ChessBoard();
 
             //set white as starting Player
             CurrentPlayer = Player1;
@@ -142,10 +138,10 @@ namespace OOPChessProject
             TurnCounter = 0;
 
             //gameState
-            GameState = gameState.Running;
+            GameState = GameState.Running;
 
             //
-            movesHistory = new List<Move>();
+            MovesHistory = new List<Move>();
         }
 
         
@@ -153,7 +149,7 @@ namespace OOPChessProject
 
         //Implement here because attribute here
         //Check if Color Player == Color Piece
-        public bool isPlayerAndPieceColorSame(Player player, Piece piece)
+        public bool IsPlayerAndPieceColorSame(Player player, Piece piece)
         {
             if (piece == null)
             {
@@ -163,17 +159,17 @@ namespace OOPChessProject
             return colorSame;
         }
 
-        public List<Move> FilterMoveWhichExposeCheck(List<Move> moves, Color currentplayerColor)
+        public List<Move> FilterMoveWhichExposeCheck(List<Move> moves, Color currentPlayerColor)
         {
             List<Move> legalMoves = new List<Move>();
             //filtered moves list, return list, reverse logic add ok moves
             foreach (var m in moves)
             {
-                ChessBoard copyBoard = new ChessBoard(this.currentChessBoard);
-                copyBoard.MovePiece(m.FromField, m.ToField, MovementType.moving, 0);
+                ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
+                copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
                 //TODO is checked doesnt work properly it doenst care for the kings color
-                Color enemyColor = Helper.ColorSwapper(currentplayerColor);
-                if (!copyBoard.isChecked(enemyColor))
+                Color enemyColor = Helper.ColorSwapper(currentPlayerColor);
+                if (!copyBoard.IsChecked(enemyColor))
                 {
                     legalMoves.Add(m);
                 }
@@ -183,13 +179,13 @@ namespace OOPChessProject
 
 
         //Check Whether a move results in a check
-        public List<Move> FilterMove(MovementType type, List<Move> MoveList)
+        public List<Move> FilterMove(MovementType type, List<Move> moveList)
         {
             List<Move> filteredList = new List<Move>();
  
-            foreach (var m in MoveList)
+            foreach (var m in moveList)
             {
-                if (m.movementType != type)
+                if (m.MovementType != type)
                 {
                     filteredList.Add(m);
                 }
@@ -202,13 +198,13 @@ namespace OOPChessProject
         {
             Color c = king.PieceColor;
             Color oppColor = Helper.ColorSwapper(c);
-            var pieces = this.currentChessBoard.getAllPiecesOfColor(oppColor);
+            var pieces = this.CurrentChessBoard.getAllPiecesOfColor(oppColor);
 
             foreach (var p in pieces)
             {
-                var enemyPmoves = p.getPossibleMoves(this.currentChessBoard);
-                enemyPmoves = FilterMove(MovementType.doubleStep, enemyPmoves);
-                enemyPmoves = FilterMove(MovementType.movingPeaceful, enemyPmoves);
+                var enemyPmoves = p.getPossibleMoves(this.CurrentChessBoard);
+                enemyPmoves = FilterMove(MovementType.DoubleStep, enemyPmoves);
+                enemyPmoves = FilterMove(MovementType.MovingPeaceful, enemyPmoves);
 
 
                 foreach (var mEnemy in enemyPmoves)
@@ -231,17 +227,17 @@ namespace OOPChessProject
         {
             bool mitigationFound = false;
 
-            var pieces = this.currentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
+            var pieces = this.CurrentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
             foreach (var pp in pieces)
             {
-                var moves = pp.getPossibleMoves(this.currentChessBoard);
-                moves = FilterMove(MovementType.defending, moves);
+                var moves = pp.getPossibleMoves(this.CurrentChessBoard);
+                moves = FilterMove(MovementType.Defending, moves);
 
                 foreach (var m in moves)
                 {
-                    ChessBoard copyBoard = new ChessBoard(this.currentChessBoard);
-                    copyBoard.MovePiece(m.FromField, m.ToField, MovementType.moving, 0);
-                    if (!copyBoard.isChecked(Helper.ColorSwapper(this.CurrentPlayer.Color)))
+                    ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
+                    copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
+                    if (!copyBoard.IsChecked(Helper.ColorSwapper(this.CurrentPlayer.Color)))
                     {
                         mitigationFound = true;
                         break;
@@ -255,15 +251,15 @@ namespace OOPChessProject
         }
 
         //TODO make sure available moves are actually available filtering of moves needed...if check for example
-        public bool movesAvailable()
+        public bool MovesAvailable()
         {
             bool areMovesAvail = false;
-            var pieces = this.currentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
+            var pieces = this.CurrentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
 
             foreach (var pp in pieces)
             {
-                var moves = pp.getPossibleMoves(this.currentChessBoard);
-                moves = FilterMove(MovementType.defending, moves);
+                var moves = pp.getPossibleMoves(this.CurrentChessBoard);
+                moves = FilterMove(MovementType.Defending, moves);
                 if (moves.Count > 0)
                 {
                     areMovesAvail = true;

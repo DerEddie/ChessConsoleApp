@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OOPChessProject
+﻿using OOPChessProject;
+namespace Chess
 {
     public class Player
     {
         public string Name;
         public Color Color;
         int SecondsLeftOnTheClock;
-        //adding a matchhistory
-        public Player(string name, Color color)
+
+        public Player(string name, Color color, int secondsLeftOnTheClock)
         {
             Name = name;
             Color = color;
+            SecondsLeftOnTheClock = secondsLeftOnTheClock;
         }
 
         public override string ToString()

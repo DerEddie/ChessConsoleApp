@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OOPChessProject
 {
     //make public if other classes should use it.
-    public enum row
+    public enum Row
     {
         _1= 0,
         _2,
@@ -23,7 +20,7 @@ namespace OOPChessProject
 // (int)row._1, (row)0
 namespace OOPChessProject
 {
-    public enum col
+    public enum Col
     {
         A = 0,
         B,
@@ -37,18 +34,18 @@ namespace OOPChessProject
 
     public class Field
     {
-        public int FieldRow; //row = 0 => 1
-        public int FieldCol; //col = 0 => A
+        public readonly int FieldRow; //row = 0 => 1
+        public readonly int FieldCol; //col = 0 => A
 
 
         public Field(string s)
         {
             
             
-            int Number = int.Parse(s[1].ToString())-1;
+            var number = int.Parse(s[1].ToString())-1;
 
-            FieldRow = Number;
-            FieldCol = (int) (col) Enum.Parse(typeof(col), s[0].ToString());
+            FieldRow = number;
+            FieldCol = (int) (Col) Enum.Parse(typeof(Col), s[0].ToString());
         }
 
 
@@ -62,7 +59,7 @@ namespace OOPChessProject
 
         public override string ToString()
         {
-            return String.Format("{1}{0}", this.FieldRow+1 ,  (col)this.FieldCol);
+            return String.Format("{1}{0}", this.FieldRow+1 ,  (Col)this.FieldCol);
         }
 
         public override bool Equals(object obj)
@@ -73,35 +70,22 @@ namespace OOPChessProject
 
             Field f = obj as Field;
 
-            return ((f.fieldCol == this.FieldCol) && (f.fieldRow == this.FieldRow));
+            return f != null && ((f.FieldCol == this.FieldCol) && (f.FieldRow == this.FieldRow));
 
 
         }
 
-
-
-        /*
-        public override bool Equals(Object obj)
+        protected bool Equals(Field other)
         {
-            Field f = obj as Field;
-            if (f == null)
-                return false;
-            else
-                
-                return base.Equals((Point)obj) && z == pt3.z;
-        }
-*/
-        //define Getter And Setter for the FieldRow and FieldCol because the Piece wants to know its location
-        public int fieldRow   // property
-        {
-            get { return FieldRow; }   // get method
-            set { FieldRow = value; }  // set method
+            return FieldRow == other.FieldRow && FieldCol == other.FieldCol;
         }
 
-        public int fieldCol   // property
+        public override int GetHashCode()
         {
-            get { return FieldCol; }   // get method
-            set { FieldCol = value; }  // set method
+            unchecked
+            {
+                return (FieldRow * 397) ^ FieldCol;
+            }
         }
 
     }

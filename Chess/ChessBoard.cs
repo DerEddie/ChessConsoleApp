@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using Chess;
 using OOPChessProject.Pieces;
 
 namespace OOPChessProject
@@ -160,7 +160,7 @@ namespace OOPChessProject
             total = total + " +--+--+--+--+--+--+--+--+\n";
             return total;
         }
-        public bool isRowAndColStillBoard(int r_n, int c_n)
+        public bool IsRowAndColStillBoard(int r_n, int c_n)
         {
             return (0 <= c_n && c_n < 8 && 0 <= r_n  && r_n < 8);
         }
@@ -192,24 +192,24 @@ namespace OOPChessProject
 
             return new Tuple<bool, Field>(false, null);
         }
-        public bool isChecked(Color c)
+        public bool IsChecked(Color c)
         {
             
             var pieces = getAllPiecesOfColor(c);
             foreach (var p in pieces)
             {
                 var moves = p.getPossibleMoves(this);
-                List<Move> filtered_moves = new List<Move>();
+                List<Move> filteredMoves = new List<Move>();
                 foreach (var m in moves)
                 {
-                    if (m.movementType == MovementType.capturing)
+                    if (m.MovementType == MovementType.Capturing)
                     {
-                        filtered_moves.Add(m);
+                        filteredMoves.Add(m);
                     }
                 }
                 
 
-                var res = this.IsKingOnMoveList(filtered_moves, Helper.ColorSwapper(c));
+                var res = this.IsKingOnMoveList(filteredMoves, Helper.ColorSwapper(c));
                 if (res.Item1)
                 {
                     return true;
@@ -222,8 +222,8 @@ namespace OOPChessProject
         //Check wheter a field is empty
         public bool IsFieldEmpty(Field f)
         {   
-            bool IsFieldOccupied = this.KeyFieldValuePiece.ContainsKey(f.ToString());
-            return !IsFieldOccupied;
+            bool isFieldOccupied = this.KeyFieldValuePiece.ContainsKey(f.ToString());
+            return !isFieldOccupied;
         }
 
         public List<Piece> getAllPiecesOfColor(Color c)
@@ -266,7 +266,7 @@ namespace OOPChessProject
             
         }
 
-        public void removeSomeGhosts(int currentIter)
+        public void RemoveSomeGhosts(int currentIter)
         {
             //iter over positionsDict
             //remove the ghost which are too old.
@@ -290,7 +290,6 @@ namespace OOPChessProject
                 if (kvp.Value is GhostPawn)
                 {
                     gp = ((GhostPawn) kvp.Value);
-                    var iterOfPice = gp.IterationOfCreation;
                     if (gp.IterationOfCreation < currentIter)
                     {
                         this.KeyFieldValuePiece.Remove(kvp.Key);
@@ -306,16 +305,16 @@ namespace OOPChessProject
         public void MovePiece(Field from, Field to, MovementType type, int iterOfMove)
         {
             var p = this.KeyFieldValuePiece[from.ToString()];
-            Color c = p.PieceColor;
-            int toRow = to.FieldRow;
-            int toCol = to.FieldCol;
-            int fromRow = from.FieldRow;
-            int fromCol = from.FieldCol;
+            var c = p.PieceColor;
+            var toRow = to.FieldRow;
+            var toCol = to.FieldCol;
+            var fromRow = from.FieldRow;
+            var fromCol = from.FieldCol;
 
 
             switch (type)
             {
-                case MovementType.doubleStep:
+                case MovementType.DoubleStep:
                     if (toRow == 3)
                     {
                         CreateAGhostlyPawn((Pawn)p, iterOfMove, new Field(toRow - 1, toCol), c);
@@ -326,10 +325,10 @@ namespace OOPChessProject
                     }
                     break;
 
-                case MovementType.enPassant:
+                case MovementType.EnPassant:
                     Piece g;
-                    var wasSucc = TryGetPieceFromField(to, out g);
-
+                    TryGetPieceFromField(to, out g);
+                    
                    
                     var ghostPawn = (GhostPawn) g;
                     var realPawn = ghostPawn.TheRealPawn;
@@ -354,7 +353,7 @@ namespace OOPChessProject
             }
             this.KeyFieldValuePiece.Remove(from.ToString());
 
-            if (type == MovementType.castleShort)
+            if (type == MovementType.CastleShort)
             {
 
                 Field fRookOld = new Field(fromRow, 7);
@@ -387,12 +386,12 @@ namespace OOPChessProject
             if (c == Color.White)
             {
                 row = 0;
-                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.castleLong);
+                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleLong);
             }
             else
             {
                 row = 7;
-                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.castleLong);
+                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleLong);
             }
 
             List<Field> shouldntHaveMoved = new List<Field>();
@@ -448,12 +447,12 @@ namespace OOPChessProject
             {
                 row = 0;
 
-                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.castleShort);
+                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleShort);
             }
             else
             {
                 row = 7;
-                mo_ = new Move("KI", new Field("E8"), new Field("G8"), MovementType.castleShort);
+                mo_ = new Move("KI", new Field("E8"), new Field("G8"), MovementType.CastleShort);
             }
             List<Field> shouldntHaveMoved = new List<Field>();
             
@@ -480,8 +479,7 @@ namespace OOPChessProject
 
             foreach (var f in shouldntHaveMoved)
             {
-                Piece piece;
-                var isRetrieved = this.TryGetPieceFromField(f, out piece);
+                var isRetrieved = this.TryGetPieceFromField(f, out var piece);
                 if (isRetrieved)
                 {
                     if (piece.HasMovedOnce)
@@ -498,7 +496,7 @@ namespace OOPChessProject
 
 
 
-        [MustUseReturnValue("Use the return value to...")]
+        
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
             return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);

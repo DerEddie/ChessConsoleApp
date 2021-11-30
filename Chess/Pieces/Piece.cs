@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using Chess;
 using JetBrains.Annotations;
 
 
@@ -86,7 +87,7 @@ namespace OOPChessProject
                 c_n = col + direction.Item2 * i;
 
                 Color EnemyCol;
-                if (cb.isRowAndColStillBoard(r_n, c_n))
+                if (cb.IsRowAndColStillBoard(r_n, c_n))
                 {
                     Field fn = new Field(r_n, c_n);
 
@@ -97,23 +98,23 @@ namespace OOPChessProject
                     {
                         if (p.PrintRepresentation != "xx")
                         {
-                            mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.capturing));
+                            mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Capturing));
                             break;
                         }
 
                         //if this piece is white and we reach a black one we can capture it but must stop iteration
-                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.moving));
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Moving));
 
                     }
                     else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
                     {
-                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.defending));
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Defending));
                         break;
                     }
                     else
                     {
                         //its an empty field
-                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.moving));
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Moving));
                     }
 
                 }

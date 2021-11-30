@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Chess;
 
 namespace OOPChessProject.Pieces
 {
@@ -57,7 +58,7 @@ namespace OOPChessProject.Pieces
                 int c1 = c_nr;
                 Field f = new Field(r1, c1);
                 if (cb.IsFieldEmpty(f))
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.doubleStep));
+                    fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.DoubleStep));
             }
 
             return fList;
@@ -76,7 +77,7 @@ namespace OOPChessProject.Pieces
             foreach (var capt in rc_offset_capturing)
             {
                 //Check so Pawn doesnt try to capture outside the board,
-                if (cb.isRowAndColStillBoard(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor))
+                if (cb.IsRowAndColStillBoard(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor))
                 {
                     Field f1 = new Field(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor);
                     Piece p;
@@ -87,17 +88,17 @@ namespace OOPChessProject.Pieces
                     {
                         if (p.PrintRepresentation == "xx")
                         {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.enPassant));
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.EnPassant));
                         }
                         else
                         {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.capturing));
+                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.Capturing));
                         }
                         
                     }
                     else
                     {
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.defending));
+                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.Defending));
                     }
                 }
                 
@@ -119,7 +120,7 @@ namespace OOPChessProject.Pieces
 
             //check whether Field is Empty
             if (cb.IsFieldEmpty(f))
-                fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.movingPeaceful));
+                fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.MovingPeaceful));
             ;
 
 
