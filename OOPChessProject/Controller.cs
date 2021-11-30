@@ -192,10 +192,6 @@ namespace OOPChessProject
 
 
             } while (true);
-
-
         }
-
-
     }
 }

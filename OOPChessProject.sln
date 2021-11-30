@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPChessProject", "OOPChess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPChessProject.Tests", "OOPChessProject.Tests\OOPChessProject.Tests.csproj", "{F1302FD1-164C-40C2-98E4-4B144A30579C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj", "{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F1302FD1-164C-40C2-98E4-4B144A30579C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1302FD1-164C-40C2-98E4-4B144A30579C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1302FD1-164C-40C2-98E4-4B144A30579C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,32 +8,30 @@ namespace OOPChessProject
     public class ChessBoard
     {
         //field
-        public Dictionary<string, Piece> kFieldvPiece;
-        List<Piece> deadPieces = new List<Piece>();
+        public Dictionary<string, Piece> KeyFieldValuePiece;
 
         public ChessBoard(ChessBoard otherBoard)
         {
             var copyDict = new Dictionary<string, Piece>();
-            foreach (var kvpPair in otherBoard.kFieldvPiece)
+            foreach (var kvpPair in otherBoard.KeyFieldValuePiece)
             {
                 //clone -> returns object -> to Piece
                 copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
             }
 
-            kFieldvPiece = copyDict;
+            KeyFieldValuePiece = copyDict;
         }
 
         public ChessBoard(Dictionary<string, Piece> dict)
         {
-            kFieldvPiece = dict;
+            KeyFieldValuePiece = dict;
         }
-
 
         //A Constructor which sets up the Game Board
         public ChessBoard()
         {
             //create a dict from store the pieces as VALUE and field as KEY
-            kFieldvPiece = new Dictionary<string, Piece>();
+            KeyFieldValuePiece = new Dictionary<string, Piece>();
             //iterate over all field combinations
             for (int r = 0; r < 8; r++)
             {
@@ -49,30 +47,30 @@ namespace OOPChessProject
                         if(c == 0 | c == 7)
                         {
                             Rook p = new Rook(f, Color.White);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
 
                         }
                         else if(c == 1 | c == 6)
                         {
                             Knight p = new Knight(f, Color.White);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if(c == 2| c == 5)
                         {
                             Bishop p = new Bishop(f, Color.White);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if(c == 3)
                         {
                             //Queen's Row
                             Queen p = new Queen(f, Color.White);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if(c  == 4)
                         {
                             //King's Row
                             King p = new King(f, Color.White);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                        
                     }
@@ -83,43 +81,43 @@ namespace OOPChessProject
                         if (c == 0 | c == 7)
                         {
                             Rook p = new Rook(f, Color.Black);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
 
                         }
                         else if (c == 1 | c == 6)
                         {
                             Knight p = new Knight(f, Color.Black);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if (c == 2 | c == 5)
                         {
                             Bishop p = new Bishop(f, Color.Black);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if (c == 3)
                         {
                             //Queen's Row
                             Queen p = new Queen(f, Color.Black);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if (c == 4)
                         {
                             //King's Row
                             King p = new King(f, Color.Black);
-                            kFieldvPiece.Add(f.ToString(), p);
+                            KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                     }
 
                     if (r == 1)
                     {
                         Pawn p = new Pawn(f, Color.White);
-                        kFieldvPiece.Add(f.ToString(), p);
+                        KeyFieldValuePiece.Add(f.ToString(), p);
                     }
                     if(r == 6)
                     {
                         //Console.WriteLine(field);
                         Pawn p = new Pawn(f, Color.Black);
-                        kFieldvPiece.Add(f.ToString(), p);
+                        KeyFieldValuePiece.Add(f.ToString(), p);
                     }
 
                     
@@ -146,15 +144,15 @@ namespace OOPChessProject
                     //checks whether field is Empty or there is a piece on it.
                     //returns also a boolean reporting on the success of the retrieval
 
-                    bool hasVal = kFieldvPiece.TryGetValue(f.ToString(), out value);
+                    bool hasVal = KeyFieldValuePiece.TryGetValue(f.ToString(), out value);
 
                     if (hasVal)
                     {
-                        total = total + String.Format("|{0}", value);
+                        total = total + $"|{value}";
                     }
                     else
                     {
-                        total = total + String.Format("|..", value);
+                        total = total + $"|..";
                     }
                 }
                 total = total + "| \n";
@@ -169,12 +167,12 @@ namespace OOPChessProject
         public void CreateAGhostlyPawn(Pawn p, int iterofcreation, Field field, Color color)
         {
             //Inserts a new ghost Pawn on the board
-            kFieldvPiece[field.ToString()] = new GhostPawn(p,iterofcreation,field, color);
+            KeyFieldValuePiece[field.ToString()] = new GhostPawn(p,iterofcreation,field, color);
         }
         public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist, Color color)
         {
             var cb = this;
-            var posList = cb.kFieldvPiece;
+            var posList = cb.KeyFieldValuePiece;
 
             foreach (var f in flist)
             {
@@ -224,14 +222,14 @@ namespace OOPChessProject
         //Check wheter a field is empty
         public bool IsFieldEmpty(Field f)
         {   
-            bool IsFieldOccupied = this.kFieldvPiece.ContainsKey(f.ToString());
+            bool IsFieldOccupied = this.KeyFieldValuePiece.ContainsKey(f.ToString());
             return !IsFieldOccupied;
         }
 
         public List<Piece> getAllPiecesOfColor(Color c)
         {
             List<Piece> pList = new List<Piece>();
-            foreach (var kvpair in kFieldvPiece)
+            foreach (var kvpair in KeyFieldValuePiece)
             {
                 if (kvpair.Value.PieceColor == c)
                 {
@@ -277,7 +275,7 @@ namespace OOPChessProject
             //Changing an iterable while iteration over it -> Error. 
             //Fix: Copy the dictionary iter over it. but change the original one.
             var copyDict = new Dictionary<string, Piece>();
-            foreach (var kvpPair in this.kFieldvPiece)
+            foreach (var kvpPair in this.KeyFieldValuePiece)
             {
                 //clone -> returns object -> to Piece
                 copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
@@ -295,7 +293,7 @@ namespace OOPChessProject
                     var iterOfPice = gp.IterationOfCreation;
                     if (gp.IterationOfCreation < currentIter)
                     {
-                        this.kFieldvPiece.Remove(kvp.Key);
+                        this.KeyFieldValuePiece.Remove(kvp.Key);
                     }
                 }
             }
@@ -307,7 +305,7 @@ namespace OOPChessProject
 
         public void MovePiece(Field from, Field to, MovementType type, int iterOfMove)
         {
-            var p = this.kFieldvPiece[from.ToString()];
+            var p = this.KeyFieldValuePiece[from.ToString()];
             Color c = p.PieceColor;
             int toRow = to.FieldRow;
             int toCol = to.FieldCol;
@@ -336,7 +334,7 @@ namespace OOPChessProject
                     var ghostPawn = (GhostPawn) g;
                     var realPawn = ghostPawn.TheRealPawn;
 
-                    this.kFieldvPiece.Remove(realPawn.CurrField.ToString());
+                    this.KeyFieldValuePiece.Remove(realPawn.CurrField.ToString());
 
                     break;
             }
@@ -347,26 +345,25 @@ namespace OOPChessProject
             p.field = to;
             if (IsFieldEmpty(to))
             {
-                this.kFieldvPiece.Add(to.ToString(),p);
+                this.KeyFieldValuePiece.Add(to.ToString(),p);
             }
             else
             {
-                var deadP = this.kFieldvPiece[to.ToString()];
-                this.kFieldvPiece[to.ToString()] = p;
-                deadPieces.Add(deadP);
+                var deadP = this.KeyFieldValuePiece[to.ToString()];
+                this.KeyFieldValuePiece[to.ToString()] = p;
             }
-            this.kFieldvPiece.Remove(from.ToString());
+            this.KeyFieldValuePiece.Remove(from.ToString());
 
             if (type == MovementType.castleShort)
             {
 
-                Field f_rookold = new Field(fromRow, 7);
+                Field fRookOld = new Field(fromRow, 7);
                 Piece pc;
-                bool wassuccess = TryGetPieceFromField(f_rookold, out pc);
-                this.kFieldvPiece.Remove(f_rookold.ToString());
+                bool wassuccess = TryGetPieceFromField(fRookOld, out pc);
+                this.KeyFieldValuePiece.Remove(fRookOld.ToString());
 
                 Field f_rooknew = new Field(fromRow, 5);
-                this.kFieldvPiece.Add(f_rooknew.ToString(), pc);
+                this.KeyFieldValuePiece.Add(f_rooknew.ToString(), pc);
             }
 
         }
@@ -504,7 +501,7 @@ namespace OOPChessProject
         [MustUseReturnValue("Use the return value to...")]
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
-            return kFieldvPiece.TryGetValue(f.ToString(), out piece);
+            return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);
         }
 
 
