@@ -171,7 +171,7 @@ namespace OOPChessProject
             //Inserts a new ghost Pawn on the board
             kFieldvPiece[field.ToString()] = new GhostPawn(p,iterofcreation,field, color);
         }
-        public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist)
+        public Tuple<bool, Field> IsKingOnMoveList(List<Move> flist, Color color)
         {
             var cb = this;
             var posList = cb.kFieldvPiece;
@@ -184,7 +184,10 @@ namespace OOPChessProject
                 {
                     if (p.GetType() == typeof(King))
                     {
-                        return new Tuple<bool, Field>(true, p.CurrField);
+                        if (p.PieceColor == color)
+                        {
+                            return new Tuple<bool, Field>(true, p.CurrField);
+                        }
                     }
                 }
             }
@@ -208,7 +211,7 @@ namespace OOPChessProject
                 }
                 
 
-                var res = this.IsKingOnMoveList(filtered_moves);
+                var res = this.IsKingOnMoveList(filtered_moves, Helper.ColorSwapper(c));
                 if (res.Item1)
                 {
                     return true;
@@ -216,109 +219,6 @@ namespace OOPChessProject
             }
 
             return false;
-        }
-
-        public HashSet<Field> getControlledFieldsByColor(Color c, ChessBoard cb)
-        {
-            //use a hashset so every Field will be unique.
-            HashSet<Field> forbiddenFields = new HashSet<Field>();
-
-            var pList = getAllPiecesOfColor(c);
-            foreach (var p in pList)
-            {
-                var controlledFieldList = getControlledFields(p, cb, p.rowOfsetcolOfset);
-            }
-
-
-            return forbiddenFields;
-        }
-
-        protected List<Field> getControlledFields(Piece p,  ChessBoard cb, List<(int, int)> directions, bool Istraverse = true)
-        {
-            List<Field> fList = new List<Field>();
-
-            //create fields and append to the List
-            int r = p.CurrField.FieldRow;
-            int c = p.CurrField.FieldCol;
-
-            int iterMax;
-            if (Istraverse) iterMax = 7; else iterMax = 1;
-
-
-            Color EnemyCol = Helper.ColorSwapper(p.PieceColor);
-
-            foreach (var os in directions)
-            {
-                int r_n = 0;
-                int c_n = 0;
-                for (int i = 1; i <= iterMax; i++)
-                {
-                    r_n = r + os.Item1 * i;
-                    c_n = c + os.Item2 * i;
-
-                    if (cb.isRowAndColStillBoard(r_n, c_n))
-                    {
-                        Field fn = new Field(r_n, c_n);
-
-                        if (cb.IsFieldOccupiedByColor(fn, EnemyCol))
-                        {
-                            //if this piece is white and we reach a black one we can capture it but must stop iteration
-                            fList.Add(fn);
-
-                            break;
-                        }
-                        else if (cb.IsFieldOccupiedByColor(fn, p.PieceColor))
-                        {
-                            //field occupied by own piece
-                            fList.Add(fn);
-                            break;
-                        }
-                        else
-                        {
-                            //its an empty field
-                            fList.Add(fn);
-                        }
-
-                    }
-                }
-            }
-
-            return fList;
-        }
-
-        public string debugBoardPrint()
-        {
-            string total = "   A  B  C  D  E  F  G  H \n";
-            for (int r = 0; r < 8; r++)
-            {
-                
-                string b = " +--+--+--+--+--+--+--+--+\n";
-                total = total + b;
-                total = total + ((int)r + 1).ToString();
-                for (int c = 0; r < 8; c++)
-                {
-                    Field f = new Field(r, c);
-                    Piece value;
-
-                    //checks whether field is Empty or there is a piece on it.
-                    //returns also a boolean reporting on the success of the retrieval
-
-                    bool hasVal = kFieldvPiece.TryGetValue(f.ToString(), out value);
-
-                    if (hasVal)
-                    {
-                        total = total + String.Format("|{0}{1}", value, value.PieceColor);
-                    }
-                    else
-                    {
-                        total = total + String.Format("|..", value);
-                    }
-                }
-                total = total + "| \n";
-
-            }
-            total = total + " +--+--+--+--+--+--+--+--+\n";
-            return total;
         }
 
         //Check wheter a field is empty
@@ -551,9 +451,6 @@ namespace OOPChessProject
             {
                 row = 0;
 
-                
-                    
-
                 mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.castleShort);
             }
             else
@@ -602,20 +499,7 @@ namespace OOPChessProject
             return moveTuple; ;
         }
 
-        //TODO those 2 functions kinda do the same...a bit redundand
-        public Piece GetPieceFromField(Field f)
-        {
-            Piece value;
-            bool hasVal = kFieldvPiece.TryGetValue(f.ToString(), out value);
-            if (hasVal)
-            {
-                return value;
-            }
-            else
-            {
-                return null;
-            }
-        }
+
 
         [MustUseReturnValue("Use the return value to...")]
         public bool TryGetPieceFromField(Field f, out Piece piece)

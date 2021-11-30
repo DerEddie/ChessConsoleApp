@@ -39,47 +39,6 @@ namespace OOPChessProject.Pieces
             return GetPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
         }
 
-        #region SomeComplicated stuff
-        /*
-        //takes the kings movelist and checks whether enemy pieces attack this field
-        public List<Move> FilterMoves(List<Move> moveList, ChessBoard cb)
-        {
-            HashSet<Field> forbiddenFields = new HashSet<Field>();
-            var enemyList = cb.getAllPiecesOfColor(Helper.ColorSwapper(this.PieceColor));
-
-            foreach (var piece in enemyList)
-            {
-                //get possible moves from that piece and get the destination field
-                var moves = piece.getPossibleMoves(cb, false);
-
-                foreach (var m in moves)
-                {
-                    forbiddenFields.Add(m.ToField);
-                }
-            }
-            
-            Console.WriteLine("ListForbidden");
-            foreach (var field in forbiddenFields)
-            {
-                Console.WriteLine(field);
-            }
-
-            foreach (var move in moveList)
-            {
-
-                //getting the enemy Pieces (opposite color)
-                if (forbiddenFields.Contains(move.ToField))
-                {
-                    moveList.Remove(move);
-                }
-                
-            }
-            return moveList;
-        }
-        */
-        #endregion
-        //TODO Iterate over all pices of one kind -> Create a set so no duplicates for the fields those pieces attack.
-        //--> consider special case the pawn who moves and attacks differently
 
     }
 

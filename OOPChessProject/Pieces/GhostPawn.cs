@@ -19,9 +19,6 @@ namespace OOPChessProject.Pieces
             TheRealPawn = p;
         }
 
-        //TODO (1) consider en passant. Create Ghost Instance - new Class with Iteration and Pawn as Field,
-        //TODO (2) selfdestruct after one Iter. if destroyed by enemy destroy the Pawn as Field
-
 
         public override List<Move> getPossibleMoves(ChessBoard cb)
         {

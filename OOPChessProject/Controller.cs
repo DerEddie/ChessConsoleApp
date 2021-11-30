@@ -9,8 +9,6 @@ namespace OOPChessProject
 {
     class Controller
     {
-
-
         public Field stringToField(string s)
         {
             // String to Field Methode
@@ -19,7 +17,6 @@ namespace OOPChessProject
             Field of = new Field(r, c);
             return of;
         }
-
         public bool isALegalMove(List<Move> lMoves, string s)
         {
             foreach (var m in lMoves)
@@ -29,7 +26,6 @@ namespace OOPChessProject
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -37,11 +33,11 @@ namespace OOPChessProject
         {
             //Init Game with the Players
             //var cGame = new ChessGame("Eduard", "Benjamin");
-            string st = "r2qk2r / pppppppp / 8 / 8 / 8 / 8 / PPPPPPPP / RN2K2R";
+            //string st = "r2qk2r / pppppppp / 8 / 8 / 8 / 8 / PPPPPPPP / RN2K2R";
+            string st = "rnbqkbnr/pppppppp/8/8/Q7/8/PP2PPPP/RN2KBNR";
 
-            
-            //string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
-            ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
+        //string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
+        ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
             
             cGame.GameState = gameState.Running;
             bool isCheck;
@@ -58,8 +54,9 @@ namespace OOPChessProject
                 Console.WriteLine(cGame.CurrentPlayer + "'s turn!");
                 Console.WriteLine(cGame.CurrentPlayer.Color);
                 Console.WriteLine("_________________________________");
-                #endregion region MyClass definition  
+                #endregion region MyClass definition
 
+                #region  Checking for Check, Mate, or StaleMate
                 //check if there is a check //change color because we need to iter of opponents pieces
                 isCheck = cGame.currentChessBoard.isChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
                 Console.WriteLine("Checked:");
@@ -85,8 +82,7 @@ namespace OOPChessProject
                     }
                 }
 
-
-
+                #endregion
 
                 #region Asking for 1st User Input
                 //User Input --> Another While Loop
@@ -111,16 +107,16 @@ namespace OOPChessProject
                 
                 //Lookup the possible Moves
                 Piece p; 
+
                 cGame.currentChessBoard.TryGetPieceFromField(of, out p);
                 var listofMoves = p.getPossibleMoves(cGame.currentChessBoard);
                 listofMoves = cGame.FilterMove(MovementType.defending, listofMoves);
+                
 
 
                 if (p.PrintRepresentation == "KI")
                 {
-
                     //Check if castling is possible
-
                     listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
                     var canWeCastleShort = cGame.currentChessBoard.CastleShort(cGame.CurrentPlayer.Color);
                     var canWeCastleLong = cGame.currentChessBoard.CastleLong(cGame.CurrentPlayer.Color);
@@ -128,14 +124,18 @@ namespace OOPChessProject
                     {
                         listofMoves.Add(canWeCastleLong.Item2);
                     }
-
                     if (canWeCastleShort.Item1)
                     {
                         listofMoves.Add(canWeCastleShort.Item2);
                     }
-
+                }
+                else
+                {
+                    //its an other piece than the king, we need to check whether the move might expose our King
+                    listofMoves = cGame.FilterMoveWhichExposeCheck(listofMoves, cGame.CurrentPlayer.Color);
                 }
 
+                
 
                 foreach (var f in listofMoves)
                 {
@@ -166,7 +166,10 @@ namespace OOPChessProject
                 else
                 {
                     //Berührt geführt not implemented
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("ILLEGAL MOVE!");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    
                     continue;
                 }
                 

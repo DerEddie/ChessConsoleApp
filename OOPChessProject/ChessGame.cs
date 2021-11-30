@@ -28,15 +28,7 @@ namespace OOPChessProject
         public gameState GameState;
         public int TurnCounter;
 
-
-        //Overloading the instructor with a fen notation option
-        //FEN NOTATION: rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1
-        //TODO b KQkq e3 0 1 not implemented yet...
-        // lower case letter = black, upper case letter = white.
-        //   "/" new row- numbers are empty fields
-        //   KQ = King-&Queenside-Castling is possible
-        //   kq = same for black
-        //   en passant fields..
+        
         public ChessGame(string fenNotationString, string player1name, string player2name)
         {
             Player1 = new Player(player1name, Color.White);
@@ -171,6 +163,23 @@ namespace OOPChessProject
             return colorSame;
         }
 
+        public List<Move> FilterMoveWhichExposeCheck(List<Move> moves, Color currentplayerColor)
+        {
+            List<Move> legalMoves = new List<Move>();
+            //filtered moves list, return list, reverse logic add ok moves
+            foreach (var m in moves)
+            {
+                ChessBoard copyBoard = new ChessBoard(this.currentChessBoard);
+                copyBoard.MovePiece(m.FromField, m.ToField, MovementType.moving, 0);
+                //TODO is checked doesnt work properly it doenst care for the kings color
+                Color enemyColor = Helper.ColorSwapper(currentplayerColor);
+                if (!copyBoard.isChecked(enemyColor))
+                {
+                    legalMoves.Add(m);
+                }
+            }
+            return legalMoves;
+        }
 
 
         //Check Whether a move results in a check
@@ -185,7 +194,6 @@ namespace OOPChessProject
                     filteredList.Add(m);
                 }
             }
-
             return filteredList;
         }
 
@@ -211,10 +219,8 @@ namespace OOPChessProject
                         {
                             moveList.RemoveAt(i);
                         }
-                        
                     }
                 }
-
             }
 
             return moveList;
