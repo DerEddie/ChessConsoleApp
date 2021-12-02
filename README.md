@@ -1,6 +1,17 @@
 # ChessConsoleApp . OOP - Project
 
 General Project-Structure:
+GUI-Requirements:
+* Drag&Drop Pieces
+* Turn Board Around if Player switches (Offline-Game)
+* Show Possible Moves when Dragging Pieces
+* Fall back if Moves illegal
+* List of Dead Pieces
+* Display Player Name
+* Game Start Menu
+* Visualize Check
+* GameOver Screen
+* Manual User Input?
 
 
 
