@@ -2,6 +2,16 @@
 
 General Project-Structure:
 
+
+
+Goal of this project:
+![chess-board-300x300](https://user-images.githubusercontent.com/29587190/144411739-dff39a22-0a01-4f97-b635-45f84218ef01.jpg)
+
+Current state of the project:
+![Chess1](https://user-images.githubusercontent.com/29587190/144411802-cea2e387-93c2-4c42-b93c-85539c61a59b.PNG)
+
+
+
 ![Unbenannt](https://user-images.githubusercontent.com/29587190/143298051-5ec44c11-8890-450c-b4a9-20657083fdad.PNG)
 
 ![image](https://user-images.githubusercontent.com/29587190/143844372-295de1a3-3aac-453a-b3fc-aef0b8f2fe6e.png)
