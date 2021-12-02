@@ -4,12 +4,12 @@ General Project-Structure:
 
 
 
-Goal of this project:
+Goal of this project:\
 ![chess-board-300x300](https://user-images.githubusercontent.com/29587190/144411739-dff39a22-0a01-4f97-b635-45f84218ef01.jpg)
-
+________________________________________________________________________________
 Current state of the project:
 ![Chess1](https://user-images.githubusercontent.com/29587190/144411891-69645d34-0a98-447f-b9d5-1e63dd2739d0.PNG)
-
+________________________________________________________________________________
 
 
 ![Unbenannt](https://user-images.githubusercontent.com/29587190/143298051-5ec44c11-8890-450c-b4a9-20657083fdad.PNG)
