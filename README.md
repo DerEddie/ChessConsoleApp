@@ -11,8 +11,8 @@ GUI-Requirements:
 * Game Start Menu
 * Visualize Check
 * GameOver Screen
-* Manual User Input?
-
+* KeyBoard User Input as alternative?
+* 
 
 
 Goal of this project:\
