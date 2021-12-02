@@ -14,7 +14,10 @@ Current state of the project:
 
 ![Unbenannt](https://user-images.githubusercontent.com/29587190/143298051-5ec44c11-8890-450c-b4a9-20657083fdad.PNG)
 
+
+
 ![image](https://user-images.githubusercontent.com/29587190/143844372-295de1a3-3aac-453a-b3fc-aef0b8f2fe6e.png)
+
 
 
 OOP-Project: Implementing Chess as a Concole App.
