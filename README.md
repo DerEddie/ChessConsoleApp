@@ -8,7 +8,7 @@ Goal of this project:
 ![chess-board-300x300](https://user-images.githubusercontent.com/29587190/144411739-dff39a22-0a01-4f97-b635-45f84218ef01.jpg)
 
 Current state of the project:
-![Chess1](https://user-images.githubusercontent.com/29587190/144411802-cea2e387-93c2-4c42-b93c-85539c61a59b.PNG)
+![Chess1](https://user-images.githubusercontent.com/29587190/144411891-69645d34-0a98-447f-b9d5-1e63dd2739d0.PNG)
 
 
 
