@@ -1,4 +1,7 @@
 # ChessConsoleApp . OOP - Project
+notImplemented Logic features:
+Promotion
+
 
 General Project-Structure:
 GUI-Requirements:
