@@ -1,7 +1,6 @@
 ﻿using System;
 
-
-namespace OOPChessProject
+namespace Chess
 {
     //make public if other classes should use it.
     public enum Row
@@ -15,11 +14,8 @@ namespace OOPChessProject
         _7,
         _8
     };
-}
 
 // (int)row._1, (row)0
-namespace OOPChessProject
-{
     public enum Col
     {
         A = 0,

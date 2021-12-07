@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Chess;
-using OOPChessProject.Pieces;
+using Chess.Pieces;
 
-namespace OOPChessProject
+namespace Chess
 {
     public class ChessBoard
     {

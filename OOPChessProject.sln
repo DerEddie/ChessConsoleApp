@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.109
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleGUI", "OOPChessProject\ConsoleGUI.csproj", "{3B466078-B56B-463F-B95E-617C8AEE7A22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modelview", "OOPChessProject\Modelview.csproj", "{3B466078-B56B-463F-B95E-617C8AEE7A22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPChessProject.Tests", "OOPChessProject.Tests\OOPChessProject.Tests.csproj", "{F1302FD1-164C-40C2-98E4-4B144A30579C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj", "{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess", "Chess\Chess.csproj", "{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "chessGUI\View.csproj", "{92AA02C3-0E1F-485A-8E15-4819FB495F25}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3B466078-B56B-463F-B95E-617C8AEE7A22} = {3B466078-B56B-463F-B95E-617C8AEE7A22}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +32,10 @@ Global
 		{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CAAD6BB-FC86-4797-B53E-35ED45BA5BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92AA02C3-0E1F-485A-8E15-4819FB495F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92AA02C3-0E1F-485A-8E15-4819FB495F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92AA02C3-0E1F-485A-8E15-4819FB495F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92AA02C3-0E1F-485A-8E15-4819FB495F25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

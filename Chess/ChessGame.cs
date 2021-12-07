@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using OOPChessProject;
-using OOPChessProject.Pieces;
+using Chess.Pieces;
 
 namespace Chess
 {
@@ -21,8 +20,11 @@ namespace Chess
         public Player Player1;
         public Player Player2;
         public Player CurrentPlayer;
-        public GameState GameState;
+        public GameState GameState = GameState.Running;
         public int TurnCounter;
+
+        //new Fields
+        public bool isCheck = false;
 
         
         public ChessGame(string fenNotationString, string player1Name, string player2Name)

@@ -65,9 +65,9 @@
       <Project>{7caad6bb-fc86-4797-b53e-35ed45ba5ba7}</Project>
       <Name>Chess</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OOPChessProject\ConsoleGUI.csproj">
+    <ProjectReference Include="..\OOPChessProject\Modelview.csproj">
       <Project>{3b466078-b56b-463f-b95e-617c8aee7a22}</Project>
-      <Name>ConsoleGUI</Name>
+      <Name>Modelview</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

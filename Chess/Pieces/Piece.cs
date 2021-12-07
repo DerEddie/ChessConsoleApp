@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Chess;
-using JetBrains.Annotations;
 
-
-namespace OOPChessProject 
+namespace Chess.Pieces 
 {
     public enum Color
     {

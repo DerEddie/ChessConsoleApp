@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using Chess;
+using Chess.Pieces;
 
 namespace OOPChessProject.Tests
 {

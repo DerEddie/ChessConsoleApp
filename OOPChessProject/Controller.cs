@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 
 using Chess;
-
-using OOPChessProject.Pieces;
+using Chess.Pieces;
 
 
 namespace OOPChessProject
@@ -30,20 +29,49 @@ namespace OOPChessProject
             return false;
         }
 
-        public void MainGameLoop()
+        public ChessGame InitChessBoard()
         {
             //Init Game with the Players
             //var cGame = new ChessGame("Eduard", "Benjamin");
             //string st = "r2qk2r / pppppppp / 8 / 8 / 8 / 8 / PPPPPPPP / RN2K2R";
-            string st = "rnbqkbnr/pppppppp/8/8/Q7/8/PP2PPPP/RN2KBNR";
+            string st = "6k1/1pp1pppp/5n2/8/8/8/1PPPPPPP/R2QK2R";
 
-        //string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
-        ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
+            //string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
+            ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
+            return cGame;
+        }
+
+        public void ChangeCurrGameState(ChessGame cGame)
+        {
+            cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
+            Console.WriteLine("Checked:");
+            if (cGame.isCheck)
+            {
+                cGame.GameState = GameState.Check;
+            }
+
+            if (cGame.GameState == GameState.Check)
+            {
+
+                if (!cGame.CheckMitigationPossible())
+                {
+                    cGame.GameState = GameState.Checkmate;
+                }
+            }
+            else //if there is no check we need to see if there is a stalemate which will result in a draw
+            {
+                if (!cGame.MovesAvailable())
+                {
+                    cGame.GameState = GameState.Draw;
+                }
+            }
+        }
+
+        public void MainGameLoop()
+        {
+            var cGame = InitChessBoard();
+
             
-            cGame.GameState = GameState.Running;
-            bool isCheck;
-
-
             //Game Loop
             do
             {
@@ -58,29 +86,8 @@ namespace OOPChessProject
                 #endregion region MyClass definition
                 #region  Checking for Check, Mate, or StaleMate
                 //check if there is a check //change color because we need to iter of opponents pieces
-                isCheck = cGame.CurrentChessBoard.IsChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
-                Console.WriteLine("Checked:");
-                if (isCheck)
-                {
-                    cGame.GameState = GameState.Check;
-                    Console.WriteLine("CHECK!");
-                }
 
-                if (cGame.GameState == GameState.Check)
-                {
-
-                    if (!cGame.CheckMitigationPossible())
-                    {
-                        Console.WriteLine("Game Over!");
-                    }
-                }
-                else //if there is no check we need to see if there is a stalemate which will result in a draw
-                {
-                    if (!cGame.MovesAvailable())
-                    {
-                        Console.WriteLine("Stalemate!");
-                    }
-                }
+                ChangeCurrGameState(cGame);
 
                 #endregion
                 #region Asking for 1st User Input
@@ -89,8 +96,10 @@ namespace OOPChessProject
                 string s = Console.ReadLine();
                 var of = StringToField(s);
                 #endregion
+
                 #region Check for right color and if field is not empty
                 //if the colors are not the same we need to prompt again for input, because not the right piece was chosen.
+
                 cGame.CurrentChessBoard.TryGetPieceFromField(of, out var pi);
                 if (!cGame.IsPlayerAndPieceColorSame(cGame.CurrentPlayer, pi ))
                 {
@@ -100,6 +109,7 @@ namespace OOPChessProject
                     continue;
                 }
                 #endregion
+
                 //Lookup the possible Moves
                 Piece p; 
 

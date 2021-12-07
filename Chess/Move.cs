@@ -1,4 +1,4 @@
-﻿using OOPChessProject;
+﻿using Chess.Pieces;
 
 namespace Chess
 {
@@ -18,21 +18,23 @@ namespace Chess
     
     public class Move
     {
+        private string name;
         private Piece P;
         public Field FromField;
         public Field ToField;
         public MovementType MovementType;
-        private Piece m_capturedPiece;
+        //private Piece m_capturedPiece;
 
 
-        public Move(string name, Field from, Field to, MovementType mt, Piece mCapturedPiece, Piece p)
+        public Move(string name, Field from, Field to, MovementType mt)
         {
+            this.name = name;
             FromField = from;
             ToField = to;
             MovementType = mt;
-            this.m_capturedPiece = mCapturedPiece;
-            this.P = p;
+            //this.m_capturedPiece = mCapturedPiece;
         }
+
 
         public override string ToString()
         {

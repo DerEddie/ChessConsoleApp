@@ -1,5 +1,6 @@
-﻿using NUnit.Framework;
-using OOPChessProject.Pieces;
+﻿using Chess;
+using Chess.Pieces;
+using NUnit.Framework;
 
 
 namespace OOPChessProject.Tests

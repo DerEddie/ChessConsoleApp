@@ -1,4 +1,4 @@
-﻿using OOPChessProject;
+﻿using Chess.Pieces;
 
 namespace Chess
 {

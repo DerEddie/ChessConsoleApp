@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Chess;
+﻿using System.Collections.Generic;
 
-namespace OOPChessProject.Pieces
+namespace Chess.Pieces
 {
     public class King : Piece
     {

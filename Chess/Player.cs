@@ -1,18 +1,18 @@
-﻿using OOPChessProject;
+﻿using Chess.Pieces;
+
 namespace Chess
 {
     public class Player
     {
         public string Name;
         public Color Color;
-        int SecondsLeftOnTheClock;
 
-        public Player(string name, Color color, int secondsLeftOnTheClock)
+        public Player(string playerName, Color color)
         {
-            Name = name;
-            Color = color;
-            SecondsLeftOnTheClock = secondsLeftOnTheClock;
+            this.Name = playerName;
+            this.Color = color;
         }
+
 
         public override string ToString()
         {
