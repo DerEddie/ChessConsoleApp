@@ -7,7 +7,7 @@ using Chess.Pieces;
 
 namespace OOPChessProject
 {
-    class Controller
+    public class Controller
     {
         public Field StringToField(string s)
         {
@@ -17,7 +17,7 @@ namespace OOPChessProject
             Field of = new Field(r, c);
             return of;
         }
-        public bool IsALegalMove(List<Move> lMoves, string s)
+        public static bool IsALegalMove(List<Move> lMoves, string s)
         {
             foreach (var m in lMoves)
             {
@@ -29,7 +29,7 @@ namespace OOPChessProject
             return false;
         }
 
-        public ChessGame InitChessBoard()
+        public static ChessGame InitChessBoard()
         {
             //Init Game with the Players
             //var cGame = new ChessGame("Eduard", "Benjamin");
@@ -40,8 +40,7 @@ namespace OOPChessProject
             ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
             return cGame;
         }
-
-        public void ChangeCurrGameState(ChessGame cGame)
+        public static void UpdateGameState(ChessGame cGame)
         {
             cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
             Console.WriteLine("Checked:");
@@ -66,6 +65,67 @@ namespace OOPChessProject
                 }
             }
         }
+        public static void GameStateBoardToConsole(ChessGame cGame)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("_________________________________");
+            Console.WriteLine("Iteration Nr." + cGame.TurnCounter);
+            Console.WriteLine(cGame.CurrentChessBoard);
+            Console.WriteLine(cGame.CurrentPlayer + "'s turn!");
+            Console.WriteLine(cGame.CurrentPlayer.Color);
+            Console.WriteLine("_________________________________");
+        }
+        public static bool isFieldValid(ChessGame cGame, Field of)
+        {
+            //if the colors are not the same we need to prompt again for input, because not the right piece was chosen.
+            cGame.CurrentChessBoard.TryGetPieceFromField(of, out var pi);
+            if (!cGame.IsPlayerAndPieceColorSame(cGame.CurrentPlayer, pi))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("WRONG COLOR OR FIELD IS EMPTY!!!");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                return false;
+            }
+            return true;
+        }
+
+        public static List<Move> getMovesForField(ChessGame cGame, Field of)
+        {
+            Piece p;
+            cGame.CurrentChessBoard.TryGetPieceFromField(of, out p);
+            var listofMoves = p.getPossibleMoves(cGame.CurrentChessBoard);
+            listofMoves = cGame.FilterMove(MovementType.Defending, listofMoves);
+
+            if (p.PrintRepresentation == "KI")
+            {
+                //Check if castling is possible
+                listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
+                var canWeCastleShort = cGame.CurrentChessBoard.CastleShort(cGame.CurrentPlayer.Color);
+                var canWeCastleLong = cGame.CurrentChessBoard.CastleLong(cGame.CurrentPlayer.Color);
+                if (canWeCastleLong.Item1)
+                {
+                    listofMoves.Add(canWeCastleLong.Item2);
+                }
+                if (canWeCastleShort.Item1)
+                {
+                    listofMoves.Add(canWeCastleShort.Item2);
+                }
+            }
+            else
+            {
+                //its an other piece than the king, we need to check whether the move might expose our King
+                listofMoves = cGame.FilterMoveWhichExposeCheck(listofMoves, cGame.CurrentPlayer.Color);
+            }
+
+            foreach (var f in listofMoves)
+            {
+                Console.WriteLine(f);
+            }
+
+            return listofMoves;
+        }
+
+
 
         public void MainGameLoop()
         {
@@ -75,91 +135,24 @@ namespace OOPChessProject
             //Game Loop
             do
             {
-                #region Printing the board
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("_________________________________");
-                Console.WriteLine("Iteration Nr." + cGame.TurnCounter);
-                Console.WriteLine(cGame.CurrentChessBoard);
-                Console.WriteLine(cGame.CurrentPlayer + "'s turn!");
-                Console.WriteLine(cGame.CurrentPlayer.Color);
-                Console.WriteLine("_________________________________");
-                #endregion region MyClass definition
-                #region  Checking for Check, Mate, or StaleMate
-                //check if there is a check //change color because we need to iter of opponents pieces
+                GameStateBoardToConsole(cGame);
 
-                ChangeCurrGameState(cGame);
-
-                #endregion
-                #region Asking for 1st User Input
-                //User Input --> Another While Loop
+                UpdateGameState(cGame); // Checks, Mate, Stalemate 
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
                 string s = Console.ReadLine();
                 var of = StringToField(s);
-                #endregion
-
-                #region Check for right color and if field is not empty
-                //if the colors are not the same we need to prompt again for input, because not the right piece was chosen.
-
-                cGame.CurrentChessBoard.TryGetPieceFromField(of, out var pi);
-                if (!cGame.IsPlayerAndPieceColorSame(cGame.CurrentPlayer, pi ))
+                if(!isFieldValid(cGame,of))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("WRONG COLOR OR FIELD IS EMPTY!!!");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
                     continue;
                 }
-                #endregion
-
-                //Lookup the possible Moves
-                Piece p; 
-
-                cGame.CurrentChessBoard.TryGetPieceFromField(of, out p);
-                var listofMoves = p.getPossibleMoves(cGame.CurrentChessBoard);
-                listofMoves = cGame.FilterMove(MovementType.Defending, listofMoves);
-                
-
-
-                if (p.PrintRepresentation == "KI")
-                {
-                    //Check if castling is possible
-                    listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
-                    var canWeCastleShort = cGame.CurrentChessBoard.CastleShort(cGame.CurrentPlayer.Color);
-                    var canWeCastleLong = cGame.CurrentChessBoard.CastleLong(cGame.CurrentPlayer.Color);
-                    if (canWeCastleLong.Item1)
-                    {
-                        listofMoves.Add(canWeCastleLong.Item2);
-                    }
-                    if (canWeCastleShort.Item1)
-                    {
-                        listofMoves.Add(canWeCastleShort.Item2);
-                    }
-                }
-                else
-                {
-                    //its an other piece than the king, we need to check whether the move might expose our King
-                    listofMoves = cGame.FilterMoveWhichExposeCheck(listofMoves, cGame.CurrentPlayer.Color);
-                }
-
-                
-
-                foreach (var f in listofMoves)
-                {
-                    Console.WriteLine(f);
-                }
-
-
-                //Check if there is a Piece and the correct color
-                //Get List Of Possible Moves for that Piece
-                //cGame.currentChessBoard.GetPieceFromField(Field f);
-
+                var listofMoves = getMovesForField(cGame, of);
                 Console.WriteLine("Enter Destination Field: [A-H][1-8]");
                 s = Console.ReadLine();
                 var df = StringToField(s);
-                MovementType mtype = MovementType.Moving;
 
+                MovementType mtype = MovementType.Moving;
                 if (IsALegalMove(listofMoves, s))
                 {
-                    
                     foreach (var move in listofMoves)
                     {
                         if (move.ToField.ToString() == df.ToString())
@@ -176,23 +169,12 @@ namespace OOPChessProject
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     continue;
                 }
-                
-
-
-
-
-
-                //Move gets Performed
                 cGame.CurrentChessBoard.MovePiece(of, df, mtype, cGame.TurnCounter);
-
-                //After the move check whether this piece now attacks the enemy King
-                
                 cGame.CurrentChessBoard.RemoveSomeGhosts(cGame.TurnCounter);
                 //cGame.currentChessBoard
                 //Change current Player
                 cGame.CurrentPlayer= (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2: cGame.Player1;
                 cGame.TurnCounter++;
-
             } while (cGame.TurnCounter < 1000);
         }
     }
