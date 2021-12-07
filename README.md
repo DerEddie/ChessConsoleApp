@@ -1,10 +1,37 @@
 # ChessConsoleApp . OOP - Project
+notImplemented Logic features:
+Promotion
+
 
 General Project-Structure:
+GUI-Requirements:
+* Drag&Drop Pieces
+* Turn Board Around if Player switches (Offline-Game)
+* Show Possible Moves when Dragging Pieces
+* Fall back if Moves illegal
+* List of Dead Pieces
+* Display Player Name
+* Game Start Menu
+* Visualize Check
+* GameOver Screen
+* KeyBoard User Input as alternative?
+* 
+
+
+Goal of this project:\
+![chess-board-300x300](https://user-images.githubusercontent.com/29587190/144411739-dff39a22-0a01-4f97-b635-45f84218ef01.jpg)
+________________________________________________________________________________
+Current state of the project:\
+![Chess1](https://user-images.githubusercontent.com/29587190/144411891-69645d34-0a98-447f-b9d5-1e63dd2739d0.PNG)
+________________________________________________________________________________
+
 
 ![Unbenannt](https://user-images.githubusercontent.com/29587190/143298051-5ec44c11-8890-450c-b4a9-20657083fdad.PNG)
 
+
+
 ![image](https://user-images.githubusercontent.com/29587190/143844372-295de1a3-3aac-453a-b3fc-aef0b8f2fe6e.png)
+
 
 
 OOP-Project: Implementing Chess as a Concole App.
