@@ -1,17 +1,21 @@
 ﻿using System;
-using System.Security.Cryptography;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Chess;
 using OOPChessProject;
+using Color = Chess.Pieces.Color;
 
 namespace ChessTest1
 {
 
+    
+
     public partial class MainWindow : Window
     {
-
+        private bool isFirstInput;
         private ChessGame m_ChessGame;
         
         public Row m_r;
@@ -20,6 +24,9 @@ namespace ChessTest1
             InitializeComponent();
             ChessBoardGrid.Rows = 9;
             ChessBoardGrid.Columns = 8;
+
+
+
 
             for (int r = 0; r < 8; r++)
             {
@@ -30,16 +37,17 @@ namespace ChessTest1
                     Button r1 = new Button();
                     if ((r + c) % 2 == 0)
                     {
-                        r1.Background = Brushes.Black;
+                        r1.Background = Brushes.SaddleBrown;
                         r1.Foreground = Brushes.White;
+                        
                     }
 
                     else
                     {
-                        r1.Background = Brushes.White;
+                        r1.Background = Brushes.Beige;
                     }
                     r1.Name = $"{col}{r + 1}";
-                    r1.Click += fieldButton_Click;
+                    r1.Click += FieldButton_Click;
 
                     //in XAML registration is automated, but not if
                     //the elements are created programmatically
@@ -59,10 +67,17 @@ namespace ChessTest1
 
 
 
-        private void fieldButton_Click(object sender, RoutedEventArgs e)
+        private void FieldButton_Click(object sender, RoutedEventArgs e)
         {
-            string field = (string)(sender as Button).Content;
             
+            string field = (sender as Button).Name.ToString();
+            Button b = sender as Button;
+            b.Background = Brushes.Red;
+
+            if (isFirstInput)
+            {
+
+            }
 
         }
 
@@ -71,17 +86,30 @@ namespace ChessTest1
 
             foreach (Button cell in ChessBoardGrid.Children)
             {
-                m_ChessGame = Controller.InitChessBoard();
+                m_ChessGame = Controller.InitChessGame();
                 cell.Name = "";
             }
 
-            m_ChessGame = Controller.InitChessBoard();
+            m_ChessGame = Controller.InitChessGame();
             foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
             {
                 // From inside the custom Button type:
                 Button b = this.FindName(kvp.Key.ToString()) as Button;
-                b.Content = kvp.Value.ToString();
+                //b.Content = kvp.Value.ToString();
 
+                string s = "";
+                if (kvp.Value.PieceColor == Color.White)
+                {
+                    s = "W";
+                }
+                else
+                {
+                    s = "B";
+                }
+
+                Image img = new Image();
+                img.Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
+                b.Content = img;
             }
 
 

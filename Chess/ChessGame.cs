@@ -9,7 +9,7 @@ namespace Chess
         Running,
         Check,
         Checkmate,
-        Draw
+        Draw,
     }
 
     public class ChessGame
@@ -22,11 +22,11 @@ namespace Chess
         public Player CurrentPlayer;
         public GameState GameState = GameState.Running;
         public int TurnCounter;
+        public bool TrueIffirstInputElseSecond = true;
 
         //new Fields
         public bool isCheck = false;
 
-        
         public ChessGame(string fenNotationString, string player1Name, string player2Name)
         {
             Player1 = new Player(player1Name, Color.White);
@@ -121,8 +121,6 @@ namespace Chess
             CurrentChessBoard = new ChessBoard(dict);
         }
 
-
-
         public ChessGame(string player1Name, string player2Name)
         {
 
@@ -146,9 +144,6 @@ namespace Chess
             MovesHistory = new List<Move>();
         }
 
-        
-
-
         //Implement here because attribute here
         //Check if Color Player == Color Piece
         public bool IsPlayerAndPieceColorSame(Player player, Piece piece)
@@ -169,7 +164,7 @@ namespace Chess
             {
                 ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                 copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                //TODO is checked doesnt work properly it doenst care for the kings color
+                
                 Color enemyColor = Helper.ColorSwapper(currentPlayerColor);
                 if (!copyBoard.IsChecked(enemyColor))
                 {
@@ -178,7 +173,6 @@ namespace Chess
             }
             return legalMoves;
         }
-
 
         //Check Whether a move results in a check
         public List<Move> FilterMove(MovementType type, List<Move> moveList)
@@ -194,7 +188,6 @@ namespace Chess
             }
             return filteredList;
         }
-
 
         public List<Move> FilterKingMoves(List<Move> moveList, King king)
         {
@@ -224,7 +217,6 @@ namespace Chess
             return moveList;
         }
 
-
         public bool CheckMitigationPossible()
         {
             bool mitigationFound = false;
@@ -234,7 +226,6 @@ namespace Chess
             {
                 var moves = pp.getPossibleMoves(this.CurrentChessBoard);
                 moves = FilterMove(MovementType.Defending, moves);
-
                 foreach (var m in moves)
                 {
                     ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
@@ -244,15 +235,11 @@ namespace Chess
                         mitigationFound = true;
                         break;
                     }
-
                 }
-
             }
-
             return mitigationFound;
         }
 
-        //TODO make sure available moves are actually available filtering of moves needed...if check for example
         public bool MovesAvailable()
         {
             bool areMovesAvail = false;
@@ -270,8 +257,6 @@ namespace Chess
 
             return areMovesAvail;
         }
-
-
 
     }
 }

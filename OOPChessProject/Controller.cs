@@ -29,7 +29,7 @@ namespace OOPChessProject
             return false;
         }
 
-        public static ChessGame InitChessBoard()
+        public static ChessGame InitChessGame()
         {
             //Init Game with the Players
             //var cGame = new ChessGame("Eduard", "Benjamin");
@@ -43,10 +43,11 @@ namespace OOPChessProject
         public static void UpdateGameState(ChessGame cGame)
         {
             cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
-            Console.WriteLine("Checked:");
+            
             if (cGame.isCheck)
             {
                 cGame.GameState = GameState.Check;
+                Console.Write("Check");
             }
 
             if (cGame.GameState == GameState.Check)
@@ -55,6 +56,7 @@ namespace OOPChessProject
                 if (!cGame.CheckMitigationPossible())
                 {
                     cGame.GameState = GameState.Checkmate;
+                    Console.Write("Check+Mate");
                 }
             }
             else //if there is no check we need to see if there is a stalemate which will result in a draw
@@ -62,6 +64,7 @@ namespace OOPChessProject
                 if (!cGame.MovesAvailable())
                 {
                     cGame.GameState = GameState.Draw;
+                    Console.WriteLine("StaleMate");
                 }
             }
         }
@@ -129,7 +132,7 @@ namespace OOPChessProject
 
         public void MainGameLoop()
         {
-            var cGame = InitChessBoard();
+            var cGame = InitChessGame();
 
             
             //Game Loop

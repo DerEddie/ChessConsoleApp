@@ -14,7 +14,6 @@ namespace Chess
         EnPassant
     }
 
-    //TODO remove instance of Piece from board and put it in the move object. Create new instance for board
     
     public class Move
     {
