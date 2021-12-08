@@ -22,8 +22,9 @@ namespace Chess
         public Player CurrentPlayer;
         public GameState GameState = GameState.Running;
         public int TurnCounter;
-        public bool TrueIffirstInputElseSecond = true;
+        public bool IfFirstInputTrueElseFalse = true;
 
+        
         //new Fields
         public bool isCheck = false;
 
@@ -165,7 +166,7 @@ namespace Chess
                 ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                 copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
                 
-                Color enemyColor = Helper.ColorSwapper(currentPlayerColor);
+                Color enemyColor = Helperfunctions.ColorSwapper(currentPlayerColor);
                 if (!copyBoard.IsChecked(enemyColor))
                 {
                     legalMoves.Add(m);
@@ -192,7 +193,7 @@ namespace Chess
         public List<Move> FilterKingMoves(List<Move> moveList, King king)
         {
             Color c = king.PieceColor;
-            Color oppColor = Helper.ColorSwapper(c);
+            Color oppColor = Helperfunctions.ColorSwapper(c);
             var pieces = this.CurrentChessBoard.getAllPiecesOfColor(oppColor);
 
             foreach (var p in pieces)
@@ -230,7 +231,7 @@ namespace Chess
                 {
                     ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                     copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                    if (!copyBoard.IsChecked(Helper.ColorSwapper(this.CurrentPlayer.Color)))
+                    if (!copyBoard.IsChecked(Helperfunctions.ColorSwapper(this.CurrentPlayer.Color)))
                     {
                         mitigationFound = true;
                         break;

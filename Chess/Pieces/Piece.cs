@@ -90,7 +90,7 @@ namespace Chess.Pieces
                     Piece p;
                     cb.TryGetPieceFromField(fn, out p);
 
-                    if (cb.IsFieldOccupiedByColor(fn, Helper.ColorSwapper(this.PieceColor)))
+                    if (cb.IsFieldOccupiedByColor(fn, Helperfunctions.ColorSwapper(this.PieceColor)))
                     {
                         if (p.PrintRepresentation != "xx")
                         {

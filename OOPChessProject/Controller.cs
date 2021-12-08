@@ -9,14 +9,7 @@ namespace OOPChessProject
 {
     public class Controller
     {
-        public Field StringToField(string s)
-        {
-            // String to Field Methode
-            int c = (int)(Col)Enum.Parse(typeof(Col), s[0].ToString());
-            int r = (int)(Row)Enum.Parse(typeof(Row), "_" + s[1]);
-            Field of = new Field(r, c);
-            return of;
-        }
+
         public static bool IsALegalMove(List<Move> lMoves, string s)
         {
             foreach (var m in lMoves)
@@ -42,7 +35,7 @@ namespace OOPChessProject
         }
         public static void UpdateGameState(ChessGame cGame)
         {
-            cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helper.ColorSwapper(cGame.CurrentPlayer.Color));
+            cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helperfunctions.ColorSwapper(cGame.CurrentPlayer.Color));
             
             if (cGame.isCheck)
             {
@@ -128,7 +121,20 @@ namespace OOPChessProject
             return listofMoves;
         }
 
+        public MovementType getMoveTypeForDestinationField(List<Move> listOfMoves, Field destField)
+        {
+            var mtype = MovementType.Moving;
+            foreach (var move in listOfMoves)
+            {
+                if (move.ToField.ToString() == destField.ToString())
+                {
+                    mtype = move.MovementType;
+                }
 
+            }
+
+            return mtype;
+        }
 
         public void MainGameLoop()
         {
@@ -143,7 +149,8 @@ namespace OOPChessProject
                 UpdateGameState(cGame); // Checks, Mate, Stalemate 
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
                 string s = Console.ReadLine();
-                var of = StringToField(s);
+                
+                var of = Helperfunctions.StringToField(s);
                 if(!isFieldValid(cGame,of))
                 {
                     continue;
@@ -151,18 +158,12 @@ namespace OOPChessProject
                 var listofMoves = getMovesForField(cGame, of);
                 Console.WriteLine("Enter Destination Field: [A-H][1-8]");
                 s = Console.ReadLine();
-                var df = StringToField(s);
+                var df = Helperfunctions.StringToField(s);
 
-                MovementType mtype = MovementType.Moving;
+                MovementType mtype;
                 if (IsALegalMove(listofMoves, s))
                 {
-                    foreach (var move in listofMoves)
-                    {
-                        if (move.ToField.ToString() == df.ToString())
-                        {
-                            mtype = move.MovementType;
-                        }
-                    }
+                    mtype = getMoveTypeForDestinationField(listofMoves, df);
                 }
                 else
                 {

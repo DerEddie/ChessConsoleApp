@@ -208,7 +208,7 @@ namespace Chess
                 }
                 
 
-                var res = this.IsKingOnMoveList(filteredMoves, Helper.ColorSwapper(c));
+                var res = this.IsKingOnMoveList(filteredMoves, Helperfunctions.ColorSwapper(c));
                 if (res.Item1)
                 {
                     return true;
@@ -303,6 +303,7 @@ namespace Chess
 
         public void MovePiece(Field from, Field to, MovementType type, int iterOfMove)
         {
+
             var p = this.KeyFieldValuePiece[from.ToString()];
             var c = p.PieceColor;
             var toRow = to.FieldRow;

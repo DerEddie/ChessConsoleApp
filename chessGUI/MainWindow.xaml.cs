@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,13 +11,11 @@ using Color = Chess.Pieces.Color;
 namespace ChessTest1
 {
 
-    
-
     public partial class MainWindow : Window
     {
-        private bool isFirstInput;
         private ChessGame m_ChessGame;
-        
+        private List<Move> moves;
+
         public Row m_r;
         public MainWindow()
         {
@@ -73,11 +71,19 @@ namespace ChessTest1
             string field = (sender as Button).Name.ToString();
             Button b = sender as Button;
             b.Background = Brushes.Red;
+            Field oriField = Helperfunctions.StringToField(field);
 
-            if (isFirstInput)
+            if (Controller.isFieldValid(m_ChessGame, oriField) && m_ChessGame.IfFirstInputTrueElseFalse)
             {
-
+                moves = Controller.getMovesForField(m_ChessGame, oriField);
             }
+
+            if (!m_ChessGame.IfFirstInputTrueElseFalse)
+            {
+                
+            }
+
+
 
         }
 
@@ -96,7 +102,6 @@ namespace ChessTest1
                 // From inside the custom Button type:
                 Button b = this.FindName(kvp.Key.ToString()) as Button;
                 //b.Content = kvp.Value.ToString();
-
                 string s = "";
                 if (kvp.Value.PieceColor == Color.White)
                 {
@@ -106,7 +111,6 @@ namespace ChessTest1
                 {
                     s = "B";
                 }
-
                 Image img = new Image();
                 img.Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
                 b.Content = img;
