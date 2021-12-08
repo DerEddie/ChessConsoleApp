@@ -9,7 +9,7 @@ namespace OOPChessProject
 {
     public class Controller
     {
-
+        //ChessGame als Feld
         public static bool IsALegalMove(List<Move> lMoves, string s)
         {
             foreach (var m in lMoves)
@@ -22,14 +22,29 @@ namespace OOPChessProject
             return false;
         }
 
+        public static bool TryGetMoveFromListBasedOnDestinationField(List<Move> MoveList, string toField, out Move move)
+        {
+            foreach (var m in MoveList)
+            {
+                if (m.ToField.ToString() == toField)
+                {
+                    move = m;
+                    return true;
+                }
+            }
+
+            move = null;
+            return false;
+        }
+
         public static ChessGame InitChessGame()
         {
             //Init Game with the Players
             //var cGame = new ChessGame("Eduard", "Benjamin");
             //string st = "r2qk2r / pppppppp / 8 / 8 / 8 / 8 / PPPPPPPP / RN2K2R";
-            string st = "6k1/1pp1pppp/5n2/8/8/8/1PPPPPPP/R2QK2R";
+            //string st = "6k1/1pp1pppp/5n2/8/8/8/1PPPPPPP/R2QK2R";
 
-            //string st = "rnbqkbnr/pppppppp/8/8/8/5N2/2PPPPPP/6K1";
+            string st = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
             ChessGame cGame = new ChessGame(st, "Eduard", "Felix");
             return cGame;
         }
@@ -37,15 +52,12 @@ namespace OOPChessProject
         {
             cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helperfunctions.ColorSwapper(cGame.CurrentPlayer.Color));
             
+            
+
             if (cGame.isCheck)
             {
                 cGame.GameState = GameState.Check;
                 Console.Write("Check");
-            }
-
-            if (cGame.GameState == GameState.Check)
-            {
-
                 if (!cGame.CheckMitigationPossible())
                 {
                     cGame.GameState = GameState.Checkmate;
@@ -58,6 +70,10 @@ namespace OOPChessProject
                 {
                     cGame.GameState = GameState.Draw;
                     Console.WriteLine("StaleMate");
+                }
+                else
+                {
+                    cGame.GameState = GameState.Running;
                 }
             }
         }
@@ -136,6 +152,11 @@ namespace OOPChessProject
             return mtype;
         }
 
+        public static void switchPlayerTurn(ChessGame cGame)
+        {
+            cGame.CurrentPlayer = (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2 : cGame.Player1;
+        }
+
         public void MainGameLoop()
         {
             var cGame = InitChessGame();
@@ -177,7 +198,8 @@ namespace OOPChessProject
                 cGame.CurrentChessBoard.RemoveSomeGhosts(cGame.TurnCounter);
                 //cGame.currentChessBoard
                 //Change current Player
-                cGame.CurrentPlayer= (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2: cGame.Player1;
+                switchPlayerTurn(cGame);
+
                 cGame.TurnCounter++;
             } while (cGame.TurnCounter < 1000);
         }

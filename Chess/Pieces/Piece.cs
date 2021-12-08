@@ -13,9 +13,11 @@ namespace Chess.Pieces
 
         //A protected member is accessible within its class and by derived class instances.
         public Field CurrField;
-        bool IsAlive;
+        public bool IsAlive;
         public bool HasMovedOnce = false;
-
+        //has a value in the children-classes
+        public string PrintRepresentation;
+        public Color PieceColor;
 
         //copyConstructor
         public Piece(Piece p)
@@ -31,12 +33,8 @@ namespace Chess.Pieces
         //Movement Behaviour
         public List<(int, int)> rowOfsetcolOfset;
 
-        //has a value in the children-classes
-        public string PrintRepresentation;
-        public Color PieceColor;
 
         //create a base constructor for instance creation of different pieces
-        
         public Piece(Field position, Color pieceColor, bool aisAlive = true)
         {
             //takes field instance for position

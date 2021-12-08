@@ -23,6 +23,7 @@ namespace Chess
         public GameState GameState = GameState.Running;
         public int TurnCounter;
         public bool IfFirstInputTrueElseFalse = true;
+        
 
         
         //new Fields
@@ -153,6 +154,7 @@ namespace Chess
             {
                 return false;
             }
+            Console.WriteLine(piece.PieceColor);
             bool colorSame = player.Color == piece.PieceColor;
             return colorSame;
         }
@@ -258,6 +260,8 @@ namespace Chess
 
             return areMovesAvail;
         }
+
+        
 
     }
 }

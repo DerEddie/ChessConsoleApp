@@ -6,26 +6,38 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Chess;
 using OOPChessProject;
-using Color = Chess.Pieces.Color;
+using gColor = Chess.Pieces.Color;
 
 namespace ChessTest1
 {
 
     public partial class MainWindow : Window
     {
+        private SolidColorBrush DarkFieldsColor = new SolidColorBrush(Color.FromArgb(100, 0, 64, 92));
+        SolidColorBrush BrightFieldColor = new SolidColorBrush(Color.FromArgb(100, 255, 166, 2));
+        SolidColorBrush SelectionColor = new SolidColorBrush(Color.FromArgb(100, 188, 80, 144));
+        SolidColorBrush PossibleMovesColor = new SolidColorBrush(Color.FromArgb(100, 255, 99, 98));
+        SolidColorBrush ControlsColor = new SolidColorBrush(Color.FromArgb(100, 88, 80, 141));
+
         private ChessGame m_ChessGame;
         private List<Move> moves;
 
         public Row m_r;
+
         public MainWindow()
         {
+            //bei WPF klasse immer initComp machen...
             InitializeComponent();
+            initGUI();
+
+
+        }
+
+        public void initGUI()
+        {
+            
             ChessBoardGrid.Rows = 9;
             ChessBoardGrid.Columns = 8;
-
-
-
-
             for (int r = 0; r < 8; r++)
             {
                 for (int c = 0; c < 8; c++)
@@ -35,14 +47,11 @@ namespace ChessTest1
                     Button r1 = new Button();
                     if ((r + c) % 2 == 0)
                     {
-                        r1.Background = Brushes.SaddleBrown;
-                        r1.Foreground = Brushes.White;
-                        
+                        r1.Background = DarkFieldsColor;
                     }
-
                     else
                     {
-                        r1.Background = Brushes.Beige;
+                        r1.Background = BrightFieldColor;
                     }
                     r1.Name = $"{col}{r + 1}";
                     r1.Click += FieldButton_Click;
@@ -56,54 +65,75 @@ namespace ChessTest1
                 }
 
             }
+
             Button startButton = new Button();
-            startButton.Background = Brushes.LawnGreen;
+            startButton.Background = ControlsColor;
             startButton.Content = "Start";
             ChessBoardGrid.Children.Add(startButton);
             startButton.Click += StartButton_Click;
         }
 
 
-
         private void FieldButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            string field = (sender as Button).Name.ToString();
             Button b = sender as Button;
-            b.Background = Brushes.Red;
-            Field oriField = Helperfunctions.StringToField(field);
-
-            if (Controller.isFieldValid(m_ChessGame, oriField) && m_ChessGame.IfFirstInputTrueElseFalse)
+            string field = b.Name;
+            Field inputField = Helperfunctions.StringToField(field);
+            //First Input
+            if (Controller.isFieldValid(m_ChessGame, inputField) && m_ChessGame.IfFirstInputTrueElseFalse)
             {
-                moves = Controller.getMovesForField(m_ChessGame, oriField);
+                b.Background = SelectionColor;
+                moves = Controller.getMovesForField(m_ChessGame, inputField);
+                if (moves.Count == 0)
+                {
+                    return;
+                }
+
+
+                foreach (var m in moves)
+                {
+                    Button ButtonGoToField = this.FindName(m.ToField.ToString()) as Button;
+                    ButtonGoToField.Background = PossibleMovesColor;
+                }
+                m_ChessGame.IfFirstInputTrueElseFalse = false;
+            }
+            //Second Input
+            if (!m_ChessGame.IfFirstInputTrueElseFalse && Controller.IsALegalMove(moves, field))
+            {
+                Move chosenMove;
+                    if (Controller.TryGetMoveFromListBasedOnDestinationField(moves, field, out chosenMove))
+                    {
+                        m_ChessGame.CurrentChessBoard.MovePiece(chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType, m_ChessGame.TurnCounter);
+                        m_ChessGame.IfFirstInputTrueElseFalse = true;
+                        RefreshChessBoard();
+                        Controller.switchPlayerTurn(m_ChessGame);
+                        m_ChessGame.TurnCounter += 1;
+                        Console.WriteLine(m_ChessGame.CurrentChessBoard);
+                        ResetColor();
+                        //m_ChessGame.CurrentChessBoard.RemoveSomeGhosts(m_ChessGame.TurnCounter);
+                        //DETERMINE Whether game will continue
+                        Controller.UpdateGameState(m_ChessGame);
+                        
+
+                    }
             }
 
-            if (!m_ChessGame.IfFirstInputTrueElseFalse)
-            {
-                
-            }
 
-
-
+            UpdateStatusBar();
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-
-            foreach (Button cell in ChessBoardGrid.Children)
-            {
-                m_ChessGame = Controller.InitChessGame();
-                cell.Name = "";
-            }
-
+            EmptyChessBoard();
             m_ChessGame = Controller.InitChessGame();
+
             foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
             {
                 // From inside the custom Button type:
                 Button b = this.FindName(kvp.Key.ToString()) as Button;
                 //b.Content = kvp.Value.ToString();
                 string s = "";
-                if (kvp.Value.PieceColor == Color.White)
+                if (kvp.Value.PieceColor == gColor.White)
                 {
                     s = "W";
                 }
@@ -111,14 +141,85 @@ namespace ChessTest1
                 {
                     s = "B";
                 }
+
                 Image img = new Image();
-                img.Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
+                img.Source =
+                    new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
                 b.Content = img;
             }
 
 
         }
 
-        
+        private void RefreshChessBoard()
+        {
+            EmptyChessBoard();
+            foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
+            {
+                // From inside the custom Button type:
+                Button b = this.FindName(kvp.Key.ToString()) as Button;
+                //b.Content = kvp.Value.ToString();
+                string s = "";
+                if (kvp.Value.PieceColor == gColor.White)
+                {
+                    s = "W";
+                }
+                else
+                {
+                    s = "B";
+                }
+
+                Image img = new Image();
+                img.Source =
+                    new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
+                b.Content = img;
+            }
+        }
+
+        private void EmptyChessBoard()
+        {
+            for (int r = 0; r < 8; r++)
+            {
+                for (int c = 0; c < 8; c++)
+                {
+                    Col col = (Col) c;
+                    string Name = $"{col}{r + 1}";
+                    Button b = this.FindName(Name) as Button;
+                    b.Content = "";
+                }
+            }
+        }
+
+        public void UpdateStatusBar()
+        {
+            var l = this.FindName("StatusBar") as Label;
+            l.Content = $"{m_ChessGame.CurrentPlayer.Color}'s Turn \n  {m_ChessGame.GameState} ";
+        }
+
+        public void ResetColor()
+        {
+
+            for (int r = 0; r < 8; r++)
+            {
+                for (int c = 0; c < 8; c++)
+                {
+                    Col col = (Col)c;
+
+                    string Name = $"{col}{r + 1}";
+                    Button b = this.FindName(Name) as Button;
+
+                    if ((r + c) % 2 == 0)
+                    {
+                        b.Background = DarkFieldsColor;
+                    }
+
+                    else
+                    {
+                        b.Background = BrightFieldColor;
+                    }
+                }
+            }
+        }
+
     }
 }

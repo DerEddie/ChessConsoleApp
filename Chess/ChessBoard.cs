@@ -326,11 +326,12 @@ namespace Chess
                     break;
 
                 case MovementType.EnPassant:
-                    Piece g;
-                    TryGetPieceFromField(to, out g);
+                    
+                    var ghostPawnRetrieved = TryGetPieceFromField(to, out Piece g);
                     
                    
                     var ghostPawn = (GhostPawn) g;
+
                     var realPawn = ghostPawn.TheRealPawn;
 
                     this.KeyFieldValuePiece.Remove(realPawn.CurrField.ToString());
@@ -491,7 +492,7 @@ namespace Chess
             }
 
             moveTuple = new Tuple<bool, Move>(true, mo_);
-            return moveTuple; ;
+            return moveTuple;
         }
 
 

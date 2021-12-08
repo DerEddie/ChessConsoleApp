@@ -5,9 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessTest1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
-    <UniformGrid x:Name="ChessBoardGrid">
-        
-    </UniformGrid>
+        Title="MainWindow" Height="800" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="200"/>
+        </Grid.RowDefinitions>
+        <UniformGrid x:Name="ChessBoardGrid" Grid.RowSpan="1" Grid.Row="1" Grid.Column="0">
+
+
+        </UniformGrid>
+
+        <Label x:Name="StatusBar"  Grid.RowSpan="1" Grid.Row="3" Grid.Column="0"></Label>
+    </Grid>
+
 
 </Window>
