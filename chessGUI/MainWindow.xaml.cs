@@ -10,13 +10,14 @@ using gColor = Chess.Pieces.Color;
 
 namespace ChessTest1
 {
+    //TODO fix castling long 
 
     public partial class MainWindow : Window
     {
-        private SolidColorBrush DarkFieldsColor = new SolidColorBrush(Color.FromArgb(100, 0, 64, 92));
+        private SolidColorBrush DarkFieldsColor = new SolidColorBrush(Color.FromArgb(100, 0, 0, 92));
         SolidColorBrush BrightFieldColor = new SolidColorBrush(Color.FromArgb(100, 255, 166, 2));
-        SolidColorBrush SelectionColor = new SolidColorBrush(Color.FromArgb(100, 188, 80, 144));
-        SolidColorBrush PossibleMovesColor = new SolidColorBrush(Color.FromArgb(100, 255, 99, 98));
+        SolidColorBrush SelectionColor = new SolidColorBrush(Color.FromArgb(100, 227, 1, 45));
+        SolidColorBrush PossibleMovesColor = new SolidColorBrush(Color.FromArgb(100, 1, 227, 182));
         SolidColorBrush ControlsColor = new SolidColorBrush(Color.FromArgb(100, 88, 80, 141));
 
         private ChessGame m_ChessGame;
@@ -29,14 +30,11 @@ namespace ChessTest1
             //bei WPF klasse immer initComp machen...
             InitializeComponent();
             initGUI();
-
-
         }
 
         public void initGUI()
         {
-            
-            ChessBoardGrid.Rows = 9;
+            ChessBoardGrid.Rows = 8;
             ChessBoardGrid.Columns = 8;
             for (int r = 0; r < 8; r++)
             {
@@ -65,14 +63,7 @@ namespace ChessTest1
                 }
 
             }
-
-            Button startButton = new Button();
-            startButton.Background = ControlsColor;
-            startButton.Content = "Start";
-            ChessBoardGrid.Children.Add(startButton);
-            startButton.Click += StartButton_Click;
         }
-
 
         private void FieldButton_Click(object sender, RoutedEventArgs e)
         {
@@ -103,19 +94,23 @@ namespace ChessTest1
                 Move chosenMove;
                     if (Controller.TryGetMoveFromListBasedOnDestinationField(moves, field, out chosenMove))
                     {
+                        m_ChessGame.TurnCounter += 1;
                         m_ChessGame.CurrentChessBoard.MovePiece(chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType, m_ChessGame.TurnCounter);
                         m_ChessGame.IfFirstInputTrueElseFalse = true;
-                        RefreshChessBoard();
+                        
                         Controller.switchPlayerTurn(m_ChessGame);
-                        m_ChessGame.TurnCounter += 1;
-                        Console.WriteLine(m_ChessGame.CurrentChessBoard);
+                        m_ChessGame.CurrentChessBoard.RemoveSomeGhosts(m_ChessGame.TurnCounter);
+
+                        //After all the logic refresh board...
+                        RefreshChessBoard();
                         ResetColor();
-                        //m_ChessGame.CurrentChessBoard.RemoveSomeGhosts(m_ChessGame.TurnCounter);
+                        
                         //DETERMINE Whether game will continue
                         Controller.UpdateGameState(m_ChessGame);
                         
 
                     }
+                    
             }
 
 
@@ -156,10 +151,11 @@ namespace ChessTest1
             EmptyChessBoard();
             foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
             {
+                ResetColor();
                 // From inside the custom Button type:
-                Button b = this.FindName(kvp.Key.ToString()) as Button;
+                var b = this.FindName(kvp.Key.ToString()) as Button;
                 //b.Content = kvp.Value.ToString();
-                string s = "";
+                var s = "";
                 if (kvp.Value.PieceColor == gColor.White)
                 {
                     s = "W";
@@ -169,7 +165,7 @@ namespace ChessTest1
                     s = "B";
                 }
 
-                Image img = new Image();
+                var img = new Image();
                 img.Source =
                     new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
                 b.Content = img;
@@ -193,7 +189,7 @@ namespace ChessTest1
         public void UpdateStatusBar()
         {
             var l = this.FindName("StatusBar") as Label;
-            l.Content = $"{m_ChessGame.CurrentPlayer.Color}'s Turn \n  {m_ChessGame.GameState} ";
+            l.Content = $" {m_ChessGame.CurrentPlayer.Color}'s Turn \n Current State:{m_ChessGame.GameState} \n Move Counter:{m_ChessGame.TurnCounter}";
         }
 
         public void ResetColor()

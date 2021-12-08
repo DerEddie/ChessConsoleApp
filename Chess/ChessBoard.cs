@@ -288,7 +288,7 @@ namespace Chess
                 GhostPawn gp;
                 if (kvp.Value is GhostPawn)
                 {
-                    gp = ((GhostPawn) kvp.Value);
+                    gp =(GhostPawn)kvp.Value;
                     if (gp.IterationOfCreation < currentIter)
                     {
                         this.KeyFieldValuePiece.Remove(kvp.Key);
@@ -356,13 +356,23 @@ namespace Chess
 
             if (type == MovementType.CastleShort)
             {
-
                 Field fRookOld = new Field(fromRow, 7);
                 Piece pc;
                 bool wassuccess = TryGetPieceFromField(fRookOld, out pc);
                 this.KeyFieldValuePiece.Remove(fRookOld.ToString());
 
                 Field f_rooknew = new Field(fromRow, 5);
+                this.KeyFieldValuePiece.Add(f_rooknew.ToString(), pc);
+            }
+            if (type == MovementType.CastleLong)
+            {
+
+                Field fRookOld = new Field(fromRow, 0);
+                Piece pc;
+                bool wassuccess = TryGetPieceFromField(fRookOld, out pc);
+                this.KeyFieldValuePiece.Remove(fRookOld.ToString());
+
+                Field f_rooknew = new Field(fromRow, 3);
                 this.KeyFieldValuePiece.Add(f_rooknew.ToString(), pc);
             }
 
@@ -387,12 +397,12 @@ namespace Chess
             if (c == Color.White)
             {
                 row = 0;
-                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleLong);
+                mo_ = new Move("KI", new Field("E1"), new Field("C1"), MovementType.CastleLong);
             }
             else
             {
                 row = 7;
-                mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleLong);
+                mo_ = new Move("KI", new Field("E8"), new Field("C8"), MovementType.CastleLong);
             }
 
             List<Field> shouldntHaveMoved = new List<Field>();

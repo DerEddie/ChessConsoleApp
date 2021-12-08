@@ -19,12 +19,7 @@ namespace OOPChessProject.Tests
             Assert.AreEqual(board.Length, 494);
         }
 
-        [Test]
-        public void TestMethod2()
-        {
-            Field f = new Field(2, 3);
-            Assert.AreEqual(4, 5);
-        }
+
 
         [Test]
         public void TestBoardCopy()
