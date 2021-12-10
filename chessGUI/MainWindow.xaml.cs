@@ -110,7 +110,7 @@ namespace chessGUI
         {
             Button b = sender as Button;
             string field = b.Name;
-            Field inputField = Helperfunctions.StringToField(field);
+            Field inputField = HelperFunctions.StringToField(field);
             //First Input
             if (Controller.isFieldValid(m_ChessGame, inputField) && m_ChessGame.IfFirstInputTrueElseFalse)
             {
@@ -136,7 +136,7 @@ namespace chessGUI
                         //TODO Put somewhere else
                         RefreshPlayerTimers();
                         m_ChessGame.TurnCounter += 1;
-                        m_ChessGame.AddMovetoMoveList(new Move("x",chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType));
+                        m_ChessGame.AddMoveToMoveList(new Move("x",chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType));
                         UpdateMovesList();
 
                         m_ChessGame.CurrentChessBoard.MovePiece(chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType, m_ChessGame.TurnCounter);

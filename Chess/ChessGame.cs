@@ -20,14 +20,14 @@ namespace Chess
         public Player Player1;
         public Player Player2;
         public Player CurrentPlayer;
-        public GameState GameState = GameState.Running;
+        public GameState GameState;
         public int TurnCounter;
         public bool IfFirstInputTrueElseFalse = true;
 
 
 
         //new Fields
-        public bool isCheck = false;
+        public bool IsCheck = false;
 
         public ChessGame(string fenNotationString, string player1Name, string player2Name)
         {
@@ -57,19 +57,9 @@ namespace Chess
 
             int row = 7;
             int col = 0;
-            Color color;
-            Piece p; //= new Pawn(new Field(0,0), Color.White);
             foreach (var c in fenNotationString)
             {
-                if (Char.IsLower(c))
-                {
-                     color = Color.Black;
-                }
-
-                else
-                {
-                     color = Color.White;
-                }
+                var color = Char.IsLower(c) ? Color.Black : Color.White;
 
                 var lowerOfChar = Char.ToLower(c);
                 Field f = new Field(row, col);
@@ -85,6 +75,7 @@ namespace Chess
                 {
 
                     //switch
+                    Piece p; //= new Pawn(new Field(0,0), Color.White);
                     switch (lowerOfChar)
                     {
                         case 'r':
@@ -165,7 +156,7 @@ namespace Chess
                 ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                 copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
                 
-                Color enemyColor = Helperfunctions.ColorSwapper(currentPlayerColor);
+                Color enemyColor = HelperFunctions.ColorSwapper(currentPlayerColor);
                 if (!copyBoard.IsChecked(enemyColor))
                 {
                     legalMoves.Add(m);
@@ -192,17 +183,17 @@ namespace Chess
         public List<Move> FilterKingMoves(List<Move> moveList, King king)
         {
             Color c = king.PieceColor;
-            Color oppColor = Helperfunctions.ColorSwapper(c);
+            Color oppColor = HelperFunctions.ColorSwapper(c);
             var pieces = this.CurrentChessBoard.getAllPiecesOfColor(oppColor);
 
             foreach (var p in pieces)
             {
-                var enemyPmoves = p.getPossibleMoves(this.CurrentChessBoard);
-                enemyPmoves = FilterMove(MovementType.DoubleStep, enemyPmoves);
-                enemyPmoves = FilterMove(MovementType.MovingPeaceful, enemyPmoves);
+                var enemyMoves = p.GetPossibleMoves(this.CurrentChessBoard);
+                enemyMoves = FilterMove(MovementType.DoubleStep, enemyMoves);
+                enemyMoves = FilterMove(MovementType.MovingPeaceful, enemyMoves);
 
 
-                foreach (var mEnemy in enemyPmoves)
+                foreach (var mEnemy in enemyMoves)
                 {
                     for (int i = moveList.Count-1; i >= 0; i--)
                     {
@@ -224,13 +215,13 @@ namespace Chess
             var pieces = this.CurrentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
             foreach (var pp in pieces)
             {
-                var moves = pp.getPossibleMoves(this.CurrentChessBoard);
+                var moves = pp.GetPossibleMoves(this.CurrentChessBoard);
                 moves = FilterMove(MovementType.Defending, moves);
                 foreach (var m in moves)
                 {
                     ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                     copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                    if (!copyBoard.IsChecked(Helperfunctions.ColorSwapper(this.CurrentPlayer.Color)))
+                    if (!copyBoard.IsChecked(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color)))
                     {
                         mitigationFound = true;
                         break;
@@ -247,7 +238,7 @@ namespace Chess
 
             foreach (var pp in pieces)
             {
-                var moves = pp.getPossibleMoves(this.CurrentChessBoard);
+                var moves = pp.GetPossibleMoves(this.CurrentChessBoard);
                 moves = FilterMove(MovementType.Defending, moves);
                 if (moves.Count > 0)
                 {
@@ -258,10 +249,10 @@ namespace Chess
             return areMovesAvail;
         }
 
-        public void AddMovetoMoveList(Move m)
+        public void AddMoveToMoveList(Move m)
         {
-            var Tuple = new Tuple<int, Move, ChessBoard>(this.TurnCounter, m, this.CurrentChessBoard);
-            this.MovesHistory.Add(Tuple);
+            var tuple = new Tuple<int, Move, ChessBoard>(this.TurnCounter, m, this.CurrentChessBoard);
+            this.MovesHistory.Add(tuple);
         }
 
     }

@@ -197,7 +197,7 @@ namespace Chess
             var pieces = getAllPiecesOfColor(c);
             foreach (var p in pieces)
             {
-                var moves = p.getPossibleMoves(this);
+                var moves = p.GetPossibleMoves(this);
                 List<Move> filteredMoves = new List<Move>();
                 foreach (var m in moves)
                 {
@@ -208,7 +208,7 @@ namespace Chess
                 }
                 
 
-                var res = this.IsKingOnMoveList(filteredMoves, Helperfunctions.ColorSwapper(c));
+                var res = this.IsKingOnMoveList(filteredMoves, HelperFunctions.ColorSwapper(c));
                 if (res.Item1)
                 {
                     return true;
@@ -342,7 +342,7 @@ namespace Chess
             //Piece which gonna move
             
             p.HasMovedOnce = true;
-            p.field = to;
+            p.Field = to;
             if (IsFieldEmpty(to))
             {
                 this.KeyFieldValuePiece.Add(to.ToString(),p);

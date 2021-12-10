@@ -4,10 +4,10 @@ namespace Chess.Pieces
 {
     public class Pawn : Piece
     {
-        readonly int directionFactor;
+        readonly int _directionFactor;
 
 
-        List<(int, int)> rowOfsetcolOfset = new List<(int, int)>
+        private List<(int, int)> _offset = new List<(int, int)>
         {
             (-1, -1),
             (-1, 1)
@@ -18,18 +18,18 @@ namespace Chess.Pieces
         public Pawn(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive)
         {
             //already Implemented
-            base.PrintRepresentation= "PW";
+            PrintRepresentation= "PW";
 
 
             //set the 
             if (this.PieceColor == Color.White)
             {
-                directionFactor = -1;
+                _directionFactor = -1;
 
             }
             else
             {
-                directionFactor = 1;
+                _directionFactor = 1;
             }
         }
 
@@ -47,14 +47,14 @@ namespace Chess.Pieces
 
 
 
-        private List<Move> GetDoubleStepMoves(int r_nr, int c_nr, ChessBoard cb)
+        private List<Move> GetDoubleStepMoves(int rNr, int cNr, ChessBoard cb)
         {
             List<Move> fList = new List<Move>();
             //Check the double-step
             if (this.CurrField.FieldRow == 1 | this.CurrField.FieldRow == 6)
             {
-                int r1 = r_nr + 2 * (-directionFactor);
-                int c1 = c_nr;
+                int r1 = rNr + 2 * (-_directionFactor);
+                int c1 = cNr;
                 Field f = new Field(r1, c1);
                 if (cb.IsFieldEmpty(f))
                     fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.DoubleStep));
@@ -63,37 +63,30 @@ namespace Chess.Pieces
             return fList;
         }
 
-        private List<Move> GetCapturingMoves(int r_nr, int c_nr, ChessBoard cb)
+        private List<Move> GetCapturingMoves(int rNr, int cNr, ChessBoard cb)
         {
             List<Move> fList = new List<Move>();
 
-            var rc_offset_capturing = new List<(int, int)>
+            var rcOffsetCapturing = new List<(int, int)>
             {
                 (-1, -1),
                 (-1, 1)
             };
 
-            foreach (var capt in rc_offset_capturing)
+            foreach (var capt in rcOffsetCapturing)
             {
-                //Check so Pawn doesnt try to capture outside the board,
-                if (cb.IsRowAndColStillBoard(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor))
+                //Check so Pawn doesn't try to capture outside the board,
+                if (cb.IsRowAndColStillBoard(rNr + capt.Item1 * _directionFactor, cNr + capt.Item2 * _directionFactor))
                 {
-                    Field f1 = new Field(r_nr + capt.Item1 * directionFactor, c_nr + capt.Item2 * directionFactor);
-                    Piece p;
-                    cb.TryGetPieceFromField(f1, out p);
+                    Field f1 = new Field(rNr + capt.Item1 * _directionFactor, cNr + capt.Item2 * _directionFactor);
+                    cb.TryGetPieceFromField(f1, out var p);
 
 
-                    if (cb.IsFieldOccupiedByColor(f1, Helperfunctions.ColorSwapper(this.PieceColor)))
+                    if (cb.IsFieldOccupiedByColor(f1, HelperFunctions.ColorSwapper(this.PieceColor)))
                     {
-                        if (p.PrintRepresentation == "xx")
-                        {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.EnPassant));
-                        }
-                        else
-                        {
-                            fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.Capturing));
-                        }
-                        
+                        fList.Add(p.PrintRepresentation == "xx"
+                            ? new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.EnPassant)
+                            : new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.Capturing));
                     }
                     else
                     {
@@ -107,20 +100,20 @@ namespace Chess.Pieces
             return fList;
         }
 
-        private List<Move> GetMovingMoves(int r_nr, int c_nr, ChessBoard cb)
+        private List<Move> GetMovingMoves(int rNr, int cNr, ChessBoard cb)
         {
             //Pawn move in different direction depending on color
             List<Move> fList = new List<Move>();
 
             //convert back to enum with modified values
-            int r1 =  r_nr + 1 * (-directionFactor);
-            int c1 =  c_nr;
+            int r1 =  rNr + 1 * (-_directionFactor);
+            int c1 =  cNr;
             Field f = new Field(r1, c1);
 
             //check whether Field is Empty
             if (cb.IsFieldEmpty(f))
                 fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.MovingPeaceful));
-            ;
+            
 
 
 
@@ -128,26 +121,22 @@ namespace Chess.Pieces
         }
 
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
             //Since Pawns move only forward, We need to know whether piece is black or white
-            var rc_offset = new int[,] { { -1, 0 }};
 
+            var rNr = CurrField.FieldRow;
+            int cNr = CurrField.FieldCol;
 
-            List<Move> fList = new List<Move>();
+            var mListMoving = GetMovingMoves(rNr, cNr, cb);
 
-            int r_nr = CurrField.FieldRow;
-            int c_nr = CurrField.FieldCol;
+            var mListCapturing = GetCapturingMoves(rNr, cNr, cb);
 
-            var mList_moving = GetMovingMoves(r_nr, c_nr, cb);
+            var mListMoving2Step = GetDoubleStepMoves(rNr, cNr, cb);
 
-            var mList_capturing = GetCapturingMoves(r_nr, c_nr, cb);
-
-            var mList_moving2Step = GetDoubleStepMoves(r_nr, c_nr, cb);
-
-            mList_capturing.AddRange(mList_moving);
-            mList_capturing.AddRange(mList_moving2Step);
-            return mList_capturing;
+            mListCapturing.AddRange(mListMoving);
+            mListCapturing.AddRange(mListMoving2Step);
+            return mListCapturing;
         }
 
     }

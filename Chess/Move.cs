@@ -1,6 +1,4 @@
-﻿using Chess.Pieces;
-
-namespace Chess
+﻿namespace Chess
 {
     public enum MovementType
     {
@@ -17,8 +15,7 @@ namespace Chess
     
     public class Move
     {
-        private string name;
-        private Piece P;
+        private readonly string _name;
         public Field FromField;
         public Field ToField;
         public MovementType MovementType;
@@ -27,7 +24,7 @@ namespace Chess
 
         public Move(string name, Field from, Field to, MovementType mt)
         {
-            this.name = name;
+            this._name = name;
             FromField = from;
             ToField = to;
             MovementType = mt;
@@ -37,7 +34,7 @@ namespace Chess
 
         public override string ToString()
         {
-            return (Piece: name,fromField: FromField, toField: ToField, movementType: MovementType).ToString();
+            return (Piece: _name,fromField: FromField, toField: ToField, movementType: MovementType).ToString();
         }
 
 

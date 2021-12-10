@@ -4,8 +4,7 @@ namespace Chess.Pieces
 {
     public class King : Piece
     {
-
-        List<(int, int)> rowOfsetcolOfset = new List<(int, int)>
+        private readonly List<(int, int)> _offset = new List<(int, int)>
         {
             (1, 1),
             (-1, -1),
@@ -17,10 +16,10 @@ namespace Chess.Pieces
             (0, -1)
         };
 
-        public King(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
+        public King(Field position, Color pieceColor) : base(position, pieceColor)
         {
             //already Implemented
-            base.PrintRepresentation = "KI";
+            PrintRepresentation = "KI";
         }
 
         public override object Clone()
@@ -29,13 +28,9 @@ namespace Chess.Pieces
             return king;
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
-            //Init FieldList
-            List<Field> fList = new List<Field>();
-
-            
-            return GetPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
+            return GetPossibleMovesTraversing(cb, _offset, 1);
         }
 
 

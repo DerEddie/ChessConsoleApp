@@ -5,24 +5,21 @@ namespace Chess.Pieces
     class Bishop: Piece
     {
         
-        public Bishop(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
+        public Bishop(Field position, Color pieceColor) : base(position, pieceColor)
         {
-            base.PrintRepresentation = "BS";
+            PrintRepresentation = "BS";
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
-            //Init FieldList
-            List<Field> fList = new List<Field>();
-
-            var rowOfsetcolOfset = new List<(int, int)>
+            var rowColOffset = new List<(int, int)>
             {
                 (1 , 1), 
                 (-1, -1), 
                 (-1, 1), 
                 (1, -1) 
             };
-            return GetPossibleMovesTraversing(cb, rowOfsetcolOfset);
+            return GetPossibleMovesTraversing(cb, rowColOffset);
         }
 
         public override object Clone()

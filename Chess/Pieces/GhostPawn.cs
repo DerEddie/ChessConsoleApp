@@ -4,32 +4,26 @@ namespace Chess.Pieces
 {
     public class GhostPawn : Piece
     {
-        //Creating a ghost pawn to implement en passant correctly.
-        //The ghostpawn is tied to an actual pawn so both can disapear when ghost pawn gets captured.
+        //Creating a ghost pawn to implement "en passant" correctly.
+        //The ghost-pawn is tied to an actual pawn so both can disappear when ghost pawn gets captured.
         //GhostPawn wont block own movement options since it is already gone once the enemy has moved,
 
         public int IterationOfCreation;
         public Pawn TheRealPawn;
 
-        public GhostPawn(Pawn p, int iterOfCreation, Field position, Color pieceColor,   bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
+        public GhostPawn(Pawn p, int iterationOfCreation, Field position, Color pieceColor) : base(position, pieceColor)
         {
             //already Implemented
-            IterationOfCreation = iterOfCreation;
-            base.PrintRepresentation = "xx";
+            IterationOfCreation = iterationOfCreation;
+            PrintRepresentation = "xx";
             TheRealPawn = p;
         }
 
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
-            //Init FieldList
-            List<Field> fList = new List<Field>();
-
-            var rowOfsetcolOfset = new List<(int, int)>
-            {
-
-            };
-            return GetPossibleMovesTraversing(cb, rowOfsetcolOfset, 1);
+            var rowColOffset = new List<(int, int)>();
+            return GetPossibleMovesTraversing(cb, rowColOffset, 1);
         }
 
         public override object Clone()

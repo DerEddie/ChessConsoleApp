@@ -2,21 +2,17 @@
 
 namespace Chess.Pieces
 {
-    class Queen: Piece
+    internal class Queen: Piece
     {
-
-        public Queen(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
+        public Queen(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor)
         {
             //already Implemented
-            base.PrintRepresentation = "QN";
+            PrintRepresentation = "QN";
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
-            //Init FieldList
-            List<Field> fList = new List<Field>();
-
-            var rowOfsetcolOfset = new List<(int, int)>
+            var offset = new List<(int, int)>
             {
                 (1 , 1),
                 (-1, -1),
@@ -27,12 +23,12 @@ namespace Chess.Pieces
                 (0, 1),
                 (0, -1)
             };
-            return GetPossibleMovesTraversing(cb, rowOfsetcolOfset);
+            return GetPossibleMovesTraversing(cb, offset);
         }
 
         public override object Clone()
         {
-            Queen queen = new Queen(this.CurrField, this.PieceColor);
+            var queen = new Queen(this.CurrField, this.PieceColor);
             return queen;
         }
     }

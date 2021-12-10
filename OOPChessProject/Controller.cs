@@ -49,8 +49,8 @@ namespace OOPChessProject
         }
         public static void UpdateGameState(ChessGame cGame)
         {
-            cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helperfunctions.ColorSwapper(cGame.CurrentPlayer.Color));
-            if (cGame.isCheck)
+            cGame.IsCheck = cGame.CurrentChessBoard.IsChecked(HelperFunctions.ColorSwapper(cGame.CurrentPlayer.Color));
+            if (cGame.IsCheck)
             {
                 cGame.GameState = GameState.Check;
                 Console.Write("Check");
@@ -101,7 +101,7 @@ namespace OOPChessProject
         {
             Piece p;
             cGame.CurrentChessBoard.TryGetPieceFromField(of, out p);
-            var listofMoves = p.getPossibleMoves(cGame.CurrentChessBoard);
+            var listofMoves = p.GetPossibleMoves(cGame.CurrentChessBoard);
             listofMoves = cGame.FilterMove(MovementType.Defending, listofMoves);
 
             if (p.PrintRepresentation == "KI")
@@ -167,7 +167,7 @@ namespace OOPChessProject
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
                 string s = Console.ReadLine();
                 
-                var of = Helperfunctions.StringToField(s);
+                var of = HelperFunctions.StringToField(s);
                 if(!isFieldValid(cGame,of))
                 {
                     continue;
@@ -175,7 +175,7 @@ namespace OOPChessProject
                 var listofMoves = getMovesForField(cGame, of);
                 Console.WriteLine("Enter Destination Field: [A-H][1-8]");
                 s = Console.ReadLine();
-                var df = Helperfunctions.StringToField(s);
+                var df = HelperFunctions.StringToField(s);
 
                 MovementType mtype;
                 if (IsALegalMove(listofMoves, s))

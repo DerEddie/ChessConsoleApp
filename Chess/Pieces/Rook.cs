@@ -12,7 +12,7 @@ namespace Chess.Pieces
             base.PrintRepresentation = "RK";
         }
 
-        public override List<Move> getPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
             //Init FieldList
             List<Field> fList = new List<Field>();

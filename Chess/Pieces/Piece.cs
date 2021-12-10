@@ -19,19 +19,10 @@ namespace Chess.Pieces
         public string PrintRepresentation;
         public Color PieceColor;
 
-        //copyConstructor
-        public Piece(Piece p)
-        {
-            CurrField = p.CurrField;
-            IsAlive = p.IsAlive;
-            HasMovedOnce = p.HasMovedOnce;
-        }
-
         public abstract object Clone();
- 
-
+        
         //Movement Behaviour
-        public List<(int, int)> rowOfsetcolOfset;
+        public List<(int, int)> RowOfsetcolOfset;
 
 
         //create a base constructor for instance creation of different pieces
@@ -46,7 +37,7 @@ namespace Chess.Pieces
 
 
         //Implement in Piece children
-        public abstract List<Move> getPossibleMoves(ChessBoard cb);
+        public abstract List<Move> GetPossibleMoves(ChessBoard cb);
 
 
         public override string ToString()
@@ -55,11 +46,11 @@ namespace Chess.Pieces
         }
 
 
-        public Field field   // property
+        public Field Field   // property
         {
             get 
             {
-                return field;  // get method
+                return Field;  // get method
             }  
 
             set 
@@ -88,7 +79,7 @@ namespace Chess.Pieces
                     Piece p;
                     cb.TryGetPieceFromField(fn, out p);
 
-                    if (cb.IsFieldOccupiedByColor(fn, Helperfunctions.ColorSwapper(this.PieceColor)))
+                    if (cb.IsFieldOccupiedByColor(fn, HelperFunctions.ColorSwapper(this.PieceColor)))
                     {
                         if (p.PrintRepresentation != "xx")
                         {
