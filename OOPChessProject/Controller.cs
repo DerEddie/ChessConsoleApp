@@ -9,7 +9,6 @@ namespace OOPChessProject
 {
     public class Controller
     {
-        //ChessGame als Feld
         public static bool IsALegalMove(List<Move> lMoves, string s)
         {
             foreach (var m in lMoves)
@@ -51,9 +50,6 @@ namespace OOPChessProject
         public static void UpdateGameState(ChessGame cGame)
         {
             cGame.isCheck = cGame.CurrentChessBoard.IsChecked(Helperfunctions.ColorSwapper(cGame.CurrentPlayer.Color));
-            
-            
-
             if (cGame.isCheck)
             {
                 cGame.GameState = GameState.Check;
@@ -194,6 +190,7 @@ namespace OOPChessProject
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     continue;
                 }
+                
                 cGame.CurrentChessBoard.MovePiece(of, df, mtype, cGame.TurnCounter);
                 cGame.CurrentChessBoard.RemoveSomeGhosts(cGame.TurnCounter);
                 //cGame.currentChessBoard

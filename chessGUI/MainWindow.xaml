@@ -1,38 +1,49 @@
-﻿<Window x:Class="ChessTest1.MainWindow"
+﻿<Window x:Class="chessGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChessTest1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="750" Width="500">
+        Title="MainWindow" Height="750" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="70"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="70"/>
-            <RowDefinition Height="100"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
 
-        <Label Grid.RowSpan="1" Grid.Row="0" Grid.Column="0" Background="BlueViolet" ></Label>
+        <ListBox x:Name="MovesList" Grid.Column="1" Background="DimGray" FontSize="15" Foreground="Azure" FontFamily="Courier New"></ListBox>
 
-        <UniformGrid x:Name="ChessBoardGrid" Grid.RowSpan="1" Grid.Row="1" Grid.Column="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="ChessClockWhite" Grid.RowSpan="1" Grid.Row="0" Grid.Column="0" Background="DarkGray" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="New Courier" Foreground="Black" ></Label>
+
+            <UniformGrid x:Name="ChessBoardGrid" Grid.RowSpan="1" Grid.Row="1" Grid.Column="0">
+            </UniformGrid>
+
+            <Label x:Name="ChessClockBlack" Grid.RowSpan="1" Grid.Row="2" Grid.Column="0" Background="DarkGray" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="New Courier" Foreground="White" ></Label>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="StatusBar" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.RowSpan="1" Grid.Row="0" Grid.Column="1" Background="DarkBlue" Content="GameStatusBar" Foreground="Azure" FontSize="16" FontFamily="Courier New"></Label>
+                <Button x:Name="Starter" Content="" Click="StartButton_Click" Background="DarkBlue" Foreground="Azure" FontSize="20" FontFamily="Courier New"></Button>
+            </Grid>
 
 
-        </UniformGrid>
-        <Label Grid.RowSpan="1" Grid.Row="2" Grid.Column="0" Background="BlueViolet" ></Label>
-        <Grid Grid.Row="3">
-            <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <Label x:Name="StatusBar"  Grid.RowSpan="1" Grid.Row="0" Grid.Column="1"></Label>
-            <Button x:Name="Starter" Content="Start!" Click="StartButton_Click"></Button>
         </Grid>
 
-        
     </Grid>
+
+
+    
 
 
 </Window>

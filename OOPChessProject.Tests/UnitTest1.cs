@@ -19,8 +19,6 @@ namespace OOPChessProject.Tests
             Assert.AreEqual(board.Length, 494);
         }
 
-
-
         [Test]
         public void TestBoardCopy()
         {
@@ -88,13 +86,6 @@ namespace OOPChessProject.Tests
 
             bool checkAndnoCheckAfterBlock = (shouldBeCheck == true) && (shouldntBeCheck == false);
             Assert.IsTrue(checkAndnoCheckAfterBlock);
-        }
-
-        [Test]
-        public void testCastleShort()
-        {
-
-
         }
 
         [Test]

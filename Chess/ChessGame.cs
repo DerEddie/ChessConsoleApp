@@ -16,23 +16,23 @@ namespace Chess
     {
         //carries basic information and information for the flow control
         public ChessBoard CurrentChessBoard;
-        public List<Move> MovesHistory;
+        public List<Tuple<int,Move,ChessBoard>> MovesHistory =  new List<Tuple<int, Move, ChessBoard>>();
         public Player Player1;
         public Player Player2;
         public Player CurrentPlayer;
         public GameState GameState = GameState.Running;
         public int TurnCounter;
         public bool IfFirstInputTrueElseFalse = true;
-        
 
-        
+
+
         //new Fields
         public bool isCheck = false;
 
         public ChessGame(string fenNotationString, string player1Name, string player2Name)
         {
-            Player1 = new Player(player1Name, Color.White);
-            Player2 = new Player(player2Name, Color.Black);
+            Player1 = new Player(player1Name, Color.White, 600);
+            Player2 = new Player(player2Name, Color.Black, 600);
 
 
             //Create the Board
@@ -47,8 +47,10 @@ namespace Chess
             //gameState
             GameState = GameState.Running;
 
-            //
-            MovesHistory = new List<Move>();
+            //Init a History
+
+
+
 
             var dict = new Dictionary<string, Piece>();
 
@@ -115,11 +117,7 @@ namespace Chess
                     row--;
                     col = 0;
                 }
-
-
-                
-
-             }
+            }
             CurrentChessBoard = new ChessBoard(dict);
         }
 
@@ -127,8 +125,8 @@ namespace Chess
         {
 
             //Create Players
-            Player1 = new Player(player1Name, Color.White);
-            Player2 = new Player(player2Name, Color.Black);
+            Player1 = new Player(player1Name, Color.White, 600);
+            Player2 = new Player(player2Name, Color.Black, 600);
 
             //Create the Board
             CurrentChessBoard = new ChessBoard();
@@ -143,7 +141,6 @@ namespace Chess
             GameState = GameState.Running;
 
             //
-            MovesHistory = new List<Move>();
         }
 
         //Implement here because attribute here
@@ -261,7 +258,11 @@ namespace Chess
             return areMovesAvail;
         }
 
-        
+        public void AddMovetoMoveList(Move m)
+        {
+            var Tuple = new Tuple<int, Move, ChessBoard>(this.TurnCounter, m, this.CurrentChessBoard);
+            this.MovesHistory.Add(Tuple);
+        }
 
     }
 }

@@ -37,7 +37,7 @@ namespace Chess
 
         public override string ToString()
         {
-            return (fromField: FromField, toField: ToField, movementType: MovementType).ToString();
+            return (Piece: name,fromField: FromField, toField: ToField, movementType: MovementType).ToString();
         }
 
 
