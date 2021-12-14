@@ -53,21 +53,18 @@ namespace OOPChessProject.Tests
                 Assert.AreEqual(moveFound, expectedResult);
             }
         }
-
         [Test]
         public void GetPossibleMoves_PawnSingleMove_Works()
         {
             Pawn_GetPossibleMoves_FieldOffsetWorks(1, Color.White, true);
             Pawn_GetPossibleMoves_FieldOffsetWorks(1, Color.Black, true);
         }
-
         [Test]
         public void Pawn_GetPossibleMoves_DoubleMoveWorks()
         {
             Pawn_GetPossibleMoves_FieldOffsetWorks(2, Color.White, true);
             Pawn_GetPossibleMoves_FieldOffsetWorks(2, Color.Black, true);
         }
-
         [Test]
         public void Pawn_GetPossibleMoves_TripleMoveFails()
         {

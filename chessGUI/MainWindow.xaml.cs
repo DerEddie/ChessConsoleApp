@@ -112,10 +112,10 @@ namespace chessGUI
             string field = b.Name;
             Field inputField = HelperFunctions.StringToField(field);
             //First Input
-            if (Controller.isFieldValid(m_ChessGame, inputField) && m_ChessGame.IfFirstInputTrueElseFalse)
+            if (Controller.IsFieldValid(m_ChessGame, inputField) && m_ChessGame.IfFirstInputTrueElseFalse)
             {
                 b.Background = ColorSelection;
-                moves = Controller.getMovesForField(m_ChessGame, inputField);
+                moves = Controller.GetMovesForField(m_ChessGame, inputField);
                 if (moves.Count == 0)
                 {
                     return;
@@ -143,7 +143,7 @@ namespace chessGUI
                         m_ChessGame.IfFirstInputTrueElseFalse = true;
                         
                         //Switching players turn
-                        Controller.switchPlayerTurn(m_ChessGame);
+                        Controller.SwitchPlayerTurn(m_ChessGame);
                         UpdatePlayerTimerColors();
 
                         //Removing en passant pawns

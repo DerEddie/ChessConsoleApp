@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Chess.Pieces;
 
 namespace Chess
@@ -125,6 +124,12 @@ namespace Chess
 
 
         }
+
+        public bool TryCastleShort(Color white)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             string total = "   A  B  C  D  E  F  G  H \n";
@@ -136,28 +141,20 @@ namespace Chess
                 for (int c = 0; c < 8; c++)
                 {
                     Field f = new Field(r, c);
-                    Piece value;
-                    string repr;
                     //checks whether field is Empty or there is a piece on it.
                     //returns also a boolean reporting on the success of the retrieval
 
-                    bool hasVal = KeyFieldValuePiece.TryGetValue(f.ToString(), out value);
+                    bool hasVal = KeyFieldValuePiece.TryGetValue(f.ToString(), out var value);
 
                     if (hasVal)
                     {
-                        if (value.PieceColor == Color.Black)
-                        {
-                            repr = value.PrintRepresentation.ToLower();
-                        }
-                        else
-                        {
-                            repr = value.PrintRepresentation;
-                        }
+                        string repr;
+                        repr = value.PieceColor == Color.Black ? value.PrintRepresentation.ToLower() : value.PrintRepresentation;
                         total = total + $"|{repr}";
                     }
                     else
                     {
-                        total = total + $"|..";
+                        total = total + "|..";
                     }
                 }
                 total = total + "| \n";
@@ -165,9 +162,9 @@ namespace Chess
             total = total + " +--+--+--+--+--+--+--+--+\n";
             return total;
         }
-        public bool IsRowAndColStillBoard(int r_n, int c_n)
+        public bool IsRowAndColStillBoard(int rN, int c_n)
         {
-            return (0 <= c_n && c_n < 8 && 0 <= r_n  && r_n < 8);
+            return (0 <= c_n && c_n < 8 && 0 <= rN  && rN < 8);
         }
         public void CreateAGhostlyPawn(Pawn p, int iterofcreation, Field field, Color color)
         {
@@ -316,8 +313,6 @@ namespace Chess
             var toCol = to.FieldCol;
             var fromRow = from.FieldRow;
             var fromCol = from.FieldCol;
-
-
             switch (type)
             {
                 case MovementType.DoubleStep:
@@ -330,23 +325,14 @@ namespace Chess
                         CreateAGhostlyPawn((Pawn)p, iterOfMove, new Field(toRow + 1, toCol), c);
                     }
                     break;
-
                 case MovementType.EnPassant:
-                    
                     var ghostPawnRetrieved = TryGetPieceFromField(to, out Piece g);
-                    
-                   
                     var ghostPawn = (GhostPawn) g;
-
                     var realPawn = ghostPawn.TheRealPawn;
-
                     this.KeyFieldValuePiece.Remove(realPawn.CurrField.ToString());
-
                     break;
             }
-
             //Piece which gonna move
-            
             p.HasMovedOnce = true;
             p.Field = to;
             if (IsFieldEmpty(to))
@@ -359,7 +345,6 @@ namespace Chess
                 this.KeyFieldValuePiece[to.ToString()] = p;
             }
             this.KeyFieldValuePiece.Remove(from.ToString());
-
             if (type == MovementType.CastleShort)
             {
                 Field fRookOld = new Field(fromRow, 7);
@@ -381,7 +366,6 @@ namespace Chess
                 Field f_rooknew = new Field(fromRow, 3);
                 this.KeyFieldValuePiece.Add(f_rooknew.ToString(), pc);
             }
-
         }
         //because the King can't know whether other pieces have moved the higher class checkboard will perform this check.
         //Castling is performed on the kingside or queenside with the rook on the same rank.
@@ -390,16 +374,14 @@ namespace Chess
         //The king is not currently in check.
         //The king does not pass through a square that is attacked by an enemy piece.
         //The king does not end up in check. (True of any legal move.)
-        public Tuple<bool, Move> CastleLong(Color c)
+        public bool TryCastleLong(Color c, out Move move)
         {
             //check whether King haven't moved yet.
             //check whether Rook didn't move yet.
             int row = 0;
             Move mo_;
-
             Tuple<bool, Move> moveTuple;
-
-            //check there are no pieces in bewetween
+            //check there are no pieces in between
             if (c == Color.White)
             {
                 row = 0;
@@ -410,29 +392,28 @@ namespace Chess
                 row = 7;
                 mo_ = new Move("KI", new Field("E8"), new Field("C8"), MovementType.CastleLong);
             }
-
             List<Field> shouldntHaveMoved = new List<Field>();
-
             Field fofRook = new Field(row, 0);
             Field fofKing = new Field(row, 4);
+
             shouldntHaveMoved.Add(fofKing);
             shouldntHaveMoved.Add(fofRook);
-
             List<Field> shouldBeEmpty = new List<Field>();
-
             Field fofKingsNeighbor = new Field(row, 1);
             Field fofRooksNeighbor = new Field(row, 2);
             Field fofbishop = new Field(row, 3);
+
             shouldBeEmpty.Add(fofRooksNeighbor);
             shouldBeEmpty.Add(fofKingsNeighbor);
+
             shouldBeEmpty.Add(fofbishop);
 
             foreach (var f in shouldBeEmpty)
             {
                 if (!this.IsFieldEmpty(f))
                 {
-                    moveTuple = new Tuple<bool, Move>(false, mo_);
-                    return moveTuple;
+                    move = null;
+                    return false;
                 }
             }
 
@@ -444,17 +425,17 @@ namespace Chess
                 {
                     if (piece.HasMovedOnce)
                     {
-                        moveTuple = new Tuple<bool, Move>(false, mo_);
-                        return moveTuple;
+                        move = null;
+                        return false;
                     }
                 }
             }
 
-            moveTuple = new Tuple<bool, Move>(true, mo_);
-            return moveTuple;
+            move = mo_;
+            return true;
         }
 
-        public Tuple<bool,Move> CastleShort(Color c)
+        public bool TryCastleShort(Color c, out Move move)
         {
             Tuple<bool, Move> moveTuple;
             Move mo_;
@@ -471,16 +452,16 @@ namespace Chess
                 mo_ = new Move("KI", new Field("E8"), new Field("G8"), MovementType.CastleShort);
             }
             List<Field> shouldntHaveMoved = new List<Field>();
-            
             Field fofRook = new Field(row, 0);
-            Field fofKing = new Field(row, 4);
+            var fofKing = new Field(row, 4);
+
             shouldntHaveMoved.Add(fofKing);
             shouldntHaveMoved.Add(fofRook);
 
             List<Field> shouldBeEmpty = new List<Field>();
-
             Field fofKingsNeighbor = new Field(row, 5);
             Field fofRooksNeighbor = new Field(row, 6);
+
             shouldBeEmpty.Add(fofRooksNeighbor);
             shouldBeEmpty.Add(fofKingsNeighbor);
 
@@ -488,8 +469,8 @@ namespace Chess
             {
                 if (!this.IsFieldEmpty(f))
                 {
-                    moveTuple = new Tuple<bool, Move>(false, mo_);
-                    return moveTuple;
+                    move = null;
+                    return false;
                 }
             }
 
@@ -500,21 +481,19 @@ namespace Chess
                 {
                     if (piece.HasMovedOnce)
                     {
-                        moveTuple = new Tuple<bool, Move>(false, mo_);
-                        return moveTuple; 
+                        move = null;
+                        return false; 
                     }
                 }
             }
 
-            moveTuple = new Tuple<bool, Move>(true, mo_);
-            return moveTuple;
+            move = mo_;
+            return true;
         }
 
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
             return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);
         }
-
-
     }
 }

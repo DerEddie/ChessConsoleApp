@@ -21,9 +21,9 @@ namespace OOPChessProject
             return false;
         }
 
-        public static bool TryGetMoveFromListBasedOnDestinationField(List<Move> MoveList, string toField, out Move move)
+        public static bool TryGetMoveFromListBasedOnDestinationField(List<Move> moveList, string toField, out Move move)
         {
-            foreach (var m in MoveList)
+            foreach (var m in moveList)
             {
                 if (m.ToField.ToString() == toField)
                 {
@@ -35,7 +35,6 @@ namespace OOPChessProject
             move = null;
             return false;
         }
-
         public static ChessGame InitChessGame()
         {
             //Init Game with the Players
@@ -83,7 +82,7 @@ namespace OOPChessProject
             Console.WriteLine(cGame.CurrentPlayer.Color);
             Console.WriteLine("_________________________________");
         }
-        public static bool isFieldValid(ChessGame cGame, Field of)
+        public static bool IsFieldValid(ChessGame cGame, Field of)
         {
             //if the colors are not the same we need to prompt again for input, because not the right piece was chosen.
             cGame.CurrentChessBoard.TryGetPieceFromField(of, out var pi);
@@ -96,8 +95,7 @@ namespace OOPChessProject
             }
             return true;
         }
-
-        public static List<Move> getMovesForField(ChessGame cGame, Field of)
+        public static List<Move> GetMovesForField(ChessGame cGame, Field of)
         {
             Piece p;
             cGame.CurrentChessBoard.TryGetPieceFromField(of, out p);
@@ -108,15 +106,15 @@ namespace OOPChessProject
             {
                 //Check if castling is possible
                 listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
-                var canWeCastleShort = cGame.CurrentChessBoard.CastleShort(cGame.CurrentPlayer.Color);
-                var canWeCastleLong = cGame.CurrentChessBoard.CastleLong(cGame.CurrentPlayer.Color);
-                if (canWeCastleLong.Item1)
+                var canWeCastleShort = cGame.CurrentChessBoard.TryCastleShort(cGame.CurrentPlayer.Color, out var move1);
+                var canWeCastleLong = cGame.CurrentChessBoard.TryCastleLong(cGame.CurrentPlayer.Color, out var move2);
+                if(canWeCastleShort)
                 {
-                    listofMoves.Add(canWeCastleLong.Item2);
+                    listofMoves.Add(move1);
                 }
-                if (canWeCastleShort.Item1)
+                if(canWeCastleLong)
                 {
-                    listofMoves.Add(canWeCastleShort.Item2);
+                    listofMoves.Add(move2);
                 }
             }
             else
@@ -124,16 +122,14 @@ namespace OOPChessProject
                 //its an other piece than the king, we need to check whether the move might expose our King
                 listofMoves = cGame.FilterMoveWhichExposeCheck(listofMoves, cGame.CurrentPlayer.Color);
             }
-
             foreach (var f in listofMoves)
             {
                 Console.WriteLine(f);
             }
-
             return listofMoves;
         }
 
-        public MovementType getMoveTypeForDestinationField(List<Move> listOfMoves, Field destField)
+        public MovementType GetMoveTypeForDestinationField(List<Move> listOfMoves, Field destField)
         {
             var mtype = MovementType.Moving;
             foreach (var move in listOfMoves)
@@ -148,16 +144,13 @@ namespace OOPChessProject
             return mtype;
         }
 
-        public static void switchPlayerTurn(ChessGame cGame)
+        public static void SwitchPlayerTurn(ChessGame cGame)
         {
             cGame.CurrentPlayer = (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2 : cGame.Player1;
         }
-
         public void MainGameLoop()
         {
             var cGame = InitChessGame();
-
-            
             //Game Loop
             do
             {
@@ -166,18 +159,18 @@ namespace OOPChessProject
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
                 string s = Console.ReadLine();
                 var of = HelperFunctions.StringToField(s);
-                if(!isFieldValid(cGame,of))
+                if(!IsFieldValid(cGame,of))
                 {
                     continue;
                 }
-                var listofMoves = getMovesForField(cGame, of);
+                var listofMoves = GetMovesForField(cGame, of);
                 Console.WriteLine("Enter Destination Field: [A-H][1-8]");
                 s = Console.ReadLine();
                 var df = HelperFunctions.StringToField(s);
                 MovementType mtype;
                 if (IsALegalMove(listofMoves, s))
                 {
-                    mtype = getMoveTypeForDestinationField(listofMoves, df);
+                    mtype = GetMoveTypeForDestinationField(listofMoves, df);
                 }
                 else
                 {
@@ -191,7 +184,7 @@ namespace OOPChessProject
                 cGame.CurrentChessBoard.RemoveSomeGhosts(cGame.TurnCounter);
                 //cGame.currentChessBoard
                 //Change current Player
-                switchPlayerTurn(cGame);
+                SwitchPlayerTurn(cGame);
                 cGame.TurnCounter++;
             } while (cGame.TurnCounter < 1000);
         }

@@ -32,8 +32,6 @@ namespace Chess
     {
         public readonly int FieldRow; //row = 0 => 1
         public readonly int FieldCol; //col = 0 => A
-
-
         public Field(string s)
         {
             

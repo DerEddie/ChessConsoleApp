@@ -42,13 +42,15 @@ namespace OOPChessProject.Tests
             cb.MovePiece(new Field(0, 3), new Field(5, 3), MovementType.Moving, 0);
             //First test should be true
             Console.WriteLine(cb);
-            Console.WriteLine(cb.CastleLong(Color.White));
+            cb.TryCastleLong(Color.White, out var move);
+            Console.WriteLine(move);
 
             cb.MovePiece(new Field(0, 4), new Field(3, 4), MovementType.Moving, 0);
             cb.MovePiece(new Field(3, 4), new Field(0, 4), MovementType.Moving, 0);
             //second test shouldnt because piece was moved back and forth.
             Console.WriteLine(cb);
-            Console.WriteLine(cb.CastleLong(Color.White));
+            cb.TryCastleLong(Color.White, out move);
+            Console.WriteLine(move);
         }
 
         [Test]
@@ -58,14 +60,14 @@ namespace OOPChessProject.Tests
             string s1 = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
             ChessGame cg1 = new ChessGame(s1, "E", "K");
             Console.WriteLine(cg1.CurrentChessBoard);
-            Console.WriteLine(cg1.CurrentChessBoard.CastleShort(Color.White));
+            Console.WriteLine(cg1.CurrentChessBoard.TryCastleShort(Color.White));
 
             //Open Space for black
             string s2 = "rnbqk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
             ChessGame cg2 = new ChessGame(s2, "E", "K");
             Console.WriteLine(cg2.CurrentChessBoard);
-            Console.WriteLine(cg2.CurrentChessBoard.CastleShort(Color.Black));
-            Console.WriteLine(cg2.CurrentChessBoard.CastleShort(Color.White));
+            Console.WriteLine(cg2.CurrentChessBoard.TryCastleShort(Color.Black));
+            Console.WriteLine(cg2.CurrentChessBoard.TryCastleShort(Color.White));
             //
         }
 
@@ -145,12 +147,12 @@ namespace OOPChessProject.Tests
             string s = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
             Console.WriteLine(cG.CurrentChessBoard);
-            var MovesList  = Controller.getMovesForField(cG, new Field("E1"));
+            var MovesList  = Controller.GetMovesForField(cG, new Field("E1"));
             Assert.AreEqual(4, MovesList.Count);
             
             cG.CurrentChessBoard.MovePiece(new Field("E1"), new Field("F1"), MovementType.Moving, 3);
             cG.CurrentChessBoard.MovePiece(new Field("F1"), new Field("E1"), MovementType.Moving, 3);
-            MovesList = Controller.getMovesForField(cG, new Field("E1"));
+            MovesList = Controller.GetMovesForField(cG, new Field("E1"));
             Assert.AreEqual(2, MovesList.Count);
 
             string s2 = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq";
@@ -158,12 +160,12 @@ namespace OOPChessProject.Tests
             cG2.CurrentPlayer = cG.Player2;
             //Castling is coupled with currentplayer Color!!!
             Console.WriteLine(cG2.CurrentChessBoard);
-            MovesList = Controller.getMovesForField(cG2, new Field("E8"));
+            MovesList = Controller.GetMovesForField(cG2, new Field("E8"));
             Assert.AreEqual(4, MovesList.Count);
 
             cG2.CurrentChessBoard.MovePiece(new Field("E8"), new Field("F8"), MovementType.Moving, 3);
             cG2.CurrentChessBoard.MovePiece(new Field("F8"), new Field("E8"), MovementType.Moving, 3);
-            MovesList = Controller.getMovesForField(cG2, new Field("E8"));
+            MovesList = Controller.GetMovesForField(cG2, new Field("E8"));
             Assert.AreEqual(2, MovesList.Count);
 
 
