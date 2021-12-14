@@ -106,7 +106,7 @@ namespace OOPChessProject
             {
                 //Check if castling is possible
                 listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
-                var canWeCastleShort = cGame.CurrentChessBoard.TryCastleShort(cGame.CurrentPlayer.Color, out var move1);
+                var canWeCastleShort = cGame.CurrentChessBoard.TryCastleShort(out var move1, p);
                 var canWeCastleLong = cGame.CurrentChessBoard.TryCastleLong(cGame.CurrentPlayer.Color, out var move2);
                 if(canWeCastleShort)
                 {

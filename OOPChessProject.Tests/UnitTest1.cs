@@ -36,7 +36,7 @@ namespace OOPChessProject.Tests
         public void TestLongCastle()
         {
 
-            ChessBoard cb = new ChessBoard();
+            var cb = new ChessBoard();
             cb.MovePiece(new Field(0,1), new Field(5,1), MovementType.Moving, 0);
             cb.MovePiece(new Field(0, 2), new Field(5, 2), MovementType.Moving, 0);
             cb.MovePiece(new Field(0, 3), new Field(5, 3), MovementType.Moving, 0);
@@ -53,23 +53,6 @@ namespace OOPChessProject.Tests
             Console.WriteLine(move);
         }
 
-        [Test]
-        public void TestCastleShort()
-        {
-            //Open Space for white
-            string s1 = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
-            ChessGame cg1 = new ChessGame(s1, "E", "K");
-            Console.WriteLine(cg1.CurrentChessBoard);
-            Console.WriteLine(cg1.CurrentChessBoard.TryCastleShort(Color.White));
-
-            //Open Space for black
-            string s2 = "rnbqk2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-            ChessGame cg2 = new ChessGame(s2, "E", "K");
-            Console.WriteLine(cg2.CurrentChessBoard);
-            Console.WriteLine(cg2.CurrentChessBoard.TryCastleShort(Color.Black));
-            Console.WriteLine(cg2.CurrentChessBoard.TryCastleShort(Color.White));
-            //
-        }
 
         [Test]
         public void cGame()
@@ -84,9 +67,9 @@ namespace OOPChessProject.Tests
             cG.CurrentChessBoard.MovePiece(new Field(1, 2), new Field(2, 2), MovementType.Moving, 0);
             //Console.WriteLine(cG.currentChessBoard);
             //Console.WriteLine(cG.currentChessBoard.isChecked(Color.Black));
-            bool shouldntBeCheck = cG.CurrentChessBoard.IsChecked(Color.Black);
+            bool shouldNotBeCheck = cG.CurrentChessBoard.IsChecked(Color.Black);
 
-            bool checkAndnoCheckAfterBlock = (shouldBeCheck == true) && (shouldntBeCheck == false);
+            bool checkAndnoCheckAfterBlock = (shouldBeCheck == true) && (shouldNotBeCheck == false);
             Assert.IsTrue(checkAndnoCheckAfterBlock);
         }
 
@@ -99,10 +82,10 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void initBoardWithFEN()
+        public void InitBoardWithFen()
         {
             string s = "rnbqkbnr / pppppppp / 8 / 8 / 8 / 8 / PPPPPPPP / RNBQKBNR";
-            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            var cG = new ChessGame(s, "Eduard", "Felix");
 
 
             ChessGame cInit = new ChessGame("A", "B");
@@ -113,7 +96,7 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void testCastlingLong()
+        public void TestCastlingLong()
         {
             string s = "r3kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
@@ -122,7 +105,7 @@ namespace OOPChessProject.Tests
             Console.WriteLine(cG.CurrentChessBoard);
         }
 
-        public void testCastlingShort()
+        public void TestCastlingShort()
         {
             string s = "r3kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");

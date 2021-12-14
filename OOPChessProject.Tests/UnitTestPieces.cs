@@ -72,5 +72,6 @@ namespace OOPChessProject.Tests
             Pawn_GetPossibleMoves_FieldOffsetWorks(3, Color.White, false);
             Pawn_GetPossibleMoves_FieldOffsetWorks(3, Color.Black, false);
         }
+
     }
 }

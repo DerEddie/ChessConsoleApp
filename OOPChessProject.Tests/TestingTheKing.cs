@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Chess;
 using NUnit.Framework;
 
@@ -50,7 +45,7 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void testEnPassant()
+        public void TestEnPassant()
         {
             //En passant geht nur direkt nach dem langen Zug des gegen.Bauern
             string s = "rn1qkbnr/pppbpppp/8/8/3p4/NP5N/P1PPPPPP/R1BQKB1R w KQkq";
@@ -111,6 +106,16 @@ namespace OOPChessProject.Tests
                     Assert.AreEqual(1, posMoves.Count);
                 }
             }
+        }
+
+        [Test]
+        public void GetMovesForKing_inCheck_cantStepBack()
+        {
+            ChessGame cG = new ChessGame("rnbqkbn1/pppppppp/8/8/7N/8/PPPPrPPP/RQB3K1", "A", "B");
+            Console.WriteLine(cG.CurrentChessBoard);
+            cG.CurrentChessBoard.MovePiece(new Field("E2"), new Field("E1"), MovementType.Moving,43);
+            var moves = Controller.GetMovesForField(cG, new Field("G1"));
+            Assert.AreEqual(moves.Count, 0);
         }
     }
 }

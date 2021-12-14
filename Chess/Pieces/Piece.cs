@@ -81,6 +81,11 @@ namespace Chess.Pieces
 
                     if (cb.IsFieldOccupiedByColor(fn, HelperFunctions.ColorSwapper(this.PieceColor)))
                     {
+                        if (p.PrintRepresentation == "KI")
+                        {
+                            continue;
+                        }
+
                         if (p.PrintRepresentation != "xx")
                         {
                             mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Capturing));

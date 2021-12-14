@@ -181,7 +181,7 @@ namespace Chess
         {
             Color c = king.PieceColor;
             Color oppColor = HelperFunctions.ColorSwapper(c);
-            var pieces = this.CurrentChessBoard.getAllPiecesOfColor(oppColor);
+            var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(oppColor);
 
             foreach (var p in pieces)
             {
@@ -209,7 +209,7 @@ namespace Chess
         {
             bool mitigationFound = false;
 
-            var pieces = this.CurrentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
+            var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(this.CurrentPlayer.Color);
             foreach (var pp in pieces)
             {
                 var moves = pp.GetPossibleMoves(this.CurrentChessBoard);
@@ -231,7 +231,7 @@ namespace Chess
         public bool MovesAvailable()
         {
             bool areMovesAvail = false;
-            var pieces = this.CurrentChessBoard.getAllPiecesOfColor(this.CurrentPlayer.Color);
+            var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(this.CurrentPlayer.Color);
 
             foreach (var pp in pieces)
             {
