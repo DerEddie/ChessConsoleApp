@@ -13,8 +13,8 @@ namespace OOPChessProject.Tests
         [Test]
         public void TestMethod1()
         {
-            ChessGame ChessGame = new ChessGame("Eduard", "Lukas");
-            string board = ChessGame.CurrentChessBoard.ToString();
+            var ChessGame = new ChessGame("Eduard", "Lukas");
+            var board = ChessGame.CurrentChessBoard.ToString();
             Console.Write(board.Length);
             Assert.AreEqual(board.Length, 494);
         }
@@ -103,11 +103,11 @@ namespace OOPChessProject.Tests
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
 
 
-            ChessGame cGinit = new ChessGame("A", "B");
+            ChessGame cInit = new ChessGame("A", "B");
             //Console.WriteLine(cG.currentChessBoard);
             //Console.WriteLine(cGinit.currentChessBoard);
 
-            Assert.AreEqual(cG.CurrentChessBoard.ToString(), cGinit.CurrentChessBoard.ToString());
+            Assert.AreEqual(cG.CurrentChessBoard.ToString(), cInit.CurrentChessBoard.ToString());
         }
 
         [Test]
@@ -137,12 +137,38 @@ namespace OOPChessProject.Tests
             Console.WriteLine(f);
         }
 
+
+
         [Test]
-        public void TryCheckmate()
+        public void getMovesForField_Castling_isReduced()
         {
-            string s = "rnbqkbnr/2pppppppp / 8 / 8 / 8 / 8 / 2PPPPPP / 6K1";
+            string s = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
             Console.WriteLine(cG.CurrentChessBoard);
+            var MovesList  = Controller.getMovesForField(cG, new Field("E1"));
+            Assert.AreEqual(4, MovesList.Count);
+            
+            cG.CurrentChessBoard.MovePiece(new Field("E1"), new Field("F1"), MovementType.Moving, 3);
+            cG.CurrentChessBoard.MovePiece(new Field("F1"), new Field("E1"), MovementType.Moving, 3);
+            MovesList = Controller.getMovesForField(cG, new Field("E1"));
+            Assert.AreEqual(2, MovesList.Count);
+
+            string s2 = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq";
+            ChessGame cG2 = new ChessGame(s2, "Eduard", "Felix");
+            cG2.CurrentPlayer = cG.Player2;
+            //Castling is coupled with currentplayer Color!!!
+            Console.WriteLine(cG2.CurrentChessBoard);
+            MovesList = Controller.getMovesForField(cG2, new Field("E8"));
+            Assert.AreEqual(4, MovesList.Count);
+
+            cG2.CurrentChessBoard.MovePiece(new Field("E8"), new Field("F8"), MovementType.Moving, 3);
+            cG2.CurrentChessBoard.MovePiece(new Field("F8"), new Field("E8"), MovementType.Moving, 3);
+            MovesList = Controller.getMovesForField(cG2, new Field("E8"));
+            Assert.AreEqual(2, MovesList.Count);
+
+
+
+
         }
     }
 }

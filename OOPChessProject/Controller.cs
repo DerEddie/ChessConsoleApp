@@ -162,11 +162,9 @@ namespace OOPChessProject
             do
             {
                 GameStateBoardToConsole(cGame);
-
                 UpdateGameState(cGame); // Checks, Mate, Stalemate 
                 Console.WriteLine("Enter Origin Field: [A-H][1-8]");
                 string s = Console.ReadLine();
-                
                 var of = HelperFunctions.StringToField(s);
                 if(!isFieldValid(cGame,of))
                 {
@@ -176,7 +174,6 @@ namespace OOPChessProject
                 Console.WriteLine("Enter Destination Field: [A-H][1-8]");
                 s = Console.ReadLine();
                 var df = HelperFunctions.StringToField(s);
-
                 MovementType mtype;
                 if (IsALegalMove(listofMoves, s))
                 {
@@ -190,13 +187,11 @@ namespace OOPChessProject
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     continue;
                 }
-                
                 cGame.CurrentChessBoard.MovePiece(of, df, mtype, cGame.TurnCounter);
                 cGame.CurrentChessBoard.RemoveSomeGhosts(cGame.TurnCounter);
                 //cGame.currentChessBoard
                 //Change current Player
                 switchPlayerTurn(cGame);
-
                 cGame.TurnCounter++;
             } while (cGame.TurnCounter < 1000);
         }

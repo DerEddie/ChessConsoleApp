@@ -24,8 +24,6 @@ namespace Chess
         public int TurnCounter;
         public bool IfFirstInputTrueElseFalse = true;
 
-
-
         //new Fields
         public bool IsCheck = false;
 
@@ -155,7 +153,6 @@ namespace Chess
             {
                 ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                 copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                
                 Color enemyColor = HelperFunctions.ColorSwapper(currentPlayerColor);
                 if (!copyBoard.IsChecked(enemyColor))
                 {

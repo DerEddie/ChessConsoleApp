@@ -227,9 +227,6 @@ namespace chessGUI
                 ChessClockBlack.Content = $"{minutes:D2}:{seconds:D2}";
             }
         }
-
-
-
         public void UpdatePlayerTimerColors()
         {
             if (m_ChessGame.CurrentPlayer.Color == gColor.White)
@@ -302,7 +299,6 @@ namespace chessGUI
         }
         public void ResetColor()
         {
-
             for (int r = 0; r < 8; r++)
             {
                 for (int c = 0; c < 8; c++)

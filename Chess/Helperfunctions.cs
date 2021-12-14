@@ -3,7 +3,7 @@ using Chess.Pieces;
 
 namespace Chess
 {
-    public static class Helperfunctions
+    public static class HelperFunctions
     {
         
         public static Color ColorSwapper(Color c)

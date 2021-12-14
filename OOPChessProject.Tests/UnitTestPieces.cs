@@ -55,7 +55,7 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void Pawn_GetPossibleMoves_SingleMoveWorks()
+        public void GetPossibleMoves_PawnSingleMove_Works()
         {
             Pawn_GetPossibleMoves_FieldOffsetWorks(1, Color.White, true);
             Pawn_GetPossibleMoves_FieldOffsetWorks(1, Color.Black, true);
@@ -71,6 +71,7 @@ namespace OOPChessProject.Tests
         [Test]
         public void Pawn_GetPossibleMoves_TripleMoveFails()
         {
+            //Negativ-Test
             Pawn_GetPossibleMoves_FieldOffsetWorks(3, Color.White, false);
             Pawn_GetPossibleMoves_FieldOffsetWorks(3, Color.Black, false);
         }

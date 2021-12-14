@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Chess.Pieces;
 
 namespace Chess
@@ -8,7 +9,6 @@ namespace Chess
     {
         //field
         public Dictionary<string, Piece> KeyFieldValuePiece;
-
         public ChessBoard(ChessBoard otherBoard)
         {
             var copyDict = new Dictionary<string, Piece>();
@@ -20,12 +20,10 @@ namespace Chess
 
             KeyFieldValuePiece = copyDict;
         }
-
         public ChessBoard(Dictionary<string, Piece> dict)
         {
             KeyFieldValuePiece = dict;
         }
-
         //A Constructor which sets up the Game Board
         public ChessBoard()
         {
@@ -139,7 +137,7 @@ namespace Chess
                 {
                     Field f = new Field(r, c);
                     Piece value;
-
+                    string repr;
                     //checks whether field is Empty or there is a piece on it.
                     //returns also a boolean reporting on the success of the retrieval
 
@@ -147,7 +145,15 @@ namespace Chess
 
                     if (hasVal)
                     {
-                        total = total + $"|{value}";
+                        if (value.PieceColor == Color.Black)
+                        {
+                            repr = value.PrintRepresentation.ToLower();
+                        }
+                        else
+                        {
+                            repr = value.PrintRepresentation;
+                        }
+                        total = total + $"|{repr}";
                     }
                     else
                     {
@@ -453,11 +459,10 @@ namespace Chess
             Tuple<bool, Move> moveTuple;
             Move mo_;
             int row = 0;
-            //check there are no pieces in bewetween
+            //check there are no pieces in between
             if (c == Color.White)
             {
                 row = 0;
-
                 mo_ = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleShort);
             }
             else
@@ -505,9 +510,6 @@ namespace Chess
             return moveTuple;
         }
 
-
-
-        
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
             return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);
