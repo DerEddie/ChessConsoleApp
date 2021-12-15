@@ -24,9 +24,7 @@ Current state of the project:\
 ________________________________________________________________________________
 
 
-![Unbenannt](https://user-images.githubusercontent.com/29587190/143298051-5ec44c11-8890-450c-b4a9-20657083fdad.PNG)
-
-
+<img src="https://user-images.githubusercontent.com/29587190/143298051-5ec44c11-8890-450c-b4a9-20657083fdad.PNG" alt="drawing" width="400"/>
 
 <img src="https://user-images.githubusercontent.com/29587190/143844372-295de1a3-3aac-453a-b3fc-aef0b8f2fe6e.png" alt="drawing" width="200"/>
 
