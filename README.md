@@ -28,8 +28,7 @@ ________________________________________________________________________________
 
 
 
-![image](https://user-images.githubusercontent.com/29587190/143844372-295de1a3-3aac-453a-b3fc-aef0b8f2fe6e.png)
-
+<img src="https://user-images.githubusercontent.com/29587190/143844372-295de1a3-3aac-453a-b3fc-aef0b8f2fe6e.png" alt="drawing" width="200"/>
 
 
 OOP-Project: Implementing Chess as a Concole App.
