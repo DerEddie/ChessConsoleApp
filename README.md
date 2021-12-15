@@ -22,7 +22,8 @@ Goal of this project:\
 ![chess-board-300x300](https://user-images.githubusercontent.com/29587190/144411739-dff39a22-0a01-4f97-b635-45f84218ef01.jpg)
 ________________________________________________________________________________
 Current state of the project:\
-![Unbenannt](https://user-images.githubusercontent.com/29587190/146266177-0e333539-0dfa-49db-8375-4fbcd8a55104.PNG)
+![Unbenannt](https://user-images.githubusercontent.com/29587190/146266333-0e8c109f-313b-426e-970d-ecce9a1bfeea.PNG)
+
 ________________________________________________________________________________
 
 
