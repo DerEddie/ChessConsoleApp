@@ -5,18 +5,10 @@ Promotion
 
 General Project-Structure:
 GUI-Requirements:
-* Drag&Drop Pieces
-* Turn Board Around if Player switches (Offline-Game)
-* Show Possible Moves when Dragging Pieces
-* Fall back if Moves illegal
-* List of Dead Pieces
 * Display Player Name
 * Game Start Menu
 * Visualize Check
 * GameOver Screen
-* KeyBoard User Input as alternative?
-* 
-
 ________________________________________________________________________________
 Current state of the project:\
 ![Unbenannt](https://user-images.githubusercontent.com/29587190/146266333-0e8c109f-313b-426e-970d-ecce9a1bfeea.PNG)
