@@ -4,7 +4,7 @@ Promotion
 
 
 General Project-Structure:
-GUI-Requirements:
+Not Yet Implemented-Requirements:
 * Display Player Name
 * Game Start Menu
 * Visualize Check
