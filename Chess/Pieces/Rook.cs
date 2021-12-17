@@ -29,7 +29,7 @@ namespace Chess.Pieces
 
         public override object Clone()
         {
-            Rook rook = new Rook(this.CurrField, this.PieceColor);
+            Rook rook = new Rook(this.CurrentField, this.PieceColor);
             return rook;
         }
     }

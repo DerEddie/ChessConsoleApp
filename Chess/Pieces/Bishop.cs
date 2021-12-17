@@ -24,7 +24,7 @@ namespace Chess.Pieces
 
         public override object Clone()
         {
-            Bishop bishop = new Bishop(this.CurrField, this.PieceColor);
+            Bishop bishop = new Bishop(this.CurrentField, this.PieceColor);
             return bishop;
         }
     }

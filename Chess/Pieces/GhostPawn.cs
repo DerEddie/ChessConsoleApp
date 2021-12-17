@@ -28,7 +28,7 @@ namespace Chess.Pieces
 
         public override object Clone()
         {
-            GhostPawn pawn = new GhostPawn(this.TheRealPawn, this.IterationOfCreation,CurrField, this.PieceColor);
+            GhostPawn pawn = new GhostPawn(this.TheRealPawn, this.IterationOfCreation,CurrentField, this.PieceColor);
             return pawn;
         }
 

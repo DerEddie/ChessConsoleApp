@@ -12,7 +12,7 @@ namespace Chess.Pieces
     {
 
         //A protected member is accessible within its class and by derived class instances.
-        public Field CurrField;
+        public Field CurrentField;
         public bool IsAlive;
         public bool HasMovedOnce = false;
         //has a value in the children-classes
@@ -22,17 +22,16 @@ namespace Chess.Pieces
         public abstract object Clone();
         
         //Movement Behaviour
-        public List<(int, int)> RowOfsetcolOfset;
+        public List<(int, int)> RowOffsetColOffset;
 
 
         //create a base constructor for instance creation of different pieces
-        public Piece(Field position, Color pieceColor, bool aisAlive = true)
+        protected Piece(Field position, Color pieceColor, bool aisAlive = true)
         {
             //takes field instance for position
-            CurrField = position;
+            CurrentField = position;
             IsAlive = aisAlive;
             PieceColor = pieceColor;
-            
         }
 
 
@@ -46,38 +45,22 @@ namespace Chess.Pieces
         }
 
 
-        public Field Field   // property
-        {
-            get 
-            {
-                return Field;  // get method
-            }  
-
-            set 
-            { 
-                CurrField = value;   // set method
-            } 
-        }
-
         
         //adds possible moves to the List
         protected void TraverseInDirection(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)
         {
-            int r_n = 0;
-            int c_n = 0;
+            int cN;
 
             for (int i = 1; i <= traverseSteps; i++)
             {
-                r_n = row + direction.Item1 * i;
-                c_n = col + direction.Item2 * i;
+                var rN = row + direction.Item1 * i;
+                cN = col + direction.Item2 * i;
 
-                Color EnemyCol;
-                if (cb.IsRowAndColStillBoard(r_n, c_n))
+                if (cb.IsRowAndColStillBoard(rN, cN))
                 {
-                    Field fn = new Field(r_n, c_n);
+                    Field fn = new Field(rN, cN);
 
-                    Piece p;
-                    cb.TryGetPieceFromField(fn, out p);
+                    cb.TryGetPieceFromField(fn, out var p);
 
                     if (cb.IsFieldOccupiedByColor(fn, HelperFunctions.ColorSwapper(this.PieceColor)))
                     {
@@ -88,23 +71,23 @@ namespace Chess.Pieces
 
                         if (p.PrintRepresentation != "xx")
                         {
-                            mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Capturing));
+                            mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Capturing));
                             break;
                         }
 
                         //if this piece is white and we reach a black one we can capture it but must stop iteration
-                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Moving));
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Moving));
 
                     }
                     else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
                     {
-                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Defending));
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Defending));
                         break;
                     }
                     else
                     {
                         //its an empty field
-                        mList.Add(new Move(this.PrintRepresentation, this.CurrField, fn, MovementType.Moving));
+                        mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Moving));
                     }
 
                 }
@@ -119,10 +102,8 @@ namespace Chess.Pieces
             List<Move> mList = new List<Move>();
 
             //create fields and append to the List
-            int r = CurrField.FieldRow;
-            int c = CurrField.FieldCol;
-
-            int iterMax;
+            int r = CurrentField.FieldRow;
+            int c = CurrentField.FieldCol;
 
 
             foreach (var os in directions)

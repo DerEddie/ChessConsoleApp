@@ -24,7 +24,7 @@ namespace Chess.Pieces
 
         public override object Clone()
         {
-            King king = new King(this.CurrField, this.PieceColor);
+            King king = new King(this.CurrentField, this.PieceColor);
             return king;
         }
 

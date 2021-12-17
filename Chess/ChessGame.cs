@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Chess.Pieces;
 
+
 namespace Chess
 {
     public enum GameState
@@ -26,7 +27,6 @@ namespace Chess
 
         //new Fields
         public bool IsCheck = false;
-
         public ChessGame(string fenNotationString, string player1Name, string player2Name)
         {
             Player1 = new Player(player1Name, Color.White, 600);
@@ -109,7 +109,6 @@ namespace Chess
             }
             CurrentChessBoard = new ChessBoard(dict);
         }
-
         public ChessGame(string player1Name, string player2Name)
         {
 
@@ -131,7 +130,6 @@ namespace Chess
 
             //
         }
-
         //Implement here because attribute here
         //Check if Color Player == Color Piece
         public bool IsPlayerAndPieceColorSame(Player player, Piece piece)
@@ -144,7 +142,6 @@ namespace Chess
             bool colorSame = player.Color == piece.PieceColor;
             return colorSame;
         }
-
         public List<Move> FilterMoveWhichExposeCheck(List<Move> moves, Color currentPlayerColor)
         {
             List<Move> legalMoves = new List<Move>();
@@ -161,7 +158,6 @@ namespace Chess
             }
             return legalMoves;
         }
-
         //Check Whether a move results in a check
         public List<Move> FilterMove(MovementType type, List<Move> moveList)
         {
@@ -176,7 +172,6 @@ namespace Chess
             }
             return filteredList;
         }
-
         public List<Move> FilterKingMoves(List<Move> moveList, King king)
         {
             Color c = king.PieceColor;
@@ -208,7 +203,6 @@ namespace Chess
         public bool CheckMitigationPossible()
         {
             bool mitigationFound = false;
-
             var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(this.CurrentPlayer.Color);
             foreach (var pp in pieces)
             {
@@ -220,6 +214,7 @@ namespace Chess
                     copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
                     if (!copyBoard.IsChecked(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color)))
                     {
+                        Console.WriteLine(copyBoard);
                         mitigationFound = true;
                         break;
                     }
@@ -251,6 +246,5 @@ namespace Chess
             var tuple = new Tuple<int, Move, ChessBoard>(this.TurnCounter, m, this.CurrentChessBoard);
             this.MovesHistory.Add(tuple);
         }
-
     }
 }

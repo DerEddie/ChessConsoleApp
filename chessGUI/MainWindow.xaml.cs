@@ -11,27 +11,14 @@ using Chess;
 using OOPChessProject;
 using gColor = Chess.Pieces.Color;
 
-/*
-"RGB Hex","RGB Hex3","HSL","RGB","HTML Keyword"
-"#4fb17c","#5b8","hsl(147,38,50)","rgb(79,177,124)","mediumseagreen"
-"#0c0636","#103","hsl(247,80,11)","rgb(12,6,54)","black"
-"#000000","#000","hsl(0,0,0)","rgb(0,0,0)","black"
-"#095169","#157","hsl(195,84,22)","rgb(9,81,105)","darkslategray"
-"#059b9a","#0aa","hsl(179,93,31)","rgb(5,155,154)","darkcyan"
-"#53ba83","#5c8","hsl(147,42,52)","rgb(83,186,131)","mediumseagreen"
-"#9fd96b","#ae7","hsl(91,59,63)","rgb(159,217,107)","lightgreen"
 
-*/
 
 namespace chessGUI
 {
-    //TODO fix castling long 
-
     public partial class MainWindow : Window
     {
-        readonly SolidColorBrush ColorDarkFields = new SolidColorBrush(Color.FromArgb(150, 12, 6, 54));
+        private readonly SolidColorBrush ColorDarkFields = new SolidColorBrush(Color.FromArgb(150, 12, 6, 54));
         readonly SolidColorBrush ColorBrightField = new SolidColorBrush(Color.FromArgb(255, 233, 212, 136));
-
         readonly SolidColorBrush ColorSelection = new SolidColorBrush(Color.FromArgb(190, 1, 227, 182));
         readonly SolidColorBrush ColorPossibleMoves = new SolidColorBrush(Color.FromArgb(255, 1, 227, 182));
         private SolidColorBrush ColorControls = new SolidColorBrush(Color.FromArgb(255, 83, 186, 131));
@@ -44,19 +31,16 @@ namespace chessGUI
         public DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         public MainWindow()
         {
-            //bei WPF klasse immer initComp machen...
+            //always init..
             InitializeComponent();
-            initGUI();
-            Stopwatch stopwatch = new Stopwatch();
+            InitGui();
         }
-
-        public void initGUI()
+        public void InitGui()
         {
-            
-            Uri uri = new Uri($"C://Users//eduard.krutitsky//Pictures//StartRed.png");
-            var starticon = new Image();
-            starticon.Source = new BitmapImage(uri);
-            Starter.Content = starticon;
+            Uri uri = new Uri("C://Users//eduard.krutitsky//Pictures//StartRed.png");
+            var startIcon = new Image();
+            startIcon.Source = new BitmapImage(uri);
+            Starter.Content = startIcon;
 
             ChessBoardGrid.Rows = 8;
             ChessBoardGrid.Columns = 8;
@@ -79,19 +63,16 @@ namespace chessGUI
                     r1.Click += FieldButton_Click;
                     //r1.PreviewMouseLeftButtonDown;
                     //r1.PreviewMouseLeftButtonUp;
-
                     //in XAML registration is automated, but not if
                     //the elements are created programmatically
                     //so you need to register them
-
                     RegisterName(r1.Name, r1);
                     ChessBoardGrid.Children.Add(r1);
                 }
-
             }
         }
 
-        public void setInitialTimersInGUI()
+        public void SetInitialTimersInGui()
         {
             int minutes = m_ChessGame.Player1.TimeLeftInSeconds / 60;
             int seconds = m_ChessGame.Player1.TimeLeftInSeconds % 60;
@@ -101,65 +82,59 @@ namespace chessGUI
             seconds = m_ChessGame.Player2.TimeLeftInSeconds % 60;
             ChessClockBlack.Content = $"{minutes:D2}:{seconds:D2}";
         }
-
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             RefreshPlayerTimers();
         }
         private void FieldButton_Click(object sender, RoutedEventArgs e)
         {
-            Button b = sender as Button;
-            string field = b.Name;
-            Field inputField = HelperFunctions.StringToField(field);
-            //First Input
-            if (Controller.IsFieldValid(m_ChessGame, inputField) && m_ChessGame.IfFirstInputTrueElseFalse)
+           
+            if (sender is Button)
             {
-                b.Background = ColorSelection;
-                moves = Controller.GetMovesForField(m_ChessGame, inputField);
-                if (moves.Count == 0)
+                Button b = (Button) sender;
+                string field = b.Name;
+                Field inputField = HelperFunctions.StringToField(field);
+                //First Input
+                if (Controller.IsFieldValid(m_ChessGame, inputField) && m_ChessGame.IfFirstInputTrueElseFalse)
                 {
-                    return;
+                    b.Background = ColorSelection;
+                    moves = Controller.GetMovesForField(m_ChessGame, inputField);
+                    if (moves.Count == 0)
+                    {
+                        return;
+                    }
+                    foreach (var m in moves)
+                    {
+                        if (this.FindName(m.ToField.ToString()) is Button buttonGoToField) buttonGoToField.Background = ColorPossibleMoves;
+                    }
+                    m_ChessGame.IfFirstInputTrueElseFalse = false;
                 }
-                foreach (var m in moves)
+                //Second Input
+                if (!m_ChessGame.IfFirstInputTrueElseFalse && Controller.IsALegalMove(moves, field))
                 {
-                    Button ButtonGoToField = this.FindName(m.ToField.ToString()) as Button;
-                    ButtonGoToField.Background = ColorPossibleMoves;
-                }
-                m_ChessGame.IfFirstInputTrueElseFalse = false;
-            }
-            //Second Input
-            if (!m_ChessGame.IfFirstInputTrueElseFalse && Controller.IsALegalMove(moves, field))
-            {
-                Move chosenMove;
-                    if (Controller.TryGetMoveFromListBasedOnDestinationField(moves, field, out chosenMove))
+                    if (Controller.TryGetMoveFromListBasedOnDestinationField(moves, field, out var chosenMove))
                     {
                         //TODO Put somewhere else
                         RefreshPlayerTimers();
                         m_ChessGame.TurnCounter += 1;
                         m_ChessGame.AddMoveToMoveList(new Move("x",chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType));
                         UpdateMovesList();
-
                         m_ChessGame.CurrentChessBoard.MovePiece(chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType, m_ChessGame.TurnCounter);
                         m_ChessGame.IfFirstInputTrueElseFalse = true;
-                        
                         //Switching players turn
                         Controller.SwitchPlayerTurn(m_ChessGame);
                         UpdatePlayerTimerColors();
-
                         //Removing en passant pawns
                         m_ChessGame.CurrentChessBoard.RemoveSomeGhosts(m_ChessGame.TurnCounter);
-
                         //After all the logic refresh board...
+                        Controller.UpdateGameState(m_ChessGame);
                         RefreshChessBoard();
                         ResetColor();
                         
-                        //DETERMINE Whether game will continue
-                        Controller.UpdateGameState(m_ChessGame);
+                        
                     }
-                    
+                }
             }
-
-
             UpdateStatusBar();
         }
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -174,7 +149,7 @@ namespace chessGUI
             if (!dispatcherTimer.IsEnabled)
             {
                 
-                dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+                dispatcherTimer.Tick += dispatcherTimer_Tick;
                 dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
                 dispatcherTimer.Start();
             }
@@ -183,25 +158,16 @@ namespace chessGUI
             foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
             {
                 // From inside the custom Button type:
-                Button b = this.FindName(kvp.Key.ToString()) as Button;
+                Button b = this.FindName(kvp.Key) as Button;
                 //b.Content = kvp.Value.ToString();
-                string s = "";
-                if (kvp.Value.PieceColor == gColor.White)
-                {
-                    s = "W";
-                }
-                else
-                {
-                    s = "B";
-                }
+                var s = kvp.Value.PieceColor == gColor.White ? "W" : "B";
 
-                Image img = new Image();
-                img.Source =
-                    new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
-                b.Content = img;
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value}.png"))
+                };
+                if (b != null) b.Content = img;
             }
-
-
             //TimeTracking;
             stopwatch.Start();
 
@@ -243,17 +209,9 @@ namespace chessGUI
         }
         public void UpdateMovesList()
         {
-            string color = "";
-            if (m_ChessGame.CurrentPlayer.Color == gColor.Black)
-            {
-                color = "Black";
-            }
-            else
-            {
-                color = "White";
-            }
+            var color = m_ChessGame.CurrentPlayer.Color == gColor.Black ? "Black" : "White";
             var lastItem = m_ChessGame.MovesHistory.Last();
-            MovesList.Items.Add($"Move #{lastItem.Item1}: {lastItem.Item2.FromField.ToString()} --> {lastItem.Item2.ToField.ToString()} by {color}");
+            MovesList.Items.Add($"Move #{lastItem.Item1}: {lastItem.Item2.FromField} --> {lastItem.Item2.ToField} by {color}");
         }
         private void RefreshChessBoard()
         {
@@ -262,21 +220,16 @@ namespace chessGUI
             {
                 ResetColor();
                 // From inside the custom Button type:
-                var b = this.FindName(kvp.Key.ToString()) as Button;
+                var b = this.FindName(kvp.Key) as Button;
                 //b.Content = kvp.Value.ToString();
-                var s = "";
-                if (kvp.Value.PieceColor == gColor.White)
-                {
-                    s = "W";
-                }
-                else
-                {
-                    s = "B";
-                }
+                string s;
+                s = kvp.Value.PieceColor == gColor.White ? "W" : "B";
 
-                var img = new Image();
-                img.Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"));
-                b.Content = img;
+                var img = new Image
+                {
+                    Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"))
+                };
+                if (b != null) b.Content = img;
             }
         }
         private void EmptyChessBoard()
@@ -286,16 +239,17 @@ namespace chessGUI
                 for (int c = 0; c < 8; c++)
                 {
                     Col col = (Col) c;
-                    string Name = $"{col}{r + 1}";
-                    Button b = this.FindName(Name) as Button;
-                    b.Content = "";
+                    string name = $"{col}{r + 1}";
+                    Button b = this.FindName(name) as Button;
+                    if (b != null) b.Content = "";
+                    b.IsEnabled = true;
                 }
             }
         }
         public void UpdateStatusBar()
         {
             var l = this.FindName("StatusBar") as Label;
-            l.Content = $"Current State:\n{m_ChessGame.GameState}";
+            if (l != null) l.Content = $"Current State:\n{m_ChessGame.GameState}";
         }
         public void ResetColor()
         {
@@ -305,21 +259,14 @@ namespace chessGUI
                 {
                     Col col = (Col)c;
 
-                    string Name = $"{col}{r + 1}";
-                    Button b = this.FindName(Name) as Button;
+                    string name = $"{col}{r + 1}";
+                    Button b = this.FindName(name) as Button;
 
-                    if ((r + c) % 2 == 0)
-                    {
-                        b.Background = ColorDarkFields;
-                    }
-
-                    else
-                    {
-                        b.Background = ColorBrightField;
-                    }
+                    b.Background = (r + c) % 2 == 0 ? ColorDarkFields : ColorBrightField;
                 }
             }
         }
+
     }
 }
 

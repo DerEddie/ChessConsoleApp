@@ -181,7 +181,7 @@ namespace Chess
                     {
                         if (p.PieceColor == color)
                         {
-                            return new Tuple<bool, Field>(true, p.CurrField);
+                            return new Tuple<bool, Field>(true, p.CurrentField);
                         }
                     }
                 }
@@ -191,7 +191,6 @@ namespace Chess
         }
         public bool IsChecked(Color c)
         {
-            
             var pieces = GetAllPiecesOfColor(c);
             foreach (var p in pieces)
             {
@@ -204,15 +203,12 @@ namespace Chess
                         filteredMoves.Add(m);
                     }
                 }
-                
-
                 var res = this.IsKingOnMoveList(filteredMoves, HelperFunctions.ColorSwapper(c));
                 if (res.Item1)
                 {
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -266,7 +262,6 @@ namespace Chess
             var copyDict = new Dictionary<string, Piece>();
             foreach (var kvpPair in this.KeyFieldValuePiece)
             {
-                //clone -> returns object -> to Piece
                 copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
             }
 
@@ -274,9 +269,8 @@ namespace Chess
 
             foreach (var kvp in copyDict)
             {
-                if (kvp.Value is GhostPawn)
+                if (kvp.Value is GhostPawn gp)
                 {
-                    var gp = (GhostPawn)kvp.Value;
                     if (gp.IterationOfCreation < currentIteration)
                     {
                         this.KeyFieldValuePiece.Remove(kvp.Key);
@@ -289,7 +283,7 @@ namespace Chess
         //TODO implement move history
 
 
-        public void MovePiece(Field from, Field to, MovementType type, int IterationOfMove)
+        public void MovePiece(Field from, Field to, MovementType type, int iterationOfMove)
         {
             var p = this.KeyFieldValuePiece[from.ToString()];
             var c = p.PieceColor;
@@ -299,7 +293,7 @@ namespace Chess
             switch (type)
             {
                 case MovementType.DoubleStep:
-                    CreateAGhostlyPawn((Pawn) p, IterationOfMove,
+                    CreateAGhostlyPawn((Pawn) p, iterationOfMove,
                         toRow == 3 ? new Field(toRow - 1, toCol) : new Field(toRow + 1, toCol), c);
                     break;
                 case MovementType.EnPassant:
@@ -308,13 +302,13 @@ namespace Chess
                     {
                         var ghostPawn = (GhostPawn)g;
                         var realPawn = ghostPawn.TheRealPawn;
-                        this.KeyFieldValuePiece.Remove(realPawn.CurrField.ToString());
+                        this.KeyFieldValuePiece.Remove(realPawn.CurrentField.ToString());
                     }
                     break;
             }
-            //Piece which gonna move
+
             p.HasMovedOnce = true;
-            p.Field = to;
+            p.CurrentField = to;
             if (IsFieldEmpty(to))
             {
                 this.KeyFieldValuePiece.Add(to.ToString(),p);
@@ -334,8 +328,8 @@ namespace Chess
                 }
                 
 
-                Field fRooknew = new Field(fromRow, 5);
-                this.KeyFieldValuePiece.Add(fRooknew.ToString(), pc);
+                Field fieldRookNew = new Field(fromRow, 5);
+                this.KeyFieldValuePiece.Add(fieldRookNew.ToString(), pc);
             }
             if (type == MovementType.CastleLong)
             {
@@ -346,8 +340,8 @@ namespace Chess
                 {
                     this.KeyFieldValuePiece.Remove(fRookOld.ToString());
 
-                    Field fRooknew = new Field(fromRow, 3);
-                    this.KeyFieldValuePiece.Add(fRooknew.ToString(), pc);
+                    Field fieldRookNew = new Field(fromRow, 3);
+                    this.KeyFieldValuePiece.Add(fieldRookNew.ToString(), pc);
                 }
             }
         }
@@ -439,7 +433,7 @@ namespace Chess
             }
 
             List<Field> shouldNotHaveMoved = new List<Field>();
-            Field fofRook = new Field(row, 0);
+            Field fofRook = new Field(row, 7);
             var fofKing = new Field(row, 4);
 
             shouldNotHaveMoved.Add(fofKing);

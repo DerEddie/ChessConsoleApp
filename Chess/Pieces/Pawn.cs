@@ -4,8 +4,7 @@ namespace Chess.Pieces
 {
     public class Pawn : Piece
     {
-        readonly int _directionFactor;
-
+        private readonly int _directionFactor;
 
         private List<(int, int)> _offset = new List<(int, int)>
         {
@@ -13,14 +12,10 @@ namespace Chess.Pieces
             (-1, 1)
         };
 
-        
-
         public Pawn(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive)
         {
             //already Implemented
             PrintRepresentation= "PW";
-
-
             //set the 
             if (this.PieceColor == Color.White)
             {
@@ -41,7 +36,7 @@ namespace Chess.Pieces
 
         public override object Clone()
         {
-            Pawn pawn = new Pawn(this.CurrField, this.PieceColor);
+            Pawn pawn = new Pawn(this.CurrentField, this.PieceColor);
             return pawn;
         }
 
@@ -51,13 +46,13 @@ namespace Chess.Pieces
         {
             List<Move> fList = new List<Move>();
             //Check the double-step
-            if (this.CurrField.FieldRow == 1 | this.CurrField.FieldRow == 6)
+            if (this.CurrentField.FieldRow == 1 | this.CurrentField.FieldRow == 6)
             {
                 int r1 = rNr + 2 * (-_directionFactor);
                 int c1 = cNr;
                 Field f = new Field(r1, c1);
                 if (cb.IsFieldEmpty(f))
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.DoubleStep));
+                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.DoubleStep));
             }
 
             return fList;
@@ -85,12 +80,12 @@ namespace Chess.Pieces
                     if (cb.IsFieldOccupiedByColor(f1, HelperFunctions.ColorSwapper(this.PieceColor)))
                     {
                         fList.Add(p.PrintRepresentation == "xx"
-                            ? new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.EnPassant)
-                            : new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.Capturing));
+                            ? new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.EnPassant)
+                            : new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.Capturing));
                     }
                     else
                     {
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrField, f1, MovementType.Defending));
+                        fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.Defending));
                     }
                 }
                 
@@ -112,7 +107,7 @@ namespace Chess.Pieces
 
             //check whether Field is Empty
             if (cb.IsFieldEmpty(f))
-                fList.Add(new Move(this.PrintRepresentation, this.CurrField, f, MovementType.MovingPeaceful));
+                fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.MovingPeaceful));
             
 
 
@@ -125,8 +120,8 @@ namespace Chess.Pieces
         {
             //Since Pawns move only forward, We need to know whether piece is black or white
 
-            var rNr = CurrField.FieldRow;
-            int cNr = CurrField.FieldCol;
+            var rNr = CurrentField.FieldRow;
+            int cNr = CurrentField.FieldCol;
 
             var mListMoving = GetMovingMoves(rNr, cNr, cb);
 
