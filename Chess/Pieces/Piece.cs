@@ -10,7 +10,6 @@ namespace Chess.Pieces
     }
     public abstract class Piece : ICloneable
     {
-
         //A protected member is accessible within its class and by derived class instances.
         public Field CurrentField;
         public bool IsAlive;
@@ -66,6 +65,7 @@ namespace Chess.Pieces
                     {
                         if (p.PrintRepresentation == "KI")
                         {
+                            mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Capturing));
                             continue;
                         }
 

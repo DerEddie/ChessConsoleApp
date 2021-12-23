@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Chess;
 using NUnit.Framework;
 
+
 namespace OOPChessProject.Tests
 {
     //Bei Schachmatt dürfen keine Züge mehr gemacht werden.
     [TestFixture]
-    class UnitTestGameFlow
+    public class UnitTestGameFlow
     {
         [Test]
         public void King()
@@ -15,8 +16,6 @@ namespace OOPChessProject.Tests
             //Nach Schach dürfen nur Schach-aufhebende Züge gemacht werden
             string s = "8/NQ4K1/2Prp3/1p3B2/1R2b3/4R3/1PpP4/1q3k2";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
-            Console.WriteLine(cG.CurrentChessBoard);
-            cG.CurrentChessBoard.MovePiece(new Field("E3"), new Field("F3"), MovementType.Moving, 3);
             Console.WriteLine(cG.CurrentChessBoard);
             var res = Controller.GetMovesForField(cG, new Field("F1"));
             Console.WriteLine(res);
@@ -30,17 +29,10 @@ namespace OOPChessProject.Tests
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
             Console.WriteLine(cG.CurrentChessBoard);
             var fields = Controller.GetMovesForField(cG, HelperFunctions.StringToField("D4"));
+            Console.WriteLine(fields);
             Assert.AreEqual(4, fields.Count);
         }
-        [Test]
-        public void KingCouldCaptureThePawn()
-        {
-            string s = "rnbqkbnr/pppp1ppp/8/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR";
-            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
-            Console.WriteLine(cG.CurrentChessBoard);
-            var fields = Controller.GetMovesForField(cG, HelperFunctions.StringToField("D4"));
-            Assert.AreEqual(6, fields.Count);
-        }
+
         [Test]
         public void CanOnlySelectPieceWithRightColor()
         {
@@ -54,6 +46,8 @@ namespace OOPChessProject.Tests
             of = HelperFunctions.StringToField("D2");
             Assert.IsTrue(Controller.IsFieldValid(cG, of));
         }
+
+        //Precondition_TargetTestFunction_ExpectedResult
         [Test]
         public void GetMovesForKing_inCheck_cantStepBack()
         {
@@ -63,5 +57,6 @@ namespace OOPChessProject.Tests
             var moves = Controller.GetMovesForField(cG, new Field("G1"));
             Assert.AreEqual(moves.Count, 0);
         }
+
     }
 }

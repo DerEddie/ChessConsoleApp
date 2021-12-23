@@ -122,5 +122,37 @@ namespace OOPChessProject.Tests
                 }
             }
         }
+
+        //Pawn is Blocked completely, or can have one move, or has 2 options
+        [Test]
+        public void PawnBlockedByKnight_GetPossibleMoves_EmptyList()
+        {            
+            string s2 = "rnbqkb1r / pppp1ppp / 7n / 4p2Q / 2B1P3 / 2N2N2 / PPPP1PPP / R1B1K2R";
+            ChessGame cG = new ChessGame(s2, "Eduard", "Felix");
+            var m = Controller.GetMovesForField(cG, new Field("F2"));
+            Console.WriteLine(m);
+            Assert.IsTrue(m.Count == 0);
+        }
+        [Test]
+        public void PawnBlockedByKnight_GetPossibleMoves_OneMove()
+        {
+            string s2 = "rnbqkb1r/pppp1ppp/7n/4p2Q/2B1P2N/2N5/PPPP1PPP/R1B1K2R";
+            ChessGame cG = new ChessGame(s2, "Eduard", "Felix");
+            var m = Controller.GetMovesForField(cG, new Field("H2"));
+            Console.WriteLine(m);
+            Assert.IsTrue(m.Count == 1);
+        }
+
+        [Test]
+        public void PawnNotBlocked_GetPossibleMoves_TwoMoves()
+        {
+            string s2 = "rnbqkb1r/pppp1ppp/7n/4p2Q/2B1P2N/2N5/PPPP1PPP/R1B1K2R";
+            ChessGame cG = new ChessGame(s2, "Eduard", "Felix");
+            var m = Controller.GetMovesForField(cG, new Field("F2"));
+            Console.WriteLine(m);
+            Assert.IsTrue(m.Count == 2);
+        }
+
+
     }
 }

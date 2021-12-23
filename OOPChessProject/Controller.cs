@@ -48,7 +48,7 @@ namespace OOPChessProject
         }
         public static void UpdateGameState(ChessGame cGame)
         {
-            cGame.IsCheck = cGame.CurrentChessBoard.IsChecked(HelperFunctions.ColorSwapper(cGame.CurrentPlayer.Color));
+            cGame.IsCheck = cGame.CurrentChessBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(cGame.CurrentPlayer.Color));
             if (cGame.IsCheck)
             {
                 cGame.GameState = GameState.Check;

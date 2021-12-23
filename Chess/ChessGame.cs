@@ -151,7 +151,7 @@ namespace Chess
                 ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                 copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
                 Color enemyColor = HelperFunctions.ColorSwapper(currentPlayerColor);
-                if (!copyBoard.IsChecked(enemyColor))
+                if (!copyBoard.IsCheckedByColor(enemyColor))
                 {
                     legalMoves.Add(m);
                 }
@@ -212,11 +212,11 @@ namespace Chess
                 {
                     ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                     copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                    if (!copyBoard.IsChecked(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color)))
+                    if (!copyBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color)))
                     {
                         Console.WriteLine(copyBoard);
                         mitigationFound = true;
-                        break;
+                        return mitigationFound;
                     }
                 }
             }

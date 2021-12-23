@@ -9,8 +9,21 @@ using NUnit.Framework;
 namespace OOPChessProject.Tests
 {
     [TestFixture]
-    class TestCastling
+    public class TestCastling
     {
+        [Test]
+        public void CastlingDone_getPossibleMoves_RookWhichCastledCanMove()
+        {
+            string s = "rnbqk2r/pppp1ppp/7n/2b1p2Q/2B1P2N/2N5/PPPP1PPP/R1B1K2R";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG.CurrentChessBoard);
+            cG.CurrentChessBoard.MovePiece(new Field("E1"), new Field("G1"), MovementType.CastleShort, 3);
+            Console.WriteLine(cG.CurrentChessBoard);
+            var fields = Controller.GetMovesForField(cG, HelperFunctions.StringToField("F1"));
+            Console.WriteLine(fields.Count);
+        }
+
+
         [Test]
         public void getMovesForField_CastlingWhenKingMoved_isReduced()
         {

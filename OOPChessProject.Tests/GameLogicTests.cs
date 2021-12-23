@@ -8,10 +8,25 @@ using NUnit.Framework;
 
 namespace OOPChessProject.Tests
 {
+    [TestFixture]
     internal class GameLogicTests
     {
         [Test]
-        public void KingCouldCaptureThePawn()
+        public static void BoardWithoutMovesForWhite_MovesAvailable_NoMoves()
+        {
+            string s = "rnbqkbnr/pppp1ppp/8/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG.CurrentChessBoard);
+            cG.CurrentChessBoard.MovePiece(new Field("H5"), new Field("F7"), MovementType.Capturing, 5);
+            Console.WriteLine(cG.CurrentChessBoard);
+            cG.CurrentPlayer = cG.Player2;
+            var x = cG.CheckMitigationPossible();
+            Assert.IsFalse(x);
+        }
+
+
+        [Test]
+        public static void CheckMateSituation_TestCheckMitigationPossible_KingIsCheckMated()
         {
             string s = "rnbqkbnr/pppp1ppp/8/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
@@ -20,14 +35,45 @@ namespace OOPChessProject.Tests
             Console.WriteLine(cG.CurrentChessBoard);
             cG.CurrentPlayer = cG.Player2;
             var x = cG.CheckMitigationPossible();
-            Console.WriteLine(x);
+            Assert.IsFalse(x);
         }
+
         [Test]
-        public void isChecked_CheckDetected()
+        public static void CheckMateSituation_TestCheckMitigationPossible_KingIsNotCheckMate()
         {
-            string s = "r2qk2r/1ppppppp/8/8/8/7R/1PPPPPPP/4K2R";
+            string s = "rnbqkb1r/pppp1ppp/7n/4p2Q/2B1P3/2N5/PPPP1PPP/R1B1K1NR";
             ChessGame cG = new ChessGame(s, "Eduard", "Felix");
-            
+            Console.WriteLine(cG.CurrentChessBoard);
+            cG.CurrentChessBoard.MovePiece(new Field("H5"), new Field("F7"), MovementType.Capturing, 5);
+            Console.WriteLine(cG.CurrentChessBoard);
+            cG.CurrentPlayer = cG.Player2;
+            var x = cG.CheckMitigationPossible();
+            Assert.IsTrue(x);
+        }
+
+
+        [Test]
+        public static void BoardWithCHeck_isCheckedByColor_CheckDetected()
+        {
+            string s = "rnbqkb1r/pppp2pp/5p1n/4p2Q/2B1P3/2N5/PPPP1PPP/R1B1K1NR";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG);
+            var x = cG.CurrentChessBoard.IsCheckedByColor(Chess.Pieces.Color.White);
+            Console.WriteLine(cG);
+            Console.WriteLine(x);
+            Assert.IsTrue(x);
+        }
+
+        [Test]
+        public static void BoardWithCHeck_isCheckedByColor_NoCheckDetected()
+        {
+            string s = "rnbqkb1r/pppp1ppp/7n/4p2Q/2B1P3/2N5/PPPP1PPP/R1B1K1NR";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG);
+            var x = cG.CurrentChessBoard.IsCheckedByColor(Chess.Pieces.Color.White);
+            Console.WriteLine(cG);
+            Console.WriteLine(x);
+            Assert.IsFalse(x);
         }
     }
 }

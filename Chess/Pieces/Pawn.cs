@@ -40,19 +40,21 @@ namespace Chess.Pieces
             return pawn;
         }
 
-
-
         private List<Move> GetDoubleStepMoves(int rNr, int cNr, ChessBoard cb)
         {
             List<Move> fList = new List<Move>();
             //Check the double-step
             if (this.CurrentField.FieldRow == 1 | this.CurrentField.FieldRow == 6)
             {
-                int r1 = rNr + 2 * (-_directionFactor);
-                int c1 = cNr;
-                Field f = new Field(r1, c1);
-                if (cb.IsFieldEmpty(f))
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.DoubleStep));
+                if(GetMovingMoves(rNr,cNr,cb).Count != 0)
+                {
+                    int r1 = rNr + 2 * (-_directionFactor);
+                    int c1 = cNr;
+                    Field f = new Field(r1, c1);
+                    if (cb.IsFieldEmpty(f))
+                        fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.DoubleStep));
+                }
+ 
             }
 
             return fList;

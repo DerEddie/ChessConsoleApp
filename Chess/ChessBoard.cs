@@ -19,6 +19,9 @@ namespace Chess
 
             KeyFieldValuePiece = copyDict;
         }
+
+
+
         public ChessBoard(Dictionary<string, Piece> dict)
         {
             KeyFieldValuePiece = dict;
@@ -189,8 +192,9 @@ namespace Chess
 
             return new Tuple<bool, Field>(false, null);
         }
-        public bool IsChecked(Color c)
+        public bool IsCheckedByColor(Color c)
         {
+
             var pieces = GetAllPiecesOfColor(c);
             foreach (var p in pieces)
             {
@@ -326,8 +330,7 @@ namespace Chess
                 {
                     this.KeyFieldValuePiece.Remove(fRookOld.ToString());
                 }
-                
-
+              
                 Field fieldRookNew = new Field(fromRow, 5);
                 this.KeyFieldValuePiece.Add(fieldRookNew.ToString(), pc);
             }
