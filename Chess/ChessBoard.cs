@@ -118,14 +118,8 @@ namespace Chess
                         Pawn p = new Pawn(f, Color.Black);
                         KeyFieldValuePiece.Add(f.ToString(), p);
                     }
-
-                    
-
                 }
             }
-
-
-
         }
 
         public bool TryCastleShort(Color white)
@@ -332,6 +326,7 @@ namespace Chess
                 }
               
                 Field fieldRookNew = new Field(fromRow, 5);
+                pc.CurrentField = fieldRookNew;
                 this.KeyFieldValuePiece.Add(fieldRookNew.ToString(), pc);
             }
             if (type == MovementType.CastleLong)
@@ -344,6 +339,7 @@ namespace Chess
                     this.KeyFieldValuePiece.Remove(fRookOld.ToString());
 
                     Field fieldRookNew = new Field(fromRow, 3);
+                    pc.CurrentField = fieldRookNew;
                     this.KeyFieldValuePiece.Add(fieldRookNew.ToString(), pc);
                 }
             }

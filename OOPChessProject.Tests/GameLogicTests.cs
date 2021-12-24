@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Chess;
+using Chess.Pieces;
 using NUnit.Framework;
 
 namespace OOPChessProject.Tests
@@ -11,6 +8,26 @@ namespace OOPChessProject.Tests
     [TestFixture]
     internal class GameLogicTests
     {
+        [Test]
+        public static void PiecePinned_FilterMoves_MoveListForPieceEmpty()
+        {
+            string s = "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            Console.WriteLine(cG.CurrentChessBoard);
+            var moves = Controller.GetMovesForField(cG, new Field("F7"));
+            Console.WriteLine(moves);
+            var movesfiltered= cG.FilterMoveWhichExposeCheck(moves, Color.Black);
+            Console.WriteLine(movesfiltered.Count);
+
+            Assert.AreEqual(0, movesfiltered.Count);
+
+            var moves2 = Controller.GetMovesForField(cG, new Field("A7"));
+            var moves2filtered = cG.FilterMoveWhichExposeCheck(moves2, Color.Black);
+            Console.WriteLine(moves2filtered.Count);
+
+            Assert.AreEqual(2, moves2filtered.Count);
+        }
+
         [Test]
         public static void BoardWithoutMovesForWhite_MovesAvailable_NoMoves()
         {
