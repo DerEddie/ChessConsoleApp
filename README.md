@@ -1,4 +1,4 @@
-# ChessGUI . OOP - Project
+# ChessGUI (OOP - Project)
 notImplemented Logic features:
 Promotion
 
