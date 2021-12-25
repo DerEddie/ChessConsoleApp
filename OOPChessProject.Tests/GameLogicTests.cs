@@ -9,6 +9,25 @@ namespace OOPChessProject.Tests
     internal class GameLogicTests
     {
         [Test]
+        public static void CheckmatePosition_CheckMitigationPossible_False()
+        {
+            string s = "4k3/8/8/8/8/8/3PPP2/r3K3";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            var x = cG.CheckMitigationPossible();
+            Assert.IsFalse(x);
+        }
+        
+        [Test]
+        public static void CheckmatePosition_CheckMitigationPossible_True()
+        {
+            string s = "4k3/8/8/8/8/4P3/3P1P2/r3K3";
+            ChessGame cG = new ChessGame(s, "Eduard", "Felix");
+            var x = cG.CheckMitigationPossible();
+            Assert.IsTrue(x);
+        }
+        
+        
+        [Test]
         public static void PiecePinned_FilterMoves_MoveListForPieceEmpty()
         {
             string s = "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR";

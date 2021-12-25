@@ -106,15 +106,10 @@ namespace OOPChessProject
             {
                 //Check if castling is possible
                 listofMoves = cGame.FilterKingMoves(listofMoves, (King)p);
-                var canWeCastleShort = cGame.CurrentChessBoard.TryCastleShort(out var move1, p);
-                var canWeCastleLong = cGame.CurrentChessBoard.TryCastleLong(cGame.CurrentPlayer.Color, out var move2);
-                if(canWeCastleShort)
+                var canWeCastle = cGame.CurrentChessBoard.TryCastle(out var moveList, p);
+                if(canWeCastle)
                 {
-                    listofMoves.Add(move1);
-                }
-                if(canWeCastleLong)
-                {
-                    listofMoves.Add(move2);
+                    listofMoves.AddRange(moveList);
                 }
             }
             else

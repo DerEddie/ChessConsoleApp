@@ -130,8 +130,6 @@ namespace chessGUI
                         Controller.UpdateGameState(m_ChessGame);
                         RefreshChessBoard();
                         ResetColor();
-                        
-                        
                     }
                 }
             }

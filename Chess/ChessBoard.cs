@@ -16,12 +16,8 @@ namespace Chess
                 //clone -> returns object -> to Piece
                 copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
             }
-
             KeyFieldValuePiece = copyDict;
         }
-
-
-
         public ChessBoard(Dictionary<string, Piece> dict)
         {
             KeyFieldValuePiece = dict;
@@ -37,12 +33,9 @@ namespace Chess
                 for (int c = 0; c < 8; c++)
                 {
                     Field f = new Field(r, c);
-
-
                     //Piece p;
                     if(r == 0)
                     {
-                        
                         if(c == 0 | c == 7)
                         {
                             Rook p = new Rook(f, Color.White);
@@ -71,17 +64,13 @@ namespace Chess
                             King p = new King(f, Color.White);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
-                       
                     }
-
                     if (r == 7)
                     {
-
                         if (c == 0 | c == 7)
                         {
                             Rook p = new Rook(f, Color.Black);
                             KeyFieldValuePiece.Add(f.ToString(), p);
-
                         }
                         else if (c == 1 | c == 6)
                         {
@@ -106,7 +95,6 @@ namespace Chess
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                     }
-
                     if (r == 1)
                     {
                         Pawn p = new Pawn(f, Color.White);
@@ -121,12 +109,10 @@ namespace Chess
                 }
             }
         }
-
         public bool TryCastleShort(Color white)
         {
             throw new NotImplementedException();
         }
-
         public override string ToString()
         {
             string total = "   A  B  C  D  E  F  G  H \n";
@@ -183,12 +169,10 @@ namespace Chess
                     }
                 }
             }
-
             return new Tuple<bool, Field>(false, null);
         }
         public bool IsCheckedByColor(Color c)
         {
-
             var pieces = GetAllPiecesOfColor(c);
             foreach (var p in pieces)
             {
@@ -209,13 +193,11 @@ namespace Chess
             }
             return false;
         }
-
         public bool IsFieldEmpty(Field f)
         {   
             bool isFieldOccupied = this.KeyFieldValuePiece.ContainsKey(f.ToString());
             return !isFieldOccupied;
         }
-
         public List<Piece> GetAllPiecesOfColor(Color c)
         {
             List<Piece> pList = new List<Piece>();
@@ -226,7 +208,6 @@ namespace Chess
                     pList.Add(kvpair.Value);
                 }
             }
-
             return pList;
         }
 
@@ -240,19 +221,16 @@ namespace Chess
                 //field is empty
                 return false;
             }
-
             else if (piece.PieceColor == c)
             {
                 //piece is correct color
                 return true;
             }
-            
             else
             {
                 //piece is other color
                 return false;
             }
-            
         }
 
         public void RemoveSomeGhosts(int currentIteration)
@@ -262,9 +240,6 @@ namespace Chess
             {
                 copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
             }
-
-
-
             foreach (var kvp in copyDict)
             {
                 if (kvp.Value is GhostPawn gp)
@@ -276,11 +251,8 @@ namespace Chess
                 }
             }
         }
-
         //Move Piece in Dict and also change field in Piece Object
         //TODO implement move history
-
-
         public void MovePiece(Field from, Field to, MovementType type, int iterationOfMove)
         {
             var p = this.KeyFieldValuePiece[from.ToString()];
@@ -303,8 +275,24 @@ namespace Chess
                         this.KeyFieldValuePiece.Remove(realPawn.CurrentField.ToString());
                     }
                     break;
+                case MovementType.Moving:
+                    break;
+                case MovementType.MovingPeaceful:
+                    break;
+                case MovementType.Defending:
+                    break;
+                case MovementType.Capturing:
+                    break;
+                case MovementType.CastleShort:
+                    break;
+                case MovementType.CastleLong:
+                    break;
+                case MovementType.Promotion:
+                    this.KeyFieldValuePiece[to.ToString()] = new Queen(to, p.PieceColor,true);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
-
             p.HasMovedOnce = true;
             p.CurrentField = to;
             if (IsFieldEmpty(to))
@@ -331,9 +319,8 @@ namespace Chess
             }
             if (type == MovementType.CastleLong)
             {
-
-                Field fRookOld = new Field(fromRow, 0);
-                bool wasSuccess = TryGetPieceFromField(fRookOld, out var pc);
+                var fRookOld = new Field(fromRow, 0);
+                var wasSuccess = TryGetPieceFromField(fRookOld, out var pc);
                 if (wasSuccess)
                 {
                     this.KeyFieldValuePiece.Remove(fRookOld.ToString());
@@ -351,129 +338,60 @@ namespace Chess
         //The king is not currently in check.
         //The king does not pass through a square that is attacked by an enemy piece.
         //The king does not end up in check. (True of any legal move.)
-        public bool TryCastleLong(Color c, out Move move)
+        
+        public bool TryGetPieceFromField(Field f, out Piece piece)
         {
-            //check whether King haven't moved yet.
-            //check whether Rook didn't move yet.
-            int row = 0;
-            Move mo_;
-            //check there are no pieces in between
-            if (c == Color.White)
-            {
-                row = 0;
-                mo_ = new Move("KI", new Field("E1"), new Field("C1"), MovementType.CastleLong);
-            }
-            else
-            {
-                row = 7;
-                mo_ = new Move("KI", new Field("E8"), new Field("C8"), MovementType.CastleLong);
-            }
-            List<Field> shouldntHaveMoved = new List<Field>();
-            var fofRook = new Field(row, 0);
-            var fofKing = new Field(row, 4);
-
-            shouldntHaveMoved.Add(fofKing);
-            shouldntHaveMoved.Add(fofRook);
-            var shouldBeEmpty = new List<Field>();
-            var fofKingsNeighbor = new Field(row, 1);
-            var fofRooksNeighbor = new Field(row, 2);
-            var fofbishop = new Field(row, 3);
-
-            shouldBeEmpty.Add(fofRooksNeighbor);
-            shouldBeEmpty.Add(fofKingsNeighbor);
-
-            shouldBeEmpty.Add(fofbishop);
-
-            foreach (var f in shouldBeEmpty)
-            {
-                if (!this.IsFieldEmpty(f))
-                {
-                    move = null;
-                    return false;
-                }
-            }
-
-            foreach (var f in shouldntHaveMoved)
-            {
-                var isRetrieved = this.TryGetPieceFromField(f, out var piece);
-                if (isRetrieved)
-                {
-                    if (piece.HasMovedOnce)
-                    {
-                        move = null;
-                        return false;
-                    }
-                }
-            }
-            move = mo_;
-            return true;
+            return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);
         }
-
-        public bool TryCastleShort(out Move move, Piece piece1)
+        public bool TryCastle(out List<Move> moves, Piece piece1)
         {
             Move mo;
             var row = 0;
+            bool gotRookForShort;
+            moves = new List<Move>();
             //check there are no pieces in between
             if (piece1.PieceColor == Color.White)
             {
                 row = 0;
                 mo = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleShort);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
             }
             else
             {
                 row = 7;
                 mo = new Move("KI", new Field("E8"), new Field("G8"), MovementType.CastleShort);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
             }
-
-            if (piece1.HasMovedOnce)
+            bool spaceForShortCastleEmpty;
+            bool isbishopFieldEmpty = !TryGetPieceFromField(new Field(row, 5), out var bishop);
+            bool isknightFieldEmpty = !TryGetPieceFromField(new Field(row, 6), out var knight);
+            spaceForShortCastleEmpty = isbishopFieldEmpty & isknightFieldEmpty;
+            if (!piece1.HasMovedOnce & gotRookForShort & spaceForShortCastleEmpty)
             {
-                move = null;
-                return false;
+                moves.Add(mo);
             }
-
-            List<Field> shouldNotHaveMoved = new List<Field>();
-            Field fofRook = new Field(row, 7);
-            var fofKing = new Field(row, 4);
-
-            shouldNotHaveMoved.Add(fofKing);
-            shouldNotHaveMoved.Add(fofRook);
-
-            List<Field> shouldBeEmpty = new List<Field>();
-            Field fofKingsNeighbor = new Field(row, 5);
-            Field fofRooksNeighbor = new Field(row, 6);
-
-            shouldBeEmpty.Add(fofRooksNeighbor);
-            shouldBeEmpty.Add(fofKingsNeighbor);
-
-            foreach (var f in shouldBeEmpty)
+            bool spaceForLongCastleEmpty;
+            bool isKnightFieldEmpty = !TryGetPieceFromField(new Field(row, 1), out var knight2);
+            bool isBishopFieldEmpty = !TryGetPieceFromField(new Field(row, 2), out var bishop2);
+            bool isQueenFieldEmpty = !TryGetPieceFromField(new Field(row, 3), out var queen);
+            spaceForShortCastleEmpty = isknightFieldEmpty & isbishopFieldEmpty & isQueenFieldEmpty;
+            if (piece1.PieceColor == Color.White)
             {
-                if (!this.IsFieldEmpty(f))
-                {
-                    move = null;
-                    return false;
-                }
+                row = 0;
+                mo = new Move("KI", new Field("E1"), new Field("C1"), MovementType.CastleLong);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
             }
-
-            foreach (var f in shouldNotHaveMoved)
+            else
             {
-                var isRetrieved = this.TryGetPieceFromField(f, out var piece);
-                if (isRetrieved)
-                {
-                    if (piece.HasMovedOnce)
-                    {
-                        move = null;
-                        return false; 
-                    }
-                }
+                row = 7;
+                mo = new Move("KI", new Field("E8"), new Field("C8"), MovementType.CastleLong);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
             }
-
-            move = mo;
-            return true;
-        }
-
-        public bool TryGetPieceFromField(Field f, out Piece piece)
-        {
-            return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);
+            if (!piece1.HasMovedOnce & gotRookForShort & spaceForShortCastleEmpty)
+            {
+                moves.Add(mo);
+            }
+            return moves.Count != 0;
         }
     }
 }

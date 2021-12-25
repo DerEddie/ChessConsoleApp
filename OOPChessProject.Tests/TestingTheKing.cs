@@ -19,7 +19,7 @@ namespace OOPChessProject.Tests
             Console.WriteLine(cG.CurrentChessBoard);
             var res = Controller.GetMovesForField(cG, new Field("F1"));
             Console.WriteLine(res);
-            Assert.AreEqual(4, res.Count);
+            Assert.AreEqual(3, res.Count);
         }
         [Test]
         public void KingShouldNotCaptureProtectedPiece()

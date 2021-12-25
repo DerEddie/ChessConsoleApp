@@ -9,7 +9,8 @@
         Capturing,
         CastleShort,
         CastleLong,
-        EnPassant
+        EnPassant,
+        Promotion
     }
 
     

@@ -54,22 +54,18 @@ namespace Chess.Pieces
                     if (cb.IsFieldEmpty(f))
                         fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.DoubleStep));
                 }
- 
             }
-
             return fList;
         }
 
         private List<Move> GetCapturingMoves(int rNr, int cNr, ChessBoard cb)
         {
             List<Move> fList = new List<Move>();
-
             var rcOffsetCapturing = new List<(int, int)>
             {
                 (-1, -1),
                 (-1, 1)
             };
-
             foreach (var capt in rcOffsetCapturing)
             {
                 //Check so Pawn doesn't try to capture outside the board,
@@ -90,9 +86,6 @@ namespace Chess.Pieces
                         fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.Defending));
                     }
                 }
-                
-
-
             }
             return fList;
         }
@@ -101,17 +94,22 @@ namespace Chess.Pieces
         {
             //Pawn move in different direction depending on color
             List<Move> fList = new List<Move>();
-
             //convert back to enum with modified values
             int r1 =  rNr + 1 * (-_directionFactor);
             int c1 =  cNr;
             Field f = new Field(r1, c1);
-
             //check whether Field is Empty
             if (cb.IsFieldEmpty(f))
-                fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.MovingPeaceful));
-            
-
+            {
+                if (rNr == 7 | rNr == 0)
+                {
+                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.Promotion));
+                }
+                else
+                {
+                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.MovingPeaceful));
+                }
+            }
 
 
             return fList;
@@ -121,16 +119,11 @@ namespace Chess.Pieces
         public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
             //Since Pawns move only forward, We need to know whether piece is black or white
-
             var rNr = CurrentField.FieldRow;
             int cNr = CurrentField.FieldCol;
-
             var mListMoving = GetMovingMoves(rNr, cNr, cb);
-
             var mListCapturing = GetCapturingMoves(rNr, cNr, cb);
-
             var mListMoving2Step = GetDoubleStepMoves(rNr, cNr, cb);
-
             mListCapturing.AddRange(mListMoving);
             mListCapturing.AddRange(mListMoving2Step);
             return mListCapturing;

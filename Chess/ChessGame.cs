@@ -210,6 +210,7 @@ namespace Chess
                 moves = FilterMove(MovementType.Defending, moves);
                 foreach (var m in moves)
                 {
+                    //Iterate over all possible moves and check whether a move stops the check.
                     ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
                     copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
                     if (!copyBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color)))
