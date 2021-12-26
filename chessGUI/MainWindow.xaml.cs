@@ -17,15 +17,15 @@ namespace chessGUI
 {
     public partial class MainWindow : Window
     {
-        private readonly SolidColorBrush ColorDarkFields = new SolidColorBrush(Color.FromArgb(150, 12, 6, 54));
-        readonly SolidColorBrush ColorBrightField = new SolidColorBrush(Color.FromArgb(255, 233, 212, 136));
-        readonly SolidColorBrush ColorSelection = new SolidColorBrush(Color.FromArgb(190, 1, 227, 182));
-        readonly SolidColorBrush ColorPossibleMoves = new SolidColorBrush(Color.FromArgb(255, 1, 227, 182));
-        private SolidColorBrush ColorControls = new SolidColorBrush(Color.FromArgb(255, 83, 186, 131));
-        readonly SolidColorBrush ColorActiveChessClock = new SolidColorBrush(Color.FromArgb(150, 1, 150, 182));
-        readonly SolidColorBrush ColorDeactivatedChessClock = new SolidColorBrush(Color.FromArgb(255, 159, 150, 150));
+        private readonly SolidColorBrush _colorDarkFields = new SolidColorBrush(Color.FromArgb(150, 12, 6, 54));
+        readonly SolidColorBrush _colorBrightField = new SolidColorBrush(Color.FromArgb(255, 233, 212, 136));
+        readonly SolidColorBrush _colorSelection = new SolidColorBrush(Color.FromArgb(190, 1, 227, 182));
+        readonly SolidColorBrush _colorPossibleMoves = new SolidColorBrush(Color.FromArgb(255, 1, 227, 182));
+        private SolidColorBrush _colorControls = new SolidColorBrush(Color.FromArgb(255, 83, 186, 131));
+        readonly SolidColorBrush _colorActiveChessClock = new SolidColorBrush(Color.FromArgb(150, 1, 150, 182));
+        readonly SolidColorBrush _colorDeactivatedChessClock = new SolidColorBrush(Color.FromArgb(255, 159, 150, 150));
         private ChessGame m_ChessGame;
-        private List<Move> moves;
+        private List<Move> _moves;
         private Stopwatch stopwatch = new Stopwatch();
         public Row m_r;
         public DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
@@ -53,11 +53,11 @@ namespace chessGUI
                     Button r1 = new Button();
                     if ((r + c) % 2 == 0)
                     {
-                        r1.Background = ColorDarkFields;
+                        r1.Background = _colorDarkFields;
                     }
                     else
                     {
-                        r1.Background = ColorBrightField;
+                        r1.Background = _colorBrightField;
                     }
                     r1.Name = $"{col}{r + 1}";
                     r1.Click += FieldButton_Click;
@@ -72,6 +72,26 @@ namespace chessGUI
             }
         }
 
+        public void MakeChessBoardGrey()
+        {
+            MessageBox.Show("Game Over!");
+            SolidColorBrush darkGrayColor = new SolidColorBrush(Color.FromArgb(255, 70, 70, 70));
+            SolidColorBrush lightgreyColor = new SolidColorBrush(Color.FromArgb(255, 150, 150, 150));
+            for (int r = 0; r < 8; r++)
+            {
+                for (int c = 0; c < 8; c++)
+                {
+                    Col col = (Col)c;
+
+                    string name = $"{col}{r + 1}";
+                    Button b = this.FindName(name) as Button;
+
+                    b.Background = (r + c) % 2 == 0 ? darkGrayColor : lightgreyColor;
+                }
+            }
+            
+            
+        }
         public void SetInitialTimersInGui()
         {
             int minutes = m_ChessGame.Player1.TimeLeftInSeconds / 60;
@@ -97,22 +117,22 @@ namespace chessGUI
                 //First Input
                 if (Controller.IsFieldValid(m_ChessGame, inputField) && m_ChessGame.IfFirstInputTrueElseFalse)
                 {
-                    b.Background = ColorSelection;
-                    moves = Controller.GetMovesForField(m_ChessGame, inputField);
-                    if (moves.Count == 0)
+                    b.Background = _colorSelection;
+                    _moves = Controller.GetMovesForField(m_ChessGame, inputField);
+                    if (_moves.Count == 0)
                     {
                         return;
                     }
-                    foreach (var m in moves)
+                    foreach (var m in _moves)
                     {
-                        if (this.FindName(m.ToField.ToString()) is Button buttonGoToField) buttonGoToField.Background = ColorPossibleMoves;
+                        if (this.FindName(m.ToField.ToString()) is Button buttonGoToField) buttonGoToField.Background = _colorPossibleMoves;
                     }
                     m_ChessGame.IfFirstInputTrueElseFalse = false;
                 }
                 //Second Input
-                if (!m_ChessGame.IfFirstInputTrueElseFalse && Controller.IsALegalMove(moves, field))
+                if (!m_ChessGame.IfFirstInputTrueElseFalse && Controller.IsALegalMove(_moves, field))
                 {
-                    if (Controller.TryGetMoveFromListBasedOnDestinationField(moves, field, out var chosenMove))
+                    if (Controller.TryGetMoveFromListBasedOnDestinationField(_moves, field, out var chosenMove))
                     {
                         //TODO Put somewhere else
                         RefreshPlayerTimers();
@@ -121,6 +141,7 @@ namespace chessGUI
                         UpdateMovesList();
                         m_ChessGame.CurrentChessBoard.MovePiece(chosenMove.FromField, chosenMove.ToField, chosenMove.MovementType, m_ChessGame.TurnCounter);
                         m_ChessGame.IfFirstInputTrueElseFalse = true;
+                        
                         //Switching players turn
                         Controller.SwitchPlayerTurn(m_ChessGame);
                         UpdatePlayerTimerColors();
@@ -128,6 +149,10 @@ namespace chessGUI
                         m_ChessGame.CurrentChessBoard.RemoveSomeGhosts(m_ChessGame.TurnCounter);
                         //After all the logic refresh board...
                         Controller.UpdateGameState(m_ChessGame);
+                        if (m_ChessGame.GameState == GameState.Checkmate)
+                        {
+                            MakeChessBoardGrey();
+                        }
                         RefreshChessBoard();
                         ResetColor();
                     }
@@ -195,13 +220,13 @@ namespace chessGUI
         {
             if (m_ChessGame.CurrentPlayer.Color == gColor.White)
             {
-                ChessClockWhite.Background = ColorActiveChessClock;
-                ChessClockBlack.Background = ColorDeactivatedChessClock;
+                ChessClockWhite.Background = _colorActiveChessClock;
+                ChessClockBlack.Background = _colorDeactivatedChessClock;
             }
             else
             {
-                ChessClockWhite.Background = ColorDeactivatedChessClock;
-                ChessClockBlack.Background = ColorActiveChessClock;
+                ChessClockWhite.Background = _colorDeactivatedChessClock;
+                ChessClockBlack.Background = _colorActiveChessClock;
             }
 
         }
@@ -260,7 +285,7 @@ namespace chessGUI
                     string name = $"{col}{r + 1}";
                     Button b = this.FindName(name) as Button;
 
-                    b.Background = (r + c) % 2 == 0 ? ColorDarkFields : ColorBrightField;
+                    if (b != null) b.Background = (r + c) % 2 == 0 ? _colorDarkFields : _colorBrightField;
                 }
             }
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Chess.Pieces;
-
 namespace Chess
 {
     public class ChessBoard
