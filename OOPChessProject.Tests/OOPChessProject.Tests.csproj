@@ -54,7 +54,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestBishop - Copy.cs" />
+    <Compile Include="TestPawnPromotion.cs" />
+    <Compile Include="TestQueen.cs" />
     <Compile Include="TestKnight.cs" />
     <Compile Include="TestBishop.cs" />
     <Compile Include="TestCastling.cs" />

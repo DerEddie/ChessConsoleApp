@@ -12,11 +12,11 @@ namespace Chess.Pieces
     {
         //A protected member is accessible within its class and by derived class instances.
         public Field CurrentField;
-        public bool IsAlive;
+        private bool IsAlive;
         public bool HasMovedOnce = false;
         //has a value in the children-classes
         public string PrintRepresentation;
-        public Color PieceColor;
+        public readonly Color PieceColor;
 
         public abstract object Clone();
         
@@ -32,8 +32,7 @@ namespace Chess.Pieces
             IsAlive = aisAlive;
             PieceColor = pieceColor;
         }
-
-
+        
         //Implement in Piece children
         public abstract List<Move> GetPossibleMoves(ChessBoard cb);
 
@@ -42,8 +41,6 @@ namespace Chess.Pieces
         {
             return this.PrintRepresentation;
         }
-
-
         
         //adds possible moves to the List
         protected void TraverseInDirection(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)

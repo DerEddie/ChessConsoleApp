@@ -53,7 +53,7 @@ namespace Chess
 
         public override string ToString()
         {
-            return String.Format("{1}{0}", this.FieldRow+1 ,  (Col)this.FieldCol);
+            return $"{(Col) this.FieldCol}{this.FieldRow + 1}";
         }
 
         public override bool Equals(object obj)

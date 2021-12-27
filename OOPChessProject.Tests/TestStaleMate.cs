@@ -5,7 +5,7 @@ using System;
 namespace OOPChessProject.Tests
 {
     [TestFixture]
-    class TestStaleMate
+    internal class TestStaleMate
     {
         [Test]
         public void KingSurrounded_GetMovesForField_CantMoveStaleMate()
@@ -17,6 +17,5 @@ namespace OOPChessProject.Tests
             Console.WriteLine(fields);
             Assert.AreEqual(0, fields.Count);
         }
-
     }
 }

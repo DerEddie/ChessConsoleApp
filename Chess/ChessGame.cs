@@ -16,10 +16,10 @@ namespace Chess
     public class ChessGame
     {
         //carries basic information and information for the flow control
-        public ChessBoard CurrentChessBoard;
-        public List<Tuple<int,Move,ChessBoard>> MovesHistory =  new List<Tuple<int, Move, ChessBoard>>();
-        public Player Player1;
-        public Player Player2;
+        public readonly ChessBoard CurrentChessBoard;
+        public readonly List<Tuple<int,Move,ChessBoard>> MovesHistory =  new List<Tuple<int, Move, ChessBoard>>();
+        public readonly Player Player1;
+        public readonly Player Player2;
         public Player CurrentPlayer;
         public GameState GameState;
         public int TurnCounter;

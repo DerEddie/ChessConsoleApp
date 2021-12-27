@@ -5,7 +5,6 @@ namespace Chess
 {
     public static class HelperFunctions
     {
-        
         public static Color ColorSwapper(Color c)
         {
             if (c == Color.White)
@@ -17,7 +16,6 @@ namespace Chess
                 return Color.White;
             }
         }
-
         public static Field StringToField(string s)
         {
             // String to Field Methode
@@ -26,11 +24,6 @@ namespace Chess
             Field of = new Field(r, c);
             return of;
         }
-
     }
-
-
-
-
 
 }

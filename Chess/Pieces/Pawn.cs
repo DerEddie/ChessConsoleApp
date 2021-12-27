@@ -6,12 +6,6 @@ namespace Chess.Pieces
     {
         private readonly int _directionFactor;
 
-        private List<(int, int)> _offset = new List<(int, int)>
-        {
-            (-1, -1),
-            (-1, 1)
-        };
-
         public Pawn(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive)
         {
             //already Implemented
@@ -44,7 +38,7 @@ namespace Chess.Pieces
         {
             List<Move> fList = new List<Move>();
             //Check the double-step
-            if (this.CurrentField.FieldRow == 1 | this.CurrentField.FieldRow == 6)
+            if ( (this.CurrentField.FieldRow == 1 & this.PieceColor == Color.White ) | (this.CurrentField.FieldRow == 6 & this.PieceColor == Color.Black))
             {
                 if(GetMovingMoves(rNr,cNr,cb).Count != 0)
                 {
@@ -66,12 +60,12 @@ namespace Chess.Pieces
                 (-1, -1),
                 (-1, 1)
             };
-            foreach (var capt in rcOffsetCapturing)
+            foreach (var (item1, item2) in rcOffsetCapturing)
             {
                 //Check so Pawn doesn't try to capture outside the board,
-                if (cb.IsRowAndColStillBoard(rNr + capt.Item1 * _directionFactor, cNr + capt.Item2 * _directionFactor))
+                if (cb.IsRowAndColStillBoard(rNr + item1 * _directionFactor, cNr + item2 * _directionFactor))
                 {
-                    Field f1 = new Field(rNr + capt.Item1 * _directionFactor, cNr + capt.Item2 * _directionFactor);
+                    Field f1 = new Field(rNr + item1 * _directionFactor, cNr + item2 * _directionFactor);
                     cb.TryGetPieceFromField(f1, out var p);
 
 
@@ -101,7 +95,7 @@ namespace Chess.Pieces
             //check whether Field is Empty
             if (cb.IsFieldEmpty(f))
             {
-                if (rNr == 7 | rNr == 0)
+                if (r1 == 7 | r1 == 0)
                 {
                     fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.Promotion));
                 }
@@ -110,8 +104,6 @@ namespace Chess.Pieces
                     fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.MovingPeaceful));
                 }
             }
-
-
             return fList;
         }
 
