@@ -4,13 +4,13 @@ namespace Chess.Pieces
 {
     internal class Queen: Piece
     {
-        public Queen(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor)
+        public Queen(Color pieceColor) : base(pieceColor)
         {
             //already Implemented
             PrintRepresentation = "QN";
         }
 
-        public override List<Move> GetPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb, Field currentField)
         {
             var offset = new List<(int, int)>
             {
@@ -23,12 +23,12 @@ namespace Chess.Pieces
                 (0, 1),
                 (0, -1)
             };
-            return GetPossibleMovesTraversing(cb, offset);
+            return GetPossibleMovesTraversing(cb, offset, currentField);
         }
 
         public override object Clone()
         {
-            var queen = new Queen(this.CurrentField, this.PieceColor);
+            var queen = new Queen(this.PieceColor);
             return queen;
         }
     }

@@ -11,7 +11,7 @@ namespace Chess.Pieces
         public int IterationOfCreation;
         public Pawn TheRealPawn;
 
-        public GhostPawn(Pawn p, int iterationOfCreation, Field position, Color pieceColor) : base(position, pieceColor)
+        public GhostPawn(Pawn p, int iterationOfCreation, Color pieceColor) : base(pieceColor)
         {
             //already Implemented
             IterationOfCreation = iterationOfCreation;
@@ -20,15 +20,15 @@ namespace Chess.Pieces
         }
 
 
-        public override List<Move> GetPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb, Field currentField)
         {
             var rowColOffset = new List<(int, int)>();
-            return GetPossibleMovesTraversing(cb, rowColOffset, 1);
+            return GetPossibleMovesTraversing(cb, rowColOffset, currentField, 1);
         }
 
         public override object Clone()
         {
-            GhostPawn pawn = new GhostPawn(this.TheRealPawn, this.IterationOfCreation,CurrentField, this.PieceColor);
+            GhostPawn pawn = new GhostPawn(this.TheRealPawn, this.IterationOfCreation, this.PieceColor);
             return pawn;
         }
 

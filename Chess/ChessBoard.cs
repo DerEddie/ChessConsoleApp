@@ -37,30 +37,30 @@ namespace Chess
                     {
                         if(c == 0 | c == 7)
                         {
-                            Rook p = new Rook(f, Color.White);
+                            Rook p = new Rook(Color.White);
                             KeyFieldValuePiece.Add(f.ToString(), p);
 
                         }
                         else if(c == 1 | c == 6)
                         {
-                            Knight p = new Knight(f, Color.White);
+                            Knight p = new Knight(Color.White);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if(c == 2| c == 5)
                         {
-                            Bishop p = new Bishop(f, Color.White);
+                            Bishop p = new Bishop(Color.White);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if(c == 3)
                         {
                             //Queen's Row
-                            Queen p = new Queen(f, Color.White);
+                            Queen p = new Queen(Color.White);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if(c  == 4)
                         {
                             //King's Row
-                            King p = new King(f, Color.White);
+                            King p = new King(Color.White);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                     }
@@ -68,41 +68,41 @@ namespace Chess
                     {
                         if (c == 0 | c == 7)
                         {
-                            Rook p = new Rook(f, Color.Black);
+                            Rook p = new Rook(Color.Black);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if (c == 1 | c == 6)
                         {
-                            Knight p = new Knight(f, Color.Black);
+                            Knight p = new Knight(Color.Black);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if (c == 2 | c == 5)
                         {
-                            Bishop p = new Bishop(f, Color.Black);
+                            Bishop p = new Bishop(Color.Black);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if (c == 3)
                         {
                             //Queen's Row
-                            Queen p = new Queen(f, Color.Black);
+                            Queen p = new Queen(Color.Black);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                         else if (c == 4)
                         {
                             //King's Row
-                            King p = new King(f, Color.Black);
+                            King p = new King(Color.Black);
                             KeyFieldValuePiece.Add(f.ToString(), p);
                         }
                     }
                     if (r == 1)
                     {
-                        Pawn p = new Pawn(f, Color.White);
+                        Pawn p = new Pawn(Color.White);
                         KeyFieldValuePiece.Add(f.ToString(), p);
                     }
                     if(r == 6)
                     {
                         //Console.WriteLine(field);
-                        Pawn p = new Pawn(f, Color.Black);
+                        Pawn p = new Pawn(Color.Black);
                         KeyFieldValuePiece.Add(f.ToString(), p);
                     }
                 }
@@ -150,7 +150,7 @@ namespace Chess
         public void CreateAGhostlyPawn(Pawn p, int iterationOfCreation, Field field, Color color)
         {
             //Inserts a new ghost Pawn on the board
-            KeyFieldValuePiece[field.ToString()] = new GhostPawn(p,iterationOfCreation,field, color);
+            KeyFieldValuePiece[field.ToString()] = new GhostPawn(p,iterationOfCreation, color);
         }
         public Tuple<bool, Field> IsKingOnMoveList(List<Move> moveList, Color color)
         {
@@ -175,7 +175,7 @@ namespace Chess
             var pieces = GetAllPiecesOfColor(c);
             foreach (var p in pieces)
             {
-                var moves = p.GetPossibleMoves(this);
+                var moves = p.GetPossibleMoves(this, TODO);
                 List<Move> filteredMoves = new List<Move>();
                 foreach (var m in moves)
                 {

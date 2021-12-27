@@ -41,7 +41,7 @@ namespace OOPChessProject.Tests
 
 
                 bool moveFound = false;
-                foreach (var move in pawn.GetPossibleMoves(cb))
+                foreach (var move in pawn.GetPossibleMoves(cb, TODO))
                 {
                     if (move.FromField.Equals(field))
                     {

@@ -46,13 +46,7 @@ namespace Chess
             GameState = GameState.Running;
 
             //Init a History
-
-
-
-
             var dict = new Dictionary<string, Piece>();
-
-
             int row = 7;
             int col = 0;
             foreach (var c in fenNotationString)
@@ -77,25 +71,25 @@ namespace Chess
                     switch (lowerOfChar)
                     {
                         case 'r':
-                            p = new Rook(f, color);
+                            p = new Rook(color);
                             break;
                         case 'n':
-                            p = new Knight(f, color);
+                            p = new Knight(color);
                             break;
                         case 'b':
-                            p = new Bishop(f, color);
+                            p = new Bishop(color);
                             break;
                         case 'q':
-                            p = new Queen(f, color);
+                            p = new Queen(color);
                             break;
                         case 'k':
-                            p = new King(f, color);
+                            p = new King(color);
                             break;
                         case 'p':
-                            p = new Pawn(f, color);
+                            p = new Pawn(color);
                             break;
                         default:
-                            p = new Pawn(f, color);
+                            p = new Pawn(color);
                             break;
                     }
                     dict.Add(f.ToString(), p);
@@ -180,7 +174,8 @@ namespace Chess
 
             foreach (var p in pieces)
             {
-                var enemyMoves = p.GetPossibleMoves(this.CurrentChessBoard);
+                
+                var enemyMoves = p.GetPossibleMoves(this.CurrentChessBoard, TODO);
                 enemyMoves = FilterMove(MovementType.DoubleStep, enemyMoves);
                 enemyMoves = FilterMove(MovementType.MovingPeaceful, enemyMoves);
 
@@ -206,7 +201,7 @@ namespace Chess
             var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(this.CurrentPlayer.Color);
             foreach (var pp in pieces)
             {
-                var moves = pp.GetPossibleMoves(this.CurrentChessBoard);
+                var moves = pp.GetPossibleMoves(this.CurrentChessBoard, TODO);
                 moves = FilterMove(MovementType.Defending, moves);
                 foreach (var m in moves)
                 {
@@ -231,7 +226,7 @@ namespace Chess
 
             foreach (var pp in pieces)
             {
-                var moves = pp.GetPossibleMoves(this.CurrentChessBoard);
+                var moves = pp.GetPossibleMoves(this.CurrentChessBoard, TODO);
                 moves = FilterMove(MovementType.Defending, moves);
                 if (moves.Count > 0)
                 {

@@ -6,7 +6,7 @@ namespace Chess.Pieces
     {
         private readonly int _directionFactor;
 
-        public Pawn(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive)
+        public Pawn(Color pieceColor) : base(pieceColor)
         {
             //already Implemented
             PrintRepresentation= "PW";
@@ -21,38 +21,35 @@ namespace Chess.Pieces
                 _directionFactor = 1;
             }
         }
-
         //The object keyword represents the System.Object type,
         //which is the root type in the C# class hierarchy. This
         //keyword is often used when there's no way to identify
         //the object type at compile time, which often happens
         //in various interoperability scenarios.
-
         public override object Clone()
         {
-            Pawn pawn = new Pawn(this.CurrentField, this.PieceColor);
+            var pawn = new Pawn(this.PieceColor);
             return pawn;
         }
-
-        private List<Move> GetDoubleStepMoves(int rNr, int cNr, ChessBoard cb)
+        private List<Move> GetDoubleStepMoves(int rNr, int cNr, ChessBoard cb, Field currentField)
         {
             List<Move> fList = new List<Move>();
             //Check the double-step
-            if ( (this.CurrentField.FieldRow == 1 & this.PieceColor == Color.White ) | (this.CurrentField.FieldRow == 6 & this.PieceColor == Color.Black))
+            if ( (currentField.FieldRow == 1 & this.PieceColor == Color.White ) | (currentField.FieldRow == 6 & this.PieceColor == Color.Black))
             {
-                if(GetMovingMoves(rNr,cNr,cb).Count != 0)
+                if(GetMovingMoves(rNr,cNr,cb, currentField).Count != 0)
                 {
                     int r1 = rNr + 2 * (-_directionFactor);
                     int c1 = cNr;
                     Field f = new Field(r1, c1);
                     if (cb.IsFieldEmpty(f))
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.DoubleStep));
+                        fList.Add(new Move(this.PrintRepresentation, currentField, f, MovementType.DoubleStep));
                 }
             }
             return fList;
         }
 
-        private List<Move> GetCapturingMoves(int rNr, int cNr, ChessBoard cb)
+        private List<Move> GetCapturingMoves(int rNr, int cNr, ChessBoard cb, Field currentField)
         {
             List<Move> fList = new List<Move>();
             var rcOffsetCapturing = new List<(int, int)>
@@ -72,19 +69,19 @@ namespace Chess.Pieces
                     if (cb.IsFieldOccupiedByColor(f1, HelperFunctions.ColorSwapper(this.PieceColor)))
                     {
                         fList.Add(p.PrintRepresentation == "xx"
-                            ? new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.EnPassant)
-                            : new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.Capturing));
+                            ? new Move(this.PrintRepresentation, currentField, f1, MovementType.EnPassant)
+                            : new Move(this.PrintRepresentation, currentField, f1, MovementType.Capturing));
                     }
                     else
                     {
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.Defending));
+                        fList.Add(new Move(this.PrintRepresentation, currentField, f1, MovementType.Defending));
                     }
                 }
             }
             return fList;
         }
 
-        private List<Move> GetMovingMoves(int rNr, int cNr, ChessBoard cb)
+        private List<Move> GetMovingMoves(int rNr, int cNr, ChessBoard cb, Field currentField)
         {
             //Pawn move in different direction depending on color
             List<Move> fList = new List<Move>();
@@ -97,25 +94,25 @@ namespace Chess.Pieces
             {
                 if (r1 == 7 | r1 == 0)
                 {
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.Promotion));
+                    fList.Add(new Move(this.PrintRepresentation, currentField, f, MovementType.Promotion));
                 }
                 else
                 {
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.MovingPeaceful));
+                    fList.Add(new Move(this.PrintRepresentation, currentField, f, MovementType.MovingPeaceful));
                 }
             }
             return fList;
         }
 
 
-        public override List<Move> GetPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb, Field currentField)
         {
             //Since Pawns move only forward, We need to know whether piece is black or white
-            var rNr = CurrentField.FieldRow;
-            int cNr = CurrentField.FieldCol;
-            var mListMoving = GetMovingMoves(rNr, cNr, cb);
-            var mListCapturing = GetCapturingMoves(rNr, cNr, cb);
-            var mListMoving2Step = GetDoubleStepMoves(rNr, cNr, cb);
+            var rNr = currentField.FieldRow;
+            int cNr = currentField.FieldCol;
+            var mListMoving = GetMovingMoves(rNr, cNr, cb, currentField);
+            var mListCapturing = GetCapturingMoves(rNr, cNr, cb, currentField);
+            var mListMoving2Step = GetDoubleStepMoves(rNr, cNr, cb, currentField);
             mListCapturing.AddRange(mListMoving);
             mListCapturing.AddRange(mListMoving2Step);
             return mListCapturing;

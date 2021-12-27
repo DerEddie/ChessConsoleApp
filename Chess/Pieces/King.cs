@@ -16,7 +16,7 @@ namespace Chess.Pieces
             (0, -1)
         };
 
-        public King(Field position, Color pieceColor) : base(position, pieceColor)
+        public King(Color pieceColor) : base(pieceColor)
         {
             //already Implemented
             PrintRepresentation = "KI";
@@ -24,13 +24,13 @@ namespace Chess.Pieces
 
         public override object Clone()
         {
-            King king = new King(this.CurrentField, this.PieceColor);
+            King king = new King(this.PieceColor);
             return king;
         }
 
-        public override List<Move> GetPossibleMoves(ChessBoard cb)
+        public override List<Move> GetPossibleMoves(ChessBoard cb, Field currentField)
         {
-            return GetPossibleMovesTraversing(cb, _offset, 1);
+            return GetPossibleMovesTraversing(cb, _offset, currentField, 1);
         }
 
 
