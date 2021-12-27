@@ -2,6 +2,7 @@
 notImplemented Logic features:
 Promotion
 
+IDE: Visual Studio ---> Rider
 
 General Project-Structure:
 Not Yet Implemented-Requirements:
