@@ -18,7 +18,7 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void PawnInFrontOfKing__UpdateGamestate_NoCheck()
+        public void PawnInFrontOfKing__UpdateGameState_NoCheck()
         {
             var s = "r1bqk2r/pP1p2Pp/2n5/8/8/8/P1p1p1pP/R3K2R";
             var cG = new ChessGame(s, "Eduard", "Felix");
@@ -29,7 +29,7 @@ namespace OOPChessProject.Tests
         }
 
         [Test]
-        public void KnightInFrontOfKing_UpdateGamestate_Check()
+        public void KnightInFrontOfKing_UpdateGameState_Check()
         {
             var s = "r1bqk2r/pP1p2Pp/8/8/8/3n4/P1p1p1pP/R3K2R";
             var cG = new ChessGame(s, "Eduard", "Felix");

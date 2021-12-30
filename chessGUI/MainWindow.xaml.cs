@@ -269,7 +269,8 @@ namespace chessGUI
                 }
             }
         }
-        public void UpdateStatusBar()
+
+        private void UpdateStatusBar()
         {
             var l = this.FindName("StatusBar") as Label;
             if (l != null) l.Content = $"Current State:\n{m_ChessGame.GameState}";

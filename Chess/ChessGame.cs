@@ -34,7 +34,7 @@ namespace Chess
 
 
             //Create the Board
-            CurrentChessBoard = new ChessBoard();
+            CurrentChessBoard = new ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
             //set white as starting Player
             CurrentPlayer = Player1;
@@ -53,8 +53,9 @@ namespace Chess
             var dict = new Dictionary<string, Piece>();
 
 
-            int row = 7;
-            int col = 0;
+            
+            var row = 7;
+            var col = 0;
             foreach (var c in fenNotationString)
             {
                 var color = Char.IsLower(c) ? Color.Black : Color.White;
@@ -117,7 +118,7 @@ namespace Chess
             Player2 = new Player(player2Name, Color.Black, 600);
 
             //Create the Board
-            CurrentChessBoard = new ChessBoard();
+            CurrentChessBoard = new ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
             //set white as starting Player
             CurrentPlayer = Player1;
@@ -132,7 +133,7 @@ namespace Chess
         }
         //Implement here because attribute here
         //Check if Color Player == Color Piece
-        public bool IsPlayerAndPieceColorSame(Player player, Piece piece)
+        public static bool IsPlayerAndPieceColorSame(Player player, Piece piece)
         {
             if (piece == null)
             {
@@ -144,13 +145,13 @@ namespace Chess
         }
         public List<Move> FilterMoveWhichExposeCheck(List<Move> moves, Color currentPlayerColor)
         {
-            List<Move> legalMoves = new List<Move>();
+            var legalMoves = new List<Move>();
             //filtered moves list, return list, reverse logic add ok moves
             foreach (var m in moves)
             {
-                ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
+                var copyBoard = new ChessBoard(this.CurrentChessBoard);
                 copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                Color enemyColor = HelperFunctions.ColorSwapper(currentPlayerColor);
+                var enemyColor = HelperFunctions.ColorSwapper(currentPlayerColor);
                 if (!copyBoard.IsCheckedByColor(enemyColor))
                 {
                     legalMoves.Add(m);
@@ -202,7 +203,6 @@ namespace Chess
 
         public bool CheckMitigationPossible()
         {
-            bool mitigationFound = false;
             var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(this.CurrentPlayer.Color);
             foreach (var pp in pieces)
             {
@@ -216,12 +216,11 @@ namespace Chess
                     if (!copyBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color)))
                     {
                         Console.WriteLine(copyBoard);
-                        mitigationFound = true;
-                        return mitigationFound;
+                        return true;
                     }
                 }
             }
-            return mitigationFound;
+            return false;
         }
 
         public bool MovesAvailable()

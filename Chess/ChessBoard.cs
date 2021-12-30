@@ -6,7 +6,7 @@ namespace Chess
     public class ChessBoard
     {
         //field
-        public Dictionary<string, Piece> KeyFieldValuePiece;
+        public readonly Dictionary<string, Piece> KeyFieldValuePiece;
         public ChessBoard(ChessBoard otherBoard)
         {
             var copyDict = new Dictionary<string, Piece>();
@@ -21,90 +21,62 @@ namespace Chess
         {
             KeyFieldValuePiece = dict;
         }
-        //A Constructor which sets up the Game Board
-        public ChessBoard()
-        {
-            //create a dict from store the pieces as VALUE and field as KEY
-            KeyFieldValuePiece = new Dictionary<string, Piece>();
-            //iterate over all field combinations
-            for (int r = 0; r < 8; r++)
-            {
-                for (int c = 0; c < 8; c++)
-                {
-                    Field f = new Field(r, c);
-                    //Piece p;
-                    if(r == 0)
-                    {
-                        if(c == 0 | c == 7)
-                        {
-                            Rook p = new Rook(f, Color.White);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
 
-                        }
-                        else if(c == 1 | c == 6)
-                        {
-                            Knight p = new Knight(f, Color.White);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                        else if(c == 2| c == 5)
-                        {
-                            Bishop p = new Bishop(f, Color.White);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                        else if(c == 3)
-                        {
-                            //Queen's Row
-                            Queen p = new Queen(f, Color.White);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                        else if(c  == 4)
-                        {
-                            //King's Row
-                            King p = new King(f, Color.White);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                    }
-                    if (r == 7)
+        public ChessBoard(string fenNotation)
+        {
+            KeyFieldValuePiece = new Dictionary<string, Piece>();
+            var row = 7;
+            var col = 0;
+            foreach (var c in fenNotation)
+            {
+                var color = Char.IsLower(c) ? Color.Black : Color.White;
+
+                var lowerOfChar = Char.ToLower(c);
+                Field f = new Field(row, col);
+
+                
+                if (char.IsDigit(lowerOfChar))
+                {
+
+                    col = col + int.Parse(c.ToString());
+                    continue;
+                }
+                if (Char.IsLetter(lowerOfChar))
+                {
+
+                    //switch
+                    Piece p; //= new Pawn(new Field(0,0), Color.White);
+                    switch (lowerOfChar)
                     {
-                        if (c == 0 | c == 7)
-                        {
-                            Rook p = new Rook(f, Color.Black);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                        else if (c == 1 | c == 6)
-                        {
-                            Knight p = new Knight(f, Color.Black);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                        else if (c == 2 | c == 5)
-                        {
-                            Bishop p = new Bishop(f, Color.Black);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                        else if (c == 3)
-                        {
-                            //Queen's Row
-                            Queen p = new Queen(f, Color.Black);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
-                        else if (c == 4)
-                        {
-                            //King's Row
-                            King p = new King(f, Color.Black);
-                            KeyFieldValuePiece.Add(f.ToString(), p);
-                        }
+                        case 'r':
+                            p = new Rook(f, color);
+                            break;
+                        case 'n':
+                            p = new Knight(f, color);
+                            break;
+                        case 'b':
+                            p = new Bishop(f, color);
+                            break;
+                        case 'q':
+                            p = new Queen(f, color);
+                            break;
+                        case 'k':
+                            p = new King(f, color);
+                            break;
+                        case 'p':
+                            p = new Pawn(f, color);
+                            break;
+                        default:
+                            p = new Pawn(f, color);
+                            break;
                     }
-                    if (r == 1)
-                    {
-                        Pawn p = new Pawn(f, Color.White);
-                        KeyFieldValuePiece.Add(f.ToString(), p);
-                    }
-                    if(r == 6)
-                    {
-                        //Console.WriteLine(field);
-                        Pawn p = new Pawn(f, Color.Black);
-                        KeyFieldValuePiece.Add(f.ToString(), p);
-                    }
+                    KeyFieldValuePiece.Add(f.ToString(), p);
+                    col++;
+                }
+                else if (lowerOfChar == char.Parse("/"))
+                {
+                    row--;
+                    col = 0;
                 }
             }
         }
@@ -200,11 +172,11 @@ namespace Chess
         public List<Piece> GetAllPiecesOfColor(Color c)
         {
             List<Piece> pList = new List<Piece>();
-            foreach (var kvpair in KeyFieldValuePiece)
+            foreach (var keyValuePair in KeyFieldValuePiece)
             {
-                if (kvpair.Value.PieceColor == c)
+                if (keyValuePair.Value.PieceColor == c)
                 {
-                    pList.Add(kvpair.Value);
+                    pList.Add(keyValuePair.Value);
                 }
             }
             return pList;
@@ -250,8 +222,6 @@ namespace Chess
                 }
             }
         }
-        //Move Piece in Dict and also change field in Piece Object
-        //TODO implement move history
         public void MovePiece(Field from, Field to, MovementType type, int iterationOfMove)
         {
             var p = this.KeyFieldValuePiece[from.ToString()];
@@ -287,7 +257,7 @@ namespace Chess
                 case MovementType.CastleLong:
                     break;
                 case MovementType.Promotion:
-                    this.KeyFieldValuePiece[to.ToString()] = new Queen(to, p.PieceColor,true);
+                    this.KeyFieldValuePiece[to.ToString()] = new Queen(to, p.PieceColor);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -330,14 +300,7 @@ namespace Chess
                 }
             }
         }
-        //because the King can't know whether other pieces have moved the higher class checkboard will perform this check.
-        //Castling is performed on the kingside or queenside with the rook on the same rank.
-        //Neither the king nor the chosen rook has previously moved.
-        //There are no pieces between the king and the chosen rook.
-        //The king is not currently in check.
-        //The king does not pass through a square that is attacked by an enemy piece.
-        //The king does not end up in check. (True of any legal move.)
-        
+
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
             return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);
@@ -345,7 +308,7 @@ namespace Chess
         public bool TryCastle(out List<Move> moves, Piece piece1)
         {
             Move mo;
-            var row = 0;
+            int row;
             bool gotRookForShort;
             moves = new List<Move>();
             //check there are no pieces in between
@@ -353,38 +316,38 @@ namespace Chess
             {
                 row = 0;
                 mo = new Move("KI", new Field("E1"), new Field("G1"), MovementType.CastleShort);
-                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out _);
             }
             else
             {
                 row = 7;
                 mo = new Move("KI", new Field("E8"), new Field("G8"), MovementType.CastleShort);
-                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out _);
             }
-            bool spaceForShortCastleEmpty;
-            bool isbishopFieldEmpty = !TryGetPieceFromField(new Field(row, 5), out var bishop);
-            bool isknightFieldEmpty = !TryGetPieceFromField(new Field(row, 6), out var knight);
-            spaceForShortCastleEmpty = isbishopFieldEmpty & isknightFieldEmpty;
+
+            var isBishopFieldEmpty = !TryGetPieceFromField(new Field(row, 5), out _);
+            var isKnightFieldEmpty = !TryGetPieceFromField(new Field(row, 6), out _);
+            var spaceForShortCastleEmpty = isBishopFieldEmpty & isKnightFieldEmpty;
             if (!piece1.HasMovedOnce & gotRookForShort & spaceForShortCastleEmpty)
             {
                 moves.Add(mo);
             }
-            bool spaceForLongCastleEmpty;
-            bool isKnightFieldEmpty = !TryGetPieceFromField(new Field(row, 1), out var knight2);
-            bool isBishopFieldEmpty = !TryGetPieceFromField(new Field(row, 2), out var bishop2);
-            bool isQueenFieldEmpty = !TryGetPieceFromField(new Field(row, 3), out var queen);
-            spaceForShortCastleEmpty = isknightFieldEmpty & isbishopFieldEmpty & isQueenFieldEmpty;
+
+            isKnightFieldEmpty = !TryGetPieceFromField(new Field(row, 1), out _);
+            isBishopFieldEmpty = !TryGetPieceFromField(new Field(row, 2), out _);
+            var isQueenFieldEmpty = !TryGetPieceFromField(new Field(row, 3), out _);
+            spaceForShortCastleEmpty = isKnightFieldEmpty & isBishopFieldEmpty & isQueenFieldEmpty;
             if (piece1.PieceColor == Color.White)
             {
                 row = 0;
                 mo = new Move("KI", new Field("E1"), new Field("C1"), MovementType.CastleLong);
-                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out _);
             }
             else
             {
                 row = 7;
                 mo = new Move("KI", new Field("E8"), new Field("C8"), MovementType.CastleLong);
-                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out var rook);
+                gotRookForShort = this.TryGetPieceFromField(new Field(row, 7), out _);
             }
             if (!piece1.HasMovedOnce & gotRookForShort & spaceForShortCastleEmpty)
             {

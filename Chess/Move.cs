@@ -17,9 +17,9 @@
     public class Move
     {
         private readonly string _name;
-        public Field FromField;
-        public Field ToField;
-        public MovementType MovementType;
+        public readonly Field FromField;
+        public readonly Field ToField;
+        public readonly MovementType MovementType;
         //private Piece m_capturedPiece;
 
 

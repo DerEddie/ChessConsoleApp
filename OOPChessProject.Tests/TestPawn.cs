@@ -10,7 +10,7 @@ namespace OOPChessProject.Tests
     [TestFixture]
     class TestPawn
     {
-        public void Pawn_GetPossibleMoves_FieldOffsetWorks(int fieldOffset, Color color, bool expectedResult)
+        public static void Pawn_GetPossibleMoves_FieldOffsetWorks(int fieldOffset, Color color, bool expectedResult)
         {
             var r = 1;
             var targetR = r + fieldOffset;
@@ -21,7 +21,7 @@ namespace OOPChessProject.Tests
                 targetR = r - fieldOffset;
             }
 
-            ChessBoard cb = new ChessBoard();
+            ChessBoard cb = new ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
             for (int c = 0; c != 8; c++)
             {

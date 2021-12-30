@@ -86,7 +86,7 @@ namespace OOPChessProject
         {
             //if the colors are not the same we need to prompt again for input, because not the right piece was chosen.
             cGame.CurrentChessBoard.TryGetPieceFromField(of, out var pi);
-            if (!cGame.IsPlayerAndPieceColorSame(cGame.CurrentPlayer, pi))
+            if (!ChessGame.IsPlayerAndPieceColorSame(cGame.CurrentPlayer, pi))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("WRONG COLOR OR FIELD IS EMPTY!!!");
