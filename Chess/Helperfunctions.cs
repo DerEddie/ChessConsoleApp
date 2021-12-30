@@ -1,6 +1,5 @@
 ﻿using System;
 using Chess.Pieces;
-
 namespace Chess
 {
     public static class HelperFunctions
