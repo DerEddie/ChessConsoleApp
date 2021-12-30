@@ -45,70 +45,8 @@ namespace Chess
             //gameState
             GameState = GameState.Running;
 
-            //Init a History
-
-
-
-
-            var dict = new Dictionary<string, Piece>();
-
-
-            
-            var row = 7;
-            var col = 0;
-            foreach (var c in fenNotationString)
-            {
-                var color = Char.IsLower(c) ? Color.Black : Color.White;
-
-                var lowerOfChar = Char.ToLower(c);
-                Field f = new Field(row, col);
-
-                
-                if (Char.IsDigit(lowerOfChar))
-                {
-
-                    col = col + int.Parse(c.ToString());
-                    continue;
-                }
-                if (Char.IsLetter(lowerOfChar))
-                {
-
-                    //switch
-                    Piece p; //= new Pawn(new Field(0,0), Color.White);
-                    switch (lowerOfChar)
-                    {
-                        case 'r':
-                            p = new Rook(f, color);
-                            break;
-                        case 'n':
-                            p = new Knight(f, color);
-                            break;
-                        case 'b':
-                            p = new Bishop(f, color);
-                            break;
-                        case 'q':
-                            p = new Queen(f, color);
-                            break;
-                        case 'k':
-                            p = new King(f, color);
-                            break;
-                        case 'p':
-                            p = new Pawn(f, color);
-                            break;
-                        default:
-                            p = new Pawn(f, color);
-                            break;
-                    }
-                    dict.Add(f.ToString(), p);
-                    col++;
-                }
-                else if (lowerOfChar == char.Parse("/"))
-                {
-                    row--;
-                    col = 0;
-                }
-            }
-            CurrentChessBoard = new ChessBoard(dict);
+            //init Board
+            CurrentChessBoard = new ChessBoard(fenNotationString);
         }
         public ChessGame(string player1Name, string player2Name)
         {
@@ -160,7 +98,7 @@ namespace Chess
             return legalMoves;
         }
         //Check Whether a move results in a check
-        public List<Move> FilterMove(MovementType type, List<Move> moveList)
+        public static List<Move> FilterMove(MovementType type, List<Move> moveList)
         {
             List<Move> filteredList = new List<Move>();
  
@@ -211,13 +149,11 @@ namespace Chess
                 foreach (var m in moves)
                 {
                     //Iterate over all possible moves and check whether a move stops the check.
-                    ChessBoard copyBoard = new ChessBoard(this.CurrentChessBoard);
+                    var copyBoard = new ChessBoard(this.CurrentChessBoard);
                     copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                    if (!copyBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color)))
-                    {
-                        Console.WriteLine(copyBoard);
-                        return true;
-                    }
+                    if (copyBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color))) continue;
+                    Console.WriteLine(copyBoard);
+                    return true;
                 }
             }
             return false;

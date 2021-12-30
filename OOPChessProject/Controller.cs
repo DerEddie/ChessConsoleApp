@@ -100,7 +100,7 @@ namespace OOPChessProject
             Piece p;
             cGame.CurrentChessBoard.TryGetPieceFromField(of, out p);
             var listofMoves = p.GetPossibleMoves(cGame.CurrentChessBoard);
-            listofMoves = cGame.FilterMove(MovementType.Defending, listofMoves);
+            listofMoves = ChessGame.FilterMove(MovementType.Defending, listofMoves);
 
             if (p.PrintRepresentation == "KI")
             {

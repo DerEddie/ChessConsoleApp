@@ -41,8 +41,7 @@ namespace Chess
             FieldRow = number;
             FieldCol = (int) (Col) Enum.Parse(typeof(Col), s[0].ToString());
         }
-
-
+        
         //creating a constructor for a field instance
         public Field(int aFieldRow, int aFieldCol)
         {
