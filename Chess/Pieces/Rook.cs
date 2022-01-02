@@ -6,7 +6,7 @@ namespace Chess.Pieces
     {
         
 
-        public Rook(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive = true)
+        public Rook(Field position, Color pieceColor) : base(position, pieceColor)
         {
             //already Implemented
             base.PrintRepresentation = "RK";
@@ -17,14 +17,14 @@ namespace Chess.Pieces
             //Init FieldList
             List<Field> fList = new List<Field>();
 
-            var rowOfsetcolOfset = new List<(int, int)>
+            var rowOffsetColOffset = new List<(int, int)>
             {
                 (1,  0),
                 (-1 , 0),
                 (0, 1),
                 (0, -1)
             };
-            return GetPossibleMovesTraversing(cb, rowOfsetcolOfset);
+            return GetPossibleMovesTraversing(cb, rowOffsetColOffset);
         }
 
         public override object Clone()

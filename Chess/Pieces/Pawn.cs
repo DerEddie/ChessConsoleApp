@@ -6,7 +6,7 @@ namespace Chess.Pieces
     {
         private readonly int _directionFactor;
 
-        public Pawn(Field position, Color pieceColor, bool aisAlive = true) : base(position, pieceColor, aisAlive)
+        public Pawn(Field position, Color pieceColor) : base(position, pieceColor)
         {
             //already Implemented
             PrintRepresentation= "PW";

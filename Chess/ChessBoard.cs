@@ -171,7 +171,7 @@ namespace Chess
         }
         public List<Piece> GetAllPiecesOfColor(Color c)
         {
-            List<Piece> pList = new List<Piece>();
+            var pList = new List<Piece>();
             foreach (var keyValuePair in KeyFieldValuePiece)
             {
                 if (keyValuePair.Value.PieceColor == c)
@@ -181,7 +181,6 @@ namespace Chess
             }
             return pList;
         }
-
         public bool IsFieldOccupiedByColor(Field f, Color c)
         {
             //returns True if there is a black piece
@@ -203,7 +202,6 @@ namespace Chess
                 return false;
             }
         }
-
         public void RemoveSomeGhosts(int currentIteration)
         {
             var copyDict = new Dictionary<string, Piece>();
@@ -300,7 +298,6 @@ namespace Chess
                 }
             }
         }
-
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
             return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);

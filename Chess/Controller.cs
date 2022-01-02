@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using Chess;
 using Chess.Pieces;
 
-
-namespace OOPChessProject
+namespace Chess
 {
     public class Controller
     {
@@ -124,7 +121,7 @@ namespace OOPChessProject
             return listofMoves;
         }
 
-        public MovementType GetMoveTypeForDestinationField(List<Move> listOfMoves, Field destField)
+        public static MovementType GetMoveTypeForDestinationField(List<Move> listOfMoves, Field destField)
         {
             var mtype = MovementType.Moving;
             foreach (var move in listOfMoves)
@@ -143,6 +140,7 @@ namespace OOPChessProject
         {
             cGame.CurrentPlayer = (cGame.CurrentPlayer == cGame.Player1) ? cGame.Player2 : cGame.Player1;
         }
+        
         public void MainGameLoop()
         {
             var cGame = InitChessGame();

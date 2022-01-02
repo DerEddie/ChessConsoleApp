@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,21 +45,14 @@ namespace chessGUI
 
             ChessBoardGrid.Rows = 8;
             ChessBoardGrid.Columns = 8;
-            for (int r = 0; r < 8; r++)
+            for (var r = 0; r < 8; r++)
             {
-                for (int c = 0; c < 8; c++)
+                for (var c = 0; c < 8; c++)
                 {
-                    Col col = (Col)c;
-                    Row row = (Row)r;
-                    Button r1 = new Button();
-                    if ((r + c) % 2 == 0)
-                    {
-                        r1.Background = _colorDarkFields;
-                    }
-                    else
-                    {
-                        r1.Background = _colorBrightField;
-                    }
+                    var col = (Col)c;
+                    var row = (Row)r;
+                    var r1 = new Button();
+                    r1.Background = (r + c) % 2 == 0 ? _colorDarkFields : _colorBrightField;
                     r1.Name = $"{col}{r + 1}";
                     r1.Click += FieldButton_Click;
                     //r1.PreviewMouseLeftButtonDown;
@@ -162,6 +156,9 @@ namespace chessGUI
         }
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            string path = Directory.GetCurrentDirectory();
+
+
             EmptyChessBoard();
             m_ChessGame = Controller.InitChessGame();
 
@@ -181,13 +178,16 @@ namespace chessGUI
             foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
             {
                 // From inside the custom Button type:
-                Button b = this.FindName(kvp.Key) as Button;
+                var b = this.FindName(kvp.Key) as Button;
                 //b.Content = kvp.Value.ToString();
                 var s = kvp.Value.PieceColor == gColor.White ? "W" : "B";
 
-                Image img = new Image
+                path = Directory.GetCurrentDirectory();
+                Console.WriteLine(path);
+                var img = new Image
                 {
-                    Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value}.png"))
+                    //Source = new BitmapImage(new Uri($"..//Chess//Images//{s}{kvp.Value}.png"))
+                    Source = new BitmapImage(new Uri($"{path}/{s}{kvp.Value}.png"))
                 };
                 if (b != null) b.Content = img;
             }
@@ -195,7 +195,8 @@ namespace chessGUI
             stopwatch.Start();
 
         }
-        public void RefreshPlayerTimers()
+
+        private void RefreshPlayerTimers()
         {
             int minutes;
             int seconds;
@@ -216,7 +217,8 @@ namespace chessGUI
                 ChessClockBlack.Content = $"{minutes:D2}:{seconds:D2}";
             }
         }
-        public void UpdatePlayerTimerColors()
+
+        private void UpdatePlayerTimerColors()
         {
             if (m_ChessGame.CurrentPlayer.Color == gColor.White)
             {
@@ -230,11 +232,12 @@ namespace chessGUI
             }
 
         }
-        public void UpdateMovesList()
+
+        private void UpdateMovesList()
         {
             var color = m_ChessGame.CurrentPlayer.Color == gColor.Black ? "Black" : "White";
-            var lastItem = m_ChessGame.MovesHistory.Last();
-            MovesList.Items.Add($"Move #{lastItem.Item1}: {lastItem.Item2.FromField} --> {lastItem.Item2.ToField} by {color}");
+            var (item1, item2, _) = m_ChessGame.MovesHistory.Last();
+            MovesList.Items.Add($"Move #{item1}: {item2.FromField} --> {item2.ToField} by {color}");
         }
         private void RefreshChessBoard()
         {
