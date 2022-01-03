@@ -9,7 +9,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Chess;
+using Chess.Pieces;
 using OOPChessProject;
+using Color = System.Windows.Media.Color;
 using gColor = Chess.Pieces.Color;
 
 
@@ -169,20 +171,24 @@ namespace chessGUI
                 dispatcherTimer.Start();
             }
 
+            //List with black and white pieces
+            var whitePieces = m_ChessGame.CurrentChessBoard.GetAllPiecesOfColor(gColor.White);
+            var blackPieces = m_ChessGame.CurrentChessBoard.GetAllPiecesOfColor(gColor.Black);
+            whitePieces.AddRange(blackPieces);
 
-            foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
+            foreach (var p in whitePieces)
             {
                 // From inside the custom Button type:
-                var b = this.FindName(kvp.Key) as Button;
+                var b = this.FindName(p.CurrentField.ToString()) as Button;
                 //b.Content = kvp.Value.ToString();
-                var s = kvp.Value.PieceColor == gColor.White ? "W" : "B";
+                var s = p.PieceColor == gColor.White ? "W" : "B";
 
                 path = Directory.GetCurrentDirectory();
                 Console.WriteLine(path);
                 var img = new Image
                 {
                     //Source = new BitmapImage(new Uri($"..//Chess//Images//{s}{kvp.Value}.png"))
-                    Source = new BitmapImage(new Uri($"{path}/{s}{kvp.Value}.png"))
+                    Source = new BitmapImage(new Uri($"{path}/{s}{p}.png"))
                 };
                 if (b != null) b.Content = img;
             }
@@ -237,19 +243,23 @@ namespace chessGUI
         private void RefreshChessBoard()
         {
             EmptyChessBoard();
-            foreach (var kvp in m_ChessGame.CurrentChessBoard.KeyFieldValuePiece)
+            
+            var whitePieces = m_ChessGame.CurrentChessBoard.GetAllPiecesOfColor(gColor.White);
+            var blackPieces = m_ChessGame.CurrentChessBoard.GetAllPiecesOfColor(gColor.Black);
+            whitePieces.AddRange(blackPieces);
+            
+            foreach (var p in whitePieces)
             {
                 ResetColor();
                 // From inside the custom Button type:
-                var b = this.FindName(kvp.Key) as Button;
+                var b = this.FindName(p.CurrentField.ToString()) as Button;
                 //b.Content = kvp.Value.ToString();
                 string s;
-                s = kvp.Value.PieceColor == gColor.White ? "W" : "B";
+                s = p.PieceColor == gColor.White ? "W" : "B";
 
                 var img = new Image
                 {
-                    
-                    Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"))
+                    Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{p}.png"))
                 };
                 if (b != null) b.Content = img;
             }

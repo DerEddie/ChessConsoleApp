@@ -4,7 +4,7 @@ namespace Chess.Pieces
 {
     public class King : Piece
     {
-        private readonly List<(int, int)> _offset = new List<(int, int)>
+        private readonly List<(int, int)> m_offset = new List<(int, int)>
         {
             (1, 1),
             (-1, -1),
@@ -30,7 +30,7 @@ namespace Chess.Pieces
 
         public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
-            return GetPossibleMovesTraversing(cb, _offset, 1);
+            return GetPossibleMovesTraversing(cb, m_offset, 1);
         }
 
 

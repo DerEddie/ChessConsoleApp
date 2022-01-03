@@ -7,10 +7,8 @@ namespace Chess.Pieces
         //Creating a ghost pawn to implement "en passant" correctly.
         //The ghost-pawn is tied to an actual pawn so both can disappear when ghost pawn gets captured.
         //GhostPawn wont block own movement options since it is already gone once the enemy has moved,
-
-        public int IterationOfCreation;
-        public Pawn TheRealPawn;
-
+        public readonly int IterationOfCreation;
+        public readonly Pawn TheRealPawn;
         public GhostPawn(Pawn p, int iterationOfCreation, Field position, Color pieceColor) : base(position, pieceColor)
         {
             //already Implemented

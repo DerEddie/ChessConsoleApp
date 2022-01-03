@@ -4,7 +4,7 @@ namespace Chess.Pieces
 {
     public class Pawn : Piece
     {
-        private readonly int _directionFactor;
+        private readonly int m_directionFactor;
 
         public Pawn(Field position, Color pieceColor) : base(position, pieceColor)
         {
@@ -13,12 +13,12 @@ namespace Chess.Pieces
             //set the 
             if (PieceColor == Color.White)
             {
-                _directionFactor = -1;
+                m_directionFactor = -1;
 
             }
             else
             {
-                _directionFactor = 1;
+                m_directionFactor = 1;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Chess.Pieces
             {
                 if(GetMovingMoves(rNr,cNr,cb).Count != 0)
                 {
-                    int r1 = rNr + 2 * (-_directionFactor);
+                    int r1 = rNr + 2 * (-m_directionFactor);
                     int c1 = cNr;
                     Field f = new Field(r1, c1);
                     if (cb.IsFieldEmpty(f))
@@ -63,9 +63,9 @@ namespace Chess.Pieces
             foreach (var (item1, item2) in rcOffsetCapturing)
             {
                 //Check so Pawn doesn't try to capture outside the board,
-                if (cb.IsRowAndColStillBoard(rNr + item1 * _directionFactor, cNr + item2 * _directionFactor))
+                if (cb.IsRowAndColStillBoard(rNr + item1 * m_directionFactor, cNr + item2 * m_directionFactor))
                 {
-                    Field f1 = new Field(rNr + item1 * _directionFactor, cNr + item2 * _directionFactor);
+                    Field f1 = new Field(rNr + item1 * m_directionFactor, cNr + item2 * m_directionFactor);
                     cb.TryGetPieceFromField(f1, out var p);
 
 
@@ -89,7 +89,7 @@ namespace Chess.Pieces
             //Pawn move in different direction depending on color
             List<Move> fList = new List<Move>();
             //convert back to enum with modified values
-            var r1 =  rNr + 1 * (-_directionFactor);
+            var r1 =  rNr + 1 * (-m_directionFactor);
             var c1 =  cNr;
             var f = new Field(r1, c1);
             //check whether Field is Empty

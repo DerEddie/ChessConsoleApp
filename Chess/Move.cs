@@ -16,16 +16,16 @@
     
     public class Move
     {
-        private readonly string _name;
+        private readonly string m_name;
         public readonly Field FromField;
         public readonly Field ToField;
         public readonly MovementType MovementType;
         //private Piece m_capturedPiece;
 
 
-        public Move(string name, Field from, Field to, MovementType mt)
+        public Move(string mName, Field from, Field to, MovementType mt)
         {
-            this._name = name;
+            this.m_name = mName;
             FromField = from;
             ToField = to;
             MovementType = mt;
@@ -35,7 +35,7 @@
 
         public override string ToString()
         {
-            return (Piece: _name,fromField: FromField, toField: ToField, movementType: MovementType).ToString();
+            return (Piece: m_name,fromField: FromField, toField: ToField, movementType: MovementType).ToString();
         }
 
 

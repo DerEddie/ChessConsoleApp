@@ -10,16 +10,13 @@ namespace Chess
         }
         public static Field StringToField(string s)
         {
-            // String to Field Methode
+            // example: Input: "E1", returns Field-Instance
             var c = (int)(Col)Enum.Parse(typeof(Col), s[0].ToString());
             var r = (int)(Row)Enum.Parse(typeof(Row), "_" + s[1]);
             var of = new Field(r, c);
             return of;
         }
     }
-
-
-
-
+    
 
 }

@@ -5,43 +5,41 @@ namespace Chess
 {
     public class ChessBoard
     {
-        //field
-        public readonly Dictionary<string, Piece> KeyFieldValuePiece;
+        
+        private readonly Dictionary<string, Piece> m_Pieces;
         public ChessBoard(ChessBoard otherBoard)
         {
             var copyDict = new Dictionary<string, Piece>();
-            foreach (var kvpPair in otherBoard.KeyFieldValuePiece)
+            foreach (var kvpPair in otherBoard.m_Pieces)
             {
                 //clone -> returns object -> to Piece
                 copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
             }
-            KeyFieldValuePiece = copyDict;
+            m_Pieces = copyDict;
         }
         public ChessBoard(Dictionary<string, Piece> dict)
         {
-            KeyFieldValuePiece = dict;
+            m_Pieces = dict;
         }
-
         public ChessBoard(string fenNotation)
         {
-            KeyFieldValuePiece = new Dictionary<string, Piece>();
+            m_Pieces = new Dictionary<string, Piece>();
             var row = 7;
             var col = 0;
             foreach (var c in fenNotation)
             {
-                var color = Char.IsLower(c) ? Color.Black : Color.White;
+                var color = char.IsLower(c) ? Color.Black : Color.White;
 
-                var lowerOfChar = Char.ToLower(c);
-                Field f = new Field(row, col);
+                var lowerOfChar = char.ToLower(c);
+                var f = new Field(row, col);
 
                 
                 if (char.IsDigit(lowerOfChar))
                 {
-
                     col = col + int.Parse(c.ToString());
                     continue;
                 }
-                if (Char.IsLetter(lowerOfChar))
+                if (char.IsLetter(lowerOfChar))
                 {
 
                     //switch
@@ -70,7 +68,7 @@ namespace Chess
                             p = new Pawn(f, color);
                             break;
                     }
-                    KeyFieldValuePiece.Add(f.ToString(), p);
+                    m_Pieces.Add(f.ToString(), p);
                     col++;
                 }
                 else if (lowerOfChar == char.Parse("/"))
@@ -98,7 +96,7 @@ namespace Chess
                     //checks whether field is Empty or there is a piece on it.
                     //returns also a boolean reporting on the success of the retrieval
 
-                    bool hasVal = KeyFieldValuePiece.TryGetValue(f.ToString(), out var value);
+                    bool hasVal = m_Pieces.TryGetValue(f.ToString(), out var value);
 
                     if (hasVal)
                     {
@@ -119,10 +117,11 @@ namespace Chess
         {
             return (0 <= cN && cN < 8 && 0 <= rN  && rN < 8);
         }
-        public void CreateAGhostlyPawn(Pawn p, int iterationOfCreation, Field field, Color color)
+
+        private void CreateAGhostlyPawn(Pawn p, int iterationOfCreation, Field field, Color color)
         {
             //Inserts a new ghost Pawn on the board
-            KeyFieldValuePiece[field.ToString()] = new GhostPawn(p,iterationOfCreation,field, color);
+            m_Pieces[field.ToString()] = new GhostPawn(p,iterationOfCreation,field, color);
         }
         public Tuple<bool, Field> IsKingOnMoveList(List<Move> moveList, Color color)
         {
@@ -166,13 +165,13 @@ namespace Chess
         }
         public bool IsFieldEmpty(Field f)
         {   
-            bool isFieldOccupied = this.KeyFieldValuePiece.ContainsKey(f.ToString());
+            bool isFieldOccupied = this.m_Pieces.ContainsKey(f.ToString());
             return !isFieldOccupied;
         }
         public List<Piece> GetAllPiecesOfColor(Color c)
         {
             var pList = new List<Piece>();
-            foreach (var keyValuePair in KeyFieldValuePiece)
+            foreach (var keyValuePair in m_Pieces)
             {
                 if (keyValuePair.Value.PieceColor == c)
                 {
@@ -205,7 +204,7 @@ namespace Chess
         public void RemoveSomeGhosts(int currentIteration)
         {
             var copyDict = new Dictionary<string, Piece>();
-            foreach (var kvpPair in this.KeyFieldValuePiece)
+            foreach (var kvpPair in this.m_Pieces)
             {
                 copyDict.Add(kvpPair.Key, (Piece)kvpPair.Value.Clone());
             }
@@ -215,14 +214,16 @@ namespace Chess
                 {
                     if (gp.IterationOfCreation < currentIteration)
                     {
-                        this.KeyFieldValuePiece.Remove(kvp.Key);
+                        this.m_Pieces.Remove(kvp.Key);
                     }
                 }
             }
         }
         public void MovePiece(Field from, Field to, MovementType type, int iterationOfMove)
         {
-            var p = this.KeyFieldValuePiece[from.ToString()];
+            RemoveSomeGhosts(iterationOfMove);
+            
+            var p = this.m_Pieces[from.ToString()];
             var c = p.PieceColor;
             var toRow = to.FieldRow;
             var toCol = to.FieldCol;
@@ -239,7 +240,7 @@ namespace Chess
                     {
                         var ghostPawn = (GhostPawn)g;
                         var realPawn = ghostPawn.TheRealPawn;
-                        this.KeyFieldValuePiece.Remove(realPawn.CurrentField.ToString());
+                        this.m_Pieces.Remove(realPawn.CurrentField.ToString());
                     }
                     break;
                 case MovementType.Moving:
@@ -255,7 +256,7 @@ namespace Chess
                 case MovementType.CastleLong:
                     break;
                 case MovementType.Promotion:
-                    this.KeyFieldValuePiece[to.ToString()] = new Queen(to, p.PieceColor);
+                    this.m_Pieces[to.ToString()] = new Queen(to, p.PieceColor);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -264,25 +265,25 @@ namespace Chess
             p.CurrentField = to;
             if (IsFieldEmpty(to))
             {
-                this.KeyFieldValuePiece.Add(to.ToString(),p);
+                this.m_Pieces.Add(to.ToString(),p);
             }
             else
             {
-                this.KeyFieldValuePiece[to.ToString()] = p;
+                this.m_Pieces[to.ToString()] = p;
             }
-            this.KeyFieldValuePiece.Remove(from.ToString());
+            this.m_Pieces.Remove(from.ToString());
             if (type == MovementType.CastleShort)
             {
                 Field fRookOld = new Field(fromRow, 7);
                 bool wasSuccess = TryGetPieceFromField(fRookOld, out var pc);
                 if (wasSuccess)
                 {
-                    this.KeyFieldValuePiece.Remove(fRookOld.ToString());
+                    this.m_Pieces.Remove(fRookOld.ToString());
                 }
               
                 Field fieldRookNew = new Field(fromRow, 5);
                 pc.CurrentField = fieldRookNew;
-                this.KeyFieldValuePiece.Add(fieldRookNew.ToString(), pc);
+                this.m_Pieces.Add(fieldRookNew.ToString(), pc);
             }
             if (type == MovementType.CastleLong)
             {
@@ -290,17 +291,17 @@ namespace Chess
                 var wasSuccess = TryGetPieceFromField(fRookOld, out var pc);
                 if (wasSuccess)
                 {
-                    this.KeyFieldValuePiece.Remove(fRookOld.ToString());
+                    this.m_Pieces.Remove(fRookOld.ToString());
 
                     Field fieldRookNew = new Field(fromRow, 3);
                     pc.CurrentField = fieldRookNew;
-                    this.KeyFieldValuePiece.Add(fieldRookNew.ToString(), pc);
+                    this.m_Pieces.Add(fieldRookNew.ToString(), pc);
                 }
             }
         }
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
-            return KeyFieldValuePiece.TryGetValue(f.ToString(), out piece);
+            return m_Pieces.TryGetValue(f.ToString(), out piece);
         }
         public bool TryCastle(out List<Move> moves, Piece piece1)
         {

@@ -57,18 +57,6 @@ namespace Chess
             //var f = obj as Field;
             return obj is Field f && ((f.FieldCol == this.FieldCol) && (f.FieldRow == this.FieldRow));
         }
-        protected bool Equals(Field other)
-        {
-            return FieldRow == other.FieldRow && FieldCol == other.FieldCol;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (FieldRow * 397) ^ FieldCol;
-            }
-        }
 
     }
 }

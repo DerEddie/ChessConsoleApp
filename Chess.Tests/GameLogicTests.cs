@@ -41,10 +41,10 @@ namespace OOPChessProject.Tests
             Assert.AreEqual(0, movesfiltered.Count);
 
             var moves2 = Controller.GetMovesForField(cG, new Field("A7"));
-            var moves2filtered = cG.FilterMoveWhichExposeCheck(moves2, Color.Black);
-            Console.WriteLine(moves2filtered.Count);
+            var moves2Filtered = cG.FilterMoveWhichExposeCheck(moves2, Color.Black);
+            Console.WriteLine(moves2Filtered.Count);
 
-            Assert.AreEqual(2, moves2filtered.Count);
+            Assert.AreEqual(2, moves2Filtered.Count);
         }
 
         [Test]

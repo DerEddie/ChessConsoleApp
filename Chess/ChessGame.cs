@@ -158,10 +158,9 @@ namespace Chess
             }
             return false;
         }
-
         public bool MovesAvailable()
         {
-            bool areMovesAvail = false;
+            var areMovesAvail = false;
             var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(this.CurrentPlayer.Color);
 
             foreach (var pp in pieces)

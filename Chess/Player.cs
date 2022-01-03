@@ -4,18 +4,18 @@ namespace Chess
 {
     public class Player
     {
-        public string Name;
-        public Color Color;
+        private readonly string m_Name;
+        public readonly Color Color;
         public int TimeLeftInSeconds;
-        public Player(string playerName, Color color, int timeLeftInSeconds)
+        public Player(string playerMName, Color color, int timeLeftInSeconds)
         {
-            this.Name = playerName;
+            this.m_Name = playerMName;
             this.Color = color;
             this.TimeLeftInSeconds = timeLeftInSeconds;
         }
         public override string ToString()
         {
-            return this.Name;
+            return this.m_Name;
         }
     }
 }

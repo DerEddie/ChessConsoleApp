@@ -4,8 +4,6 @@ namespace Chess.Pieces
 {
     class Rook : Piece
     {
-        
-
         public Rook(Field position, Color pieceColor) : base(position, pieceColor)
         {
             //already Implemented

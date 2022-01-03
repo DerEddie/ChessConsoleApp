@@ -31,12 +31,13 @@ namespace Chess.Pieces
             return this.PrintRepresentation;
         }
         //adds possible moves to the List
-        private void TraverseInDirection(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)
+        protected void TraverseInDirection(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)
         {
             for (var i = 1; i <= traverseSteps; i++)
             {
-                var rN = row + direction.Item1 * i;
-                var cN = col + direction.Item2 * i;
+                var (item1, item2) = direction;
+                var rN = row + item1 * i;
+                var cN = col + item2 * i;
                 if (cb.IsRowAndColStillBoard(rN, cN))
                 {
                     var fn = new Field(rN, cN);
@@ -46,12 +47,12 @@ namespace Chess.Pieces
                         if (p.PrintRepresentation == "KI")
                         {
                             //continue because want the fields behind the kind register as well, so king can't just step back
-                            mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Capturing));
+                            mList.Add(new Move(PrintRepresentation, CurrentField, fn, MovementType.Capturing));
                             continue;
                         }
                         if (p.PrintRepresentation != "xx")
                         {
-                            mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Capturing));
+                            mList.Add(new Move(PrintRepresentation, CurrentField, fn, MovementType.Capturing));
                             break;
                         }
                         //if this piece is white and we reach a black one we can capture it but must stop iteration
