@@ -157,13 +157,8 @@ namespace chessGUI
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             string path = Directory.GetCurrentDirectory();
-
-
             EmptyChessBoard();
             m_ChessGame = Controller.InitChessGame();
-
-
-
             UpdatePlayerTimerColors();
 
             if (!dispatcherTimer.IsEnabled)
@@ -253,6 +248,7 @@ namespace chessGUI
 
                 var img = new Image
                 {
+                    
                     Source = new BitmapImage(new Uri($"C://Users//eduard.krutitsky//Pictures//{s}{kvp.Value.ToString()}.png"))
                 };
                 if (b != null) b.Content = img;

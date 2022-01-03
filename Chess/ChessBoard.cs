@@ -156,7 +156,7 @@ namespace Chess
                         filteredMoves.Add(m);
                     }
                 }
-                var res = this.IsKingOnMoveList(filteredMoves, HelperFunctions.ColorSwapper(c));
+                var res = this.IsKingOnMoveList(filteredMoves, HelperFunctions.OppositeColor(c));
                 if (res.Item1)
                 {
                     return true;

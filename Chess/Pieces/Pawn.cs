@@ -11,7 +11,7 @@ namespace Chess.Pieces
             //already Implemented
             PrintRepresentation= "PW";
             //set the 
-            if (this.PieceColor == Color.White)
+            if (PieceColor == Color.White)
             {
                 _directionFactor = -1;
 
@@ -30,15 +30,15 @@ namespace Chess.Pieces
 
         public override object Clone()
         {
-            Pawn pawn = new Pawn(this.CurrentField, this.PieceColor);
+            var pawn = new Pawn(CurrentField, PieceColor);
             return pawn;
         }
 
         private List<Move> GetDoubleStepMoves(int rNr, int cNr, ChessBoard cb)
         {
-            List<Move> fList = new List<Move>();
+            var fList = new List<Move>();
             //Check the double-step
-            if ( (this.CurrentField.FieldRow == 1 & this.PieceColor == Color.White ) | (this.CurrentField.FieldRow == 6 & this.PieceColor == Color.Black))
+            if ( (CurrentField.FieldRow == 1 & PieceColor == Color.White ) | (CurrentField.FieldRow == 6 & PieceColor == Color.Black))
             {
                 if(GetMovingMoves(rNr,cNr,cb).Count != 0)
                 {
@@ -46,7 +46,7 @@ namespace Chess.Pieces
                     int c1 = cNr;
                     Field f = new Field(r1, c1);
                     if (cb.IsFieldEmpty(f))
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.DoubleStep));
+                        fList.Add(new Move(PrintRepresentation, CurrentField, f, MovementType.DoubleStep));
                 }
             }
             return fList;
@@ -69,15 +69,15 @@ namespace Chess.Pieces
                     cb.TryGetPieceFromField(f1, out var p);
 
 
-                    if (cb.IsFieldOccupiedByColor(f1, HelperFunctions.ColorSwapper(this.PieceColor)))
+                    if (cb.IsFieldOccupiedByColor(f1, HelperFunctions.OppositeColor(PieceColor)))
                     {
                         fList.Add(p.PrintRepresentation == "xx"
-                            ? new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.EnPassant)
-                            : new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.Capturing));
+                            ? new Move(PrintRepresentation, CurrentField, f1, MovementType.EnPassant)
+                            : new Move(PrintRepresentation, CurrentField, f1, MovementType.Capturing));
                     }
                     else
                     {
-                        fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f1, MovementType.Defending));
+                        fList.Add(new Move(PrintRepresentation, CurrentField, f1, MovementType.Defending));
                     }
                 }
             }
@@ -89,19 +89,19 @@ namespace Chess.Pieces
             //Pawn move in different direction depending on color
             List<Move> fList = new List<Move>();
             //convert back to enum with modified values
-            int r1 =  rNr + 1 * (-_directionFactor);
-            int c1 =  cNr;
-            Field f = new Field(r1, c1);
+            var r1 =  rNr + 1 * (-_directionFactor);
+            var c1 =  cNr;
+            var f = new Field(r1, c1);
             //check whether Field is Empty
             if (cb.IsFieldEmpty(f))
             {
                 if (r1 == 7 | r1 == 0)
                 {
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.Promotion));
+                    fList.Add(new Move(PrintRepresentation, CurrentField, f, MovementType.Promotion));
                 }
                 else
                 {
-                    fList.Add(new Move(this.PrintRepresentation, this.CurrentField, f, MovementType.MovingPeaceful));
+                    fList.Add(new Move(PrintRepresentation, CurrentField, f, MovementType.MovingPeaceful));
                 }
             }
             return fList;

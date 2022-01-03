@@ -27,29 +27,23 @@ namespace Chess
         G,
         H
     };
-
     public class Field
     {
         public readonly int FieldRow; //row = 0 => 1
         public readonly int FieldCol; //col = 0 => A
         public Field(string s)
         {
-            
-            
             var number = int.Parse(s[1].ToString())-1;
-
             FieldRow = number;
             FieldCol = (int) (Col) Enum.Parse(typeof(Col), s[0].ToString());
         }
-        
         //creating a constructor for a field instance
         public Field(int aFieldRow, int aFieldCol)
         {
             FieldRow = aFieldRow;
             FieldCol = aFieldCol;          
         }
-
-
+        
         public override string ToString()
         {
             return $"{(Col) this.FieldCol}{this.FieldRow + 1}";
@@ -60,14 +54,9 @@ namespace Chess
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-
-            Field f = obj as Field;
-
-            return f != null && ((f.FieldCol == this.FieldCol) && (f.FieldRow == this.FieldRow));
-
-
+            //var f = obj as Field;
+            return obj is Field f && ((f.FieldCol == this.FieldCol) && (f.FieldRow == this.FieldRow));
         }
-
         protected bool Equals(Field other)
         {
             return FieldRow == other.FieldRow && FieldCol == other.FieldCol;

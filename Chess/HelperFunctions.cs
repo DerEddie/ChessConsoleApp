@@ -4,16 +4,9 @@ namespace Chess
 {
     public static class HelperFunctions
     {
-        public static Color ColorSwapper(Color c)
+        public static Color OppositeColor(Color c)
         {
-            if (c == Color.White)
-            {
-                return Color.Black;
-            }
-            else
-            {
-                return Color.White;
-            }
+            return c == Color.White ? Color.Black : Color.White;
         }
         public static Field StringToField(string s)
         {

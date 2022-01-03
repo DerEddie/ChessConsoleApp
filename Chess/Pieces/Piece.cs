@@ -24,49 +24,38 @@ namespace Chess.Pieces
             CurrentField = position;
             PieceColor = pieceColor;
         }
-        
         //Implement in Piece children
         public abstract List<Move> GetPossibleMoves(ChessBoard cb);
-
-
         public override string ToString()
         {
             return this.PrintRepresentation;
         }
-        
         //adds possible moves to the List
-        protected void TraverseInDirection(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)
+        private void TraverseInDirection(List<Move> mList, int traverseSteps, int row, int col, (int, int) direction, ChessBoard cb)
         {
-            int cN;
-
-            for (int i = 1; i <= traverseSteps; i++)
+            for (var i = 1; i <= traverseSteps; i++)
             {
                 var rN = row + direction.Item1 * i;
-                cN = col + direction.Item2 * i;
-
+                var cN = col + direction.Item2 * i;
                 if (cb.IsRowAndColStillBoard(rN, cN))
                 {
-                    Field fn = new Field(rN, cN);
-
+                    var fn = new Field(rN, cN);
                     cb.TryGetPieceFromField(fn, out var p);
-
-                    if (cb.IsFieldOccupiedByColor(fn, HelperFunctions.ColorSwapper(this.PieceColor)))
+                    if (cb.IsFieldOccupiedByColor(fn, HelperFunctions.OppositeColor(this.PieceColor)))
                     {
                         if (p.PrintRepresentation == "KI")
                         {
+                            //continue because want the fields behind the kind register as well, so king can't just step back
                             mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Capturing));
                             continue;
                         }
-
                         if (p.PrintRepresentation != "xx")
                         {
                             mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Capturing));
                             break;
                         }
-
                         //if this piece is white and we reach a black one we can capture it but must stop iteration
                         mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Moving));
-
                     }
                     else if (cb.IsFieldOccupiedByColor(fn, this.PieceColor))
                     {
@@ -78,31 +67,20 @@ namespace Chess.Pieces
                         //its an empty field
                         mList.Add(new Move(this.PrintRepresentation, this.CurrentField, fn, MovementType.Moving));
                     }
-
                 }
             }
         }
-
-
-        
-
         protected List<Move> GetPossibleMovesTraversing(ChessBoard cb, List<(int, int)> directions, int traverseSteps = 7)
         {
             List<Move> mList = new List<Move>();
-
             //create fields and append to the List
-            int r = CurrentField.FieldRow;
-            int c = CurrentField.FieldCol;
-
-
+            var r = CurrentField.FieldRow;
+            var c = CurrentField.FieldCol;
             foreach (var os in directions)
             {
                 TraverseInDirection(mList,traverseSteps,r,c,os,cb);
             }
-
             return mList;
         }
     }
-
-    
 }

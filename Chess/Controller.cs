@@ -45,7 +45,7 @@ namespace Chess
         }
         public static void UpdateGameState(ChessGame cGame)
         {
-            cGame.IsCheck = cGame.CurrentChessBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(cGame.CurrentPlayer.Color));
+            cGame.IsCheck = cGame.CurrentChessBoard.IsCheckedByColor(HelperFunctions.OppositeColor(cGame.CurrentPlayer.Color));
             if (cGame.IsCheck)
             {
                 cGame.GameState = GameState.Check;
@@ -120,7 +120,6 @@ namespace Chess
             }
             return listofMoves;
         }
-
         public static MovementType GetMoveTypeForDestinationField(List<Move> listOfMoves, Field destField)
         {
             var mtype = MovementType.Moving;

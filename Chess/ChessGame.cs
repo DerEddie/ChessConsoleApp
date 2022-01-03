@@ -89,7 +89,7 @@ namespace Chess
             {
                 var copyBoard = new ChessBoard(this.CurrentChessBoard);
                 copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                var enemyColor = HelperFunctions.ColorSwapper(currentPlayerColor);
+                var enemyColor = HelperFunctions.OppositeColor(currentPlayerColor);
                 if (!copyBoard.IsCheckedByColor(enemyColor))
                 {
                     legalMoves.Add(m);
@@ -114,7 +114,7 @@ namespace Chess
         public List<Move> FilterKingMoves(List<Move> moveList, King king)
         {
             Color c = king.PieceColor;
-            Color oppColor = HelperFunctions.ColorSwapper(c);
+            Color oppColor = HelperFunctions.OppositeColor(c);
             var pieces = this.CurrentChessBoard.GetAllPiecesOfColor(oppColor);
 
             foreach (var p in pieces)
@@ -151,7 +151,7 @@ namespace Chess
                     //Iterate over all possible moves and check whether a move stops the check.
                     var copyBoard = new ChessBoard(this.CurrentChessBoard);
                     copyBoard.MovePiece(m.FromField, m.ToField, MovementType.Moving, 0);
-                    if (copyBoard.IsCheckedByColor(HelperFunctions.ColorSwapper(this.CurrentPlayer.Color))) continue;
+                    if (copyBoard.IsCheckedByColor(HelperFunctions.OppositeColor(this.CurrentPlayer.Color))) continue;
                     Console.WriteLine(copyBoard);
                     return true;
                 }
