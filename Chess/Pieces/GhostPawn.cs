@@ -16,14 +16,11 @@ namespace Chess.Pieces
             PrintRepresentation = "xx";
             TheRealPawn = p;
         }
-
-
         public override List<Move> GetPossibleMoves(ChessBoard cb)
         {
             var rowColOffset = new List<(int, int)>();
             return GetPossibleMovesTraversing(cb, rowColOffset, 1);
         }
-
         public override object Clone()
         {
             GhostPawn pawn = new GhostPawn(this.TheRealPawn, this.IterationOfCreation,CurrentField, this.PieceColor);

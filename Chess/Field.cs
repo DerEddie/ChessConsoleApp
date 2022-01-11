@@ -43,16 +43,20 @@ namespace Chess
             FieldRow = aFieldRow;
             FieldCol = aFieldCol;          
         }
-        
         public override string ToString()
         {
             return $"{(Col) this.FieldCol}{this.FieldRow + 1}";
         }
-
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if(ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if((ReferenceEquals(this, obj)))
+            {
+                return true;
+            }
             if (obj.GetType() != this.GetType()) return false;
             //var f = obj as Field;
             return obj is Field f && ((f.FieldCol == this.FieldCol) && (f.FieldRow == this.FieldRow));

@@ -12,7 +12,6 @@ namespace Chess
         Checkmate,
         Draw,
     }
-
     public class ChessGame
     {
         //carries basic information and information for the flow control
@@ -24,50 +23,36 @@ namespace Chess
         public GameState GameState;
         public int TurnCounter;
         public bool IfFirstInputTrueElseFalse = true;
-
         //new Fields
         public bool IsCheck = false;
         public ChessGame(string fenNotationString, string player1Name, string player2Name)
         {
             Player1 = new Player(player1Name, Color.White, 600);
             Player2 = new Player(player2Name, Color.Black, 600);
-
-
             //Create the Board
             CurrentChessBoard = new ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-
             //set white as starting Player
             CurrentPlayer = Player1;
-
             //set Move Counter to Zero
             TurnCounter = 0;
-
             //gameState
             GameState = GameState.Running;
-
             //init Board
             CurrentChessBoard = new ChessBoard(fenNotationString);
         }
         public ChessGame(string player1Name, string player2Name)
         {
-
             //Create Players
             Player1 = new Player(player1Name, Color.White, 600);
             Player2 = new Player(player2Name, Color.Black, 600);
-
             //Create the Board
             CurrentChessBoard = new ChessBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-
             //set white as starting Player
             CurrentPlayer = Player1;
-
             //set Move Counter to Zero
             TurnCounter = 0;
-
             //gameState
             GameState = GameState.Running;
-
-            //
         }
         //Implement here because attribute here
         //Check if Color Player == Color Piece

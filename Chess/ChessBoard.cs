@@ -117,7 +117,6 @@ namespace Chess
         {
             return (0 <= cN && cN < 8 && 0 <= rN  && rN < 8);
         }
-
         private void CreateAGhostlyPawn(Pawn p, int iterationOfCreation, Field field, Color color)
         {
             //Inserts a new ghost Pawn on the board
@@ -221,8 +220,6 @@ namespace Chess
         }
         public void MovePiece(Field from, Field to, MovementType type, int iterationOfMove)
         {
-            RemoveSomeGhosts(iterationOfMove);
-            
             var p = this.m_Pieces[from.ToString()];
             var c = p.PieceColor;
             var toRow = to.FieldRow;
@@ -274,8 +271,8 @@ namespace Chess
             this.m_Pieces.Remove(from.ToString());
             if (type == MovementType.CastleShort)
             {
-                Field fRookOld = new Field(fromRow, 7);
-                bool wasSuccess = TryGetPieceFromField(fRookOld, out var pc);
+                var fRookOld = new Field(fromRow, 7);
+                var wasSuccess = TryGetPieceFromField(fRookOld, out var pc);
                 if (wasSuccess)
                 {
                     this.m_Pieces.Remove(fRookOld.ToString());
@@ -298,6 +295,7 @@ namespace Chess
                     this.m_Pieces.Add(fieldRookNew.ToString(), pc);
                 }
             }
+            RemoveSomeGhosts(iterationOfMove);
         }
         public bool TryGetPieceFromField(Field f, out Piece piece)
         {
