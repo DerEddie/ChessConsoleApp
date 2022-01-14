@@ -14,6 +14,10 @@ ________________________________________________________________________________
 Current state of the project:\
 ![Unbenannt](https://user-images.githubusercontent.com/29587190/146266333-0e8c109f-313b-426e-970d-ecce9a1bfeea.PNG)
 
+This is how the Gamelogic looks for the console application:
+![image](https://user-images.githubusercontent.com/29587190/149512806-6ea3e822-7552-4bc9-ad5d-2726b8ecb80b.png)
+
+
 ________________________________________________________________________________
 
 
