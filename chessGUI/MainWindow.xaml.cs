@@ -14,19 +14,30 @@ using OOPChessProject;
 using Color = System.Windows.Media.Color;
 using gColor = Chess.Pieces.Color;
 
-
-
+/*
+RGB Hex	RGB Hex3	HSL	RGB	HTML Keyword
+#c8125c	#d16	hsl(335,83,42)	rgb(200,18,92)	crimson
+#e298a9	#eab	hsl(346,56,74)	rgb(226,152,169)	tan
+#363b3d	#344	hsl(197,6,22)	rgb(54,59,61)	darkslategray
+#dc2c59	#e36	hsl(344,71,51)	rgb(220,44,89)	crimson
+#9a3e63	#a46	hsl(335,42,42)	rgb(154,62,99)	sienna
+#c7135d	#c16	hsl(335,82,42)	rgb(199,19,93)	crimson
+#f987f1	#f8f	hsl(304,90,75)	rgb(249,135,241)	violet
+#c5005a	#c06	hsl(332,100,38)	rgb(197,0,90)	crimson
+#707e87	#788	hsl(203,9,48)	rgb(112,126,135)	slategray
+#fdfdfd	#fff	hsl(0,0,99)	rgb(253,253,253)	white
+*/
 namespace chessGUI
 {
     public partial class MainWindow : Window
     {
-        private readonly SolidColorBrush _colorDarkFields = new SolidColorBrush(Color.FromArgb(150, 12, 6, 54));
-        readonly SolidColorBrush _colorBrightField = new SolidColorBrush(Color.FromArgb(255, 233, 212, 136));
-        readonly SolidColorBrush _colorSelection = new SolidColorBrush(Color.FromArgb(190, 1, 227, 182));
-        readonly SolidColorBrush _colorPossibleMoves = new SolidColorBrush(Color.FromArgb(255, 1, 227, 182));
-        private SolidColorBrush _colorControls = new SolidColorBrush(Color.FromArgb(255, 83, 186, 131));
-        readonly SolidColorBrush _colorActiveChessClock = new SolidColorBrush(Color.FromArgb(150, 1, 150, 182));
-        readonly SolidColorBrush _colorDeactivatedChessClock = new SolidColorBrush(Color.FromArgb(255, 159, 150, 150));
+        private readonly SolidColorBrush _colorDarkFields = new SolidColorBrush(Color.FromArgb(249,255,200, 255));
+        readonly SolidColorBrush _colorBrightField = new SolidColorBrush(Color.FromArgb(190,255,50, 255));
+        readonly SolidColorBrush _colorSelection = new SolidColorBrush(Color.FromArgb(249,135,241, 0));
+        readonly SolidColorBrush _colorPossibleMoves = new SolidColorBrush(Color.FromArgb(255, 1, 227, 0));
+        private SolidColorBrush _colorControls = new SolidColorBrush(Color.FromArgb(255, 83, 186, 255));
+        readonly SolidColorBrush _colorActiveChessClock = new SolidColorBrush(Color.FromArgb(154,62,99, 0));
+        readonly SolidColorBrush _colorDeactivatedChessClock = new SolidColorBrush(Color.FromArgb(112,126,135, 0));
         private ChessGame m_ChessGame;
         private List<Move> _moves;
         private Stopwatch stopwatch = new Stopwatch();
