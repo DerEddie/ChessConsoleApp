@@ -33,8 +33,8 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Label x:Name="StatusBar" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.RowSpan="1" Grid.Row="0" Grid.Column="1" Background="DarkBlue" Content="GameStatusBar" Foreground="Azure" FontSize="16" FontFamily="Courier New"></Label>
-                <Button x:Name="Starter" Content="" Click="StartButton_Click" Background="DarkBlue" Foreground="Azure" FontSize="20" FontFamily="Courier New"></Button>
+                <Label x:Name="StatusBar" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.RowSpan="1" Grid.Row="0" Grid.Column="1" Background="Gray" Content="GameStatusBar" Foreground="Azure" FontSize="16" FontFamily="Courier New"></Label>
+                <Button x:Name="Starter" Content="" Click="StartButton_Click" Background="DarkGray" Foreground="Azure" FontSize="20" FontFamily="Courier New"></Button>
             </Grid>
 
 

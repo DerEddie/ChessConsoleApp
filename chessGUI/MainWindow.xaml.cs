@@ -33,8 +33,8 @@ namespace chessGUI
     {
         private readonly SolidColorBrush _colorDarkFields = new SolidColorBrush(Color.FromArgb(249,255,200, 255));
         readonly SolidColorBrush _colorBrightField = new SolidColorBrush(Color.FromArgb(190,255,50, 255));
-        readonly SolidColorBrush _colorSelection = new SolidColorBrush(Color.FromArgb(249,135,241, 0));
-        readonly SolidColorBrush _colorPossibleMoves = new SolidColorBrush(Color.FromArgb(255, 1, 227, 0));
+        readonly SolidColorBrush _colorSelection = new SolidColorBrush(Color.FromArgb(100,255,255, 0));
+        readonly SolidColorBrush _colorPossibleMoves = new SolidColorBrush(Color.FromArgb(100, 200, 200, 0));
         private SolidColorBrush _colorControls = new SolidColorBrush(Color.FromArgb(255, 83, 186, 255));
         readonly SolidColorBrush _colorActiveChessClock = new SolidColorBrush(Color.FromArgb(154,62,99, 0));
         readonly SolidColorBrush _colorDeactivatedChessClock = new SolidColorBrush(Color.FromArgb(112,126,135, 0));
